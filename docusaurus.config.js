@@ -4,8 +4,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
-  title: 'Dayu',
-  tagline: 'Dayu is all you need',
+  title: ' ',
+  // disableHeaderTitle: true,
+  // tagline: 'Dayu is all you need',
+  tagline: 'Expert in automated scheduling of edge computing stream data processing.',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
   favicon: 'img/dayu-logo.png',
@@ -71,7 +73,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'introduction',
             position: 'left',
             label: 'Tutorial',
           },
@@ -91,7 +93,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/intro',
+                to: '/docs/introduction',
               },
             ],
           },
