@@ -9,7 +9,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
   // tagline: 'Dayu is all you need',
   tagline: 'Expert in automated scheduling of edge computing stream data processing.',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  baseUrl: '/dayu-autostreamer.github.io/',
   favicon: 'img/dayu-logo.png',
 
   // GitHub pages deployment config.
