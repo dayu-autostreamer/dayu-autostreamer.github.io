@@ -101,7 +101,7 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 
 在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操作时，修改 04-configmap，添加 relayNode（根本原因在于，不符合“访问节点和被访问节点处于同一个局域网内”，所以需要添加 relayNode）
 
-<img src="../static/img/FAQs/Q7.png" alt="Q7" style="zoom: 50%;" />
+![Q7](/img/FAQs/Q7.png)
 
 ### 问题八：master 的gpu 存在但是找不到 gpu 资源
 
@@ -150,15 +150,15 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 
 ```
 
-![Q9-1](../static/img/FAQs/Q9-1.png)
+![Q9-1](/img/FAQs/Q9-1.png)
 
 ```bash
 $ dpkg -l '*nvidia*'
 ```
 
-![Q9-2](../static/img/FAQs/Q9-2.png)
+![Q9-2](/img/FAQs/Q9-2.png)
 
-![Q9-3](../static/img/FAQs/Q9-3.png)
+![Q9-3](/img/FAQs/Q9-3.png)
 
 >[!quote]
 >[Plug in does not detect Tegra device Jetson Nano · Issue #377 · NVIDIA/k8s-device-plugin (github.com)](https://github.com/NVIDIA/k8s-device-plugin/issues/377)
@@ -218,11 +218,11 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ### 问题十二： `kubectl logs <pod-name>` 超时
 
-![Q12-1](../static/img/FAQs/Q12-1.png)
+![Q12-1](/img/FAQs/Q12-1.png)
 
 原因：借鉴 [Kubernetes 边缘节点抓不到监控指标？试试这个方法！ - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/379962934)
 
-![Q12-2](../static/img/FAQs/Q12-2.png)
+![Q12-2](/img/FAQs/Q12-2.png)
 
 可以发现报错访问的端口就是 10350，而在 kubeedge 中 10350 应该会进行转发，所以应该是 cloudcore 的设置问题。
 
@@ -239,7 +239,7 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ### 问题十四：CloudCore报certficate错误
 
-![Q14](../static/img/FAQs/Q14.png)
+![Q14](/img/FAQs/Q14.png)
 
 原因：因为是重装，主节点 token 变了，但是边缘节点一直以过去的 token 尝试进行连接
 
@@ -436,7 +436,7 @@ guest@cloud:~/yby$ cat sedna.json
  journalctl -u edgecore.service  -f
 ```
 
-![Q17](../static/img/FAQs/Q17.png)
+![Q17](/img/FAQs/Q17.png)
 
 解决：重启 edgecore
 
@@ -565,15 +565,15 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 #### 解决方法
 
 由于是pod与edgemesh-agent的交互问题，首先检查该edge上的edgemesh-agent的状态，发现会是edgemesh-agent的问题。
-![Q24-1](../static/img/FAQs/Q24-1.png)
+![Q24-1](/img/FAQs/Q24-1.png)
 
 通过describe pod发现该pod被分配到新edge后就没有其余事件记录
 
-![Q24-2](../static/img/FAQs/Q24-2.png)
+![Q24-2](/img/FAQs/Q24-2.png)
 
 可以去edge上查看信息。通过`journalctl -u edgecore.service -xe`可以看到相关报错
 
-![Q24-3](../static/img/FAQs/Q24-3.png)
+![Q24-3](/img/FAQs/Q24-3.png)
 
 原因：docker国内无法访问，新加入的edge没有做对应配置，导致拉取不到 kubeedge/edgemesh-agent 镜像。配置后重启docker和edgecore即可。
 
@@ -591,7 +591,7 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 vim /etc/kubeedge/config/edgecore.yaml
 ```
 
-![Q25](../static/img/FAQs/Q25.png)
+![Q25](/img/FAQs/Q25.png)
 
 edgeHub中的httpServer添加云端地址，例如https://114.212.81.11:10002 ，websocket中的server删除最开始的冒号
 
