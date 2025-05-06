@@ -1,17 +1,23 @@
-endi:
-  name: Endilie Yacop Sucipto
-  title: Maintainer of Docusaurus
-  url: https://github.com/endiliey
-  image_url: https://github.com/endiliey.png
+lxie:
+  name: Lei Xie
+  title:
+  url: https://cs.nju.edu.cn/lxie
+  image_url: https://cs.nju.edu.cn/lxie/Lei%20Xie_files/Xie11.JPG
 
-yangshun:
-  name: Yangshun Tay
-  title: Front End Engineer @ Facebook
-  url: https://github.com/yangshun
-  image_url: https://github.com/yangshun.png
+whzhou:
+  name: Wenhui Zhou
+  title:
+  url: https://github.com/zwh2119
+  image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/zhouwenhui.jpg
 
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
+adayang:
+  name: Bingyun Yang
+  title:
+  url: https://github.com/AdaYangOlzz
+  image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/yangbingyun.jpg
+
+haowu:
+  name: Hao Wu
+  title:
+  url: https://github.com/skyrimforest
+  image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/wuhao.png

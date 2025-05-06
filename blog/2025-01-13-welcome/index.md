@@ -1,0 +1,16 @@
+---
+slug: welcome
+title: Welcome to Dayu
+authors: [lxie, whzhou]
+---
+
+Welcome to **Dayu**, an auto scheduling system for stream data processing on distributed cloud-edge platforms.
+
+We provide infrastructure for cloud-edge collaborative stream data analysis and focus on scheduling tasks like configuration optimization, model evolution, task offloading, and so on.
+
+
+![dayu-img](./dayu.png)
+
+For more information of dayu, please refer to [Introduction](https://dayu-autostreamer.github.io/docs/intorduction/why-dayu)
+
+For a quick start, please refer to [Getting Started](https://dayu-autostreamer.github.io/docs/getting-started/quick-start)
