@@ -1,7 +1,5 @@
 ---
 sidebar_label: FAQs
-id: faqs
-title: FAQs
 slug: /getting-start/faqs
 ---
 
