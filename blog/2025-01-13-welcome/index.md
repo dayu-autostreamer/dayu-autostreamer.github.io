@@ -1,6 +1,7 @@
 ---
 slug: welcome
 title: Welcome to Dayu
+description: dayu
 authors: [lxie, whzhou]
 ---
 

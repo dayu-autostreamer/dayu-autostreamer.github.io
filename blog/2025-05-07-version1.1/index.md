@@ -28,5 +28,5 @@ The basic structure of tasks in dayu is updated from linear pipeline to topologi
 - Add application of age classification. (Current available applications: car-detection, face-detection, gender-classification, age-classification)
 
 
-For more details, please refer to [dayu-v1.0](https://github.com/dayu-autostreamer/dayu/releases/tag/v1.1)
+For more details, please refer to [dayu-v1.1](https://github.com/dayu-autostreamer/dayu/releases/tag/v1.1)
 
