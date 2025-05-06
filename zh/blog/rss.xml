@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>  Blog</title>
+        <title>Dayu Blog</title>
         <link>https://your-docusaurus-test-site.com/zh/blog</link>
-        <description>  Blog</description>
+        <description>Dayu Blog</description>
         <lastBuildDate>Wed, 07 May 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
@@ -33,7 +33,7 @@
             <link>https://your-docusaurus-test-site.com/zh/blog/welcome</link>
             <guid>welcome</guid>
             <pubDate>Mon, 13 Jan 2025 00:00:00 GMT</pubDate>
-            <description><![CDATA[Welcome to Dayu, an auto scheduling system for stream data processing on distributed cloud-edge platforms.]]></description>
+            <description><![CDATA[dayu]]></description>
         </item>
     </channel>
 </rss>

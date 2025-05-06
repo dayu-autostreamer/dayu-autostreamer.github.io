@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://your-docusaurus-test-site.com/blog</id>
-    <title>  Blog</title>
+    <title>Dayu Blog</title>
     <updated>2025-05-07T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://your-docusaurus-test-site.com/blog"/>
-    <subtitle>  Blog</subtitle>
+    <subtitle>Dayu Blog</subtitle>
     <icon>https://your-docusaurus-test-site.com/img/dayu-logo.png</icon>
     <entry>
         <title type="html"><![CDATA[Dayu v1.1 Released]]></title>
@@ -61,7 +61,7 @@
         <id>welcome</id>
         <link href="https://your-docusaurus-test-site.com/blog/welcome"/>
         <updated>2025-01-13T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[Welcome to Dayu, an auto scheduling system for stream data processing on distributed cloud-edge platforms.]]></summary>
+        <summary type="html"><![CDATA[dayu]]></summary>
         <author>
             <name>Lei Xie</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>
