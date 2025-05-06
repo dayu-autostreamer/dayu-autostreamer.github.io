@@ -41,7 +41,7 @@ function HomepageHeader() {
                     <div className="margin-horiz--sm">
                         <Link
                             className="button button--secondary button--lg"
-                            to="/docs/introduction">
+                            to="/docs/why-dayu">
                             Get Started
                         </Link>
                     </div>

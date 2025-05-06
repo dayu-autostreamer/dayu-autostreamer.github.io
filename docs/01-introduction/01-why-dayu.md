@@ -1,6 +1,8 @@
 ---
 sidebar_label: Why Dayu
-slug: /why-dayu
+id: why-dayu
+title: Why Dayu
+slug: /introduction/why-dayu
 ---
 
 # Why Dayu

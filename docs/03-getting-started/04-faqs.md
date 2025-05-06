@@ -1,3 +1,12 @@
+---
+sidebar_label: FAQs
+id: faqs
+title: FAQs
+slug: /getting-start/faqs
+---
+
+# FAQs
+
 ### 问题一：kube-proxy 报 iptables 问题
 
 ```

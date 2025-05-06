@@ -1,6 +1,8 @@
 ---
-sidebar_label: FAQs
-slug: /faqs
+sidebar_label: Architecture
+id: architecture
+title: Architecture
+slug: /architecture/architecture
 ---
 
-# FAQs
+# Architecture

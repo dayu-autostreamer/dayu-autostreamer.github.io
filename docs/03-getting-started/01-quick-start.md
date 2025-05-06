@@ -1,6 +1,8 @@
 ---
 sidebar_label: Quick Start
-slug: /quick-start
+id: quick-start
+title: Quick Start
+slug: /getting-start/quick-start
 ---
 
 # Quick Start
