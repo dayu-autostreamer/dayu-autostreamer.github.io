@@ -13,4 +13,4 @@ We provide infrastructure for cloud-edge collaborative stream data analysis and 
 
 For more information of dayu, please refer to [Introduction](https://dayu-autostreamer.github.io/docs/introduction/why-dayu)
 
-For a quick start, please refer to [Getting Started](https://dayu-autostreamer.github.io/docs/getting-started/quick-start)
+For a quick start, please refer to [Getting Started](https://dayu-autostreamer.github.io/docs/getting-start/quick-start)
