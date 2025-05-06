@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkguide=self.webpackChunkguide||[]).push([[472],{5513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"New Accepted Paper: CRAVE","permalink":"/blog/crave"},{"title":"Welcome to Dayu","permalink":"/blog/welcome"}]}')}}]);

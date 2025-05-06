@@ -4,15 +4,29 @@
         <title>  Blog</title>
         <link>https://your-docusaurus-test-site.com/zh/blog</link>
         <description>  Blog</description>
-        <lastBuildDate>Thu, 27 Mar 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 07 May 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[Dayu v1.1 Released]]></title>
+            <link>https://your-docusaurus-test-site.com/zh/blog/version1.1</link>
+            <guid>version1.1</guid>
+            <pubDate>Wed, 07 May 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Dayu system Version 1.1 is released!]]></description>
+        </item>
         <item>
             <title><![CDATA[New Accepted Paper: CRAVE]]></title>
             <link>https://your-docusaurus-test-site.com/zh/blog/crave</link>
             <guid>crave</guid>
             <pubDate>Thu, 27 Mar 2025 00:00:00 GMT</pubDate>
             <description><![CDATA[Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Dayu v1.0 Released]]></title>
+            <link>https://your-docusaurus-test-site.com/zh/blog/version1.0</link>
+            <guid>version1.0</guid>
+            <pubDate>Fri, 21 Feb 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Dayu system Version 1.0 is released!]]></description>
         </item>
         <item>
             <title><![CDATA[Welcome to Dayu]]></title>
