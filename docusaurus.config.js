@@ -7,8 +7,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
     title: 'Dayu',
     // disableHeaderTitle: true,
     // tagline: 'Dayu is all you need',
-    tagline: 'Provide infrastructure for cloud-edge collaborative stream data analysis.',
-    url: 'https://your-docusaurus-test-site.com',
+    tagline: /** @type {import('@docusaurus/Translate').translate} */ ('Provide infrastructure for cloud-edge collaborative stream data analysis.'),
+    url: 'https://dayu-autostreamer.github.io',
     baseUrl: '/',
     favicon: 'img/dayu-logo.png',
 
@@ -31,9 +31,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         localeConfigs: {
             en: {
                 label: 'English',
+                direction: 'ltr',
             },
             zh: {
                 label: '简体中文',
+                direction: 'ltr',
             },
         },
     },
@@ -79,62 +81,81 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
                     },
                     {to: '/blog', label: 'Blog', position: 'left'},
                     {
+                        type: 'docsVersionDropdown',
+                        position: 'right',
+                        dropdownActiveClassDisabled: true,
+                        docsPluginId: 'default',
+                    },
+                    {
+                        type: 'localeDropdown',
+                        position: 'right',
+                        dropdownItemsBefore: [],
+                        dropdownItemsAfter: []
+                    },
+                    {
                         href: 'https://github.com/dayu-autostreamer/dayu',
                         label: 'GitHub',
                         position: 'right',
                     },
+
                 ],
             },
             footer: {
                 style: 'dark',
-                links: [
-                    {
-                        title: 'Docs',
-                        items: [
-                            {
-                                label: 'Introduction',
-                                to: '/docs/introduction/why-dayu',
-                            },
-                            {
-                                label: 'Tutorial',
-                                to: '/docs/getting-start/quick-start',
-                            },
-                            {
-                                label: 'Development',
-                                to: '/docs/developer-guide/how-to-develop',
-                            },
+                links:
+                    [
+                        {
+                            title: 'Docs',
+                            items: [
+                                {
+                                    label: 'Introduction',
+                                    to: '/docs/introduction/why-dayu',
+                                },
+                                {
+                                    label: 'Tutorial',
+                                    to: '/docs/getting-start/quick-start',
+                                },
+                                {
+                                    label: 'Development',
+                                    to: '/docs/developer-guide/how-to-develop',
+                                },
 
-                        ],
-                    },
-                    {
-                        title: 'Community',
-                        items: [
-                            {
-                                label: 'Github Issue',
-                                href: 'https://github.com/dayu-autostreamer/dayu/issues',
-                            },
-                            {
-                                label: 'Contact Us',
-                                to: '/docs/community/contact-us',
-                            },
+                            ],
+                        },
+                        {
+                            title: 'Community',
+                            items: [
+                                {
+                                    label: 'Github Issue',
+                                    href: 'https://github.com/dayu-autostreamer/dayu/issues',
+                                },
+                                {
+                                    label: 'Contact Us',
+                                    to: '/docs/community/contact-us',
+                                },
 
-                        ],
-                    },
-                    {
-                        title: 'More',
-                        items: [
-                            {
-                                label: 'GitHub',
-                                href: 'https://github.com/dayu-autostreamer/dayu',
-                            },
-                        ],
-                    },
-                ],
-                copyright: `Copyright © ${new Date().getFullYear()} Dayu Project Authors. All rights reserved.`,
-            },
+                            ],
+                        },
+                        {
+                            title: 'More',
+                            items: [
+                                {
+                                    label: 'GitHub',
+                                    href: 'https://github.com/dayu-autostreamer/dayu',
+                                },
+                            ],
+                        },
+                    ],
+                copyright:
+                    `Copyright © ${new Date().getFullYear()} Dayu Project Authors. All rights reserved.`,
+            }
+            ,
             prism: {
                 theme: lightCodeTheme,
-                darkTheme: darkCodeTheme,
-            },
+                darkTheme:
+                darkCodeTheme,
+            }
+            ,
         }),
-});
+})
+;

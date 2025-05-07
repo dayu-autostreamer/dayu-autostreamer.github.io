@@ -1,0 +1,42 @@
+{
+  "link.title.Docs": {
+    "message": "文档",
+    "description": "The title of the footer links column with title=Docs in the footer"
+  },
+  "link.title.Community": {
+    "message": "社区",
+    "description": "The title of the footer links column with title=Community in the footer"
+  },
+  "link.title.More": {
+    "message": "更多",
+    "description": "The title of the footer links column with title=More in the footer"
+  },
+  "link.item.label.Tutorial": {
+    "message": "教程",
+    "description": "The label of footer link with label=Tutorial linking to /docs/getting-start/quick-start"
+  },
+  "link.item.label.Github Issue": {
+    "message": "Github Issue",
+    "description": "The label of footer link with label=Github Issue linking to https://github.com/dayu-autostreamer/dayu/issues"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/dayu-autostreamer/dayu"
+  },
+  "copyright": {
+    "message": "Copyright © 2025 The Dayu Authors. All rights reserved.",
+    "description": "The footer copyright"
+  },
+  "link.item.label.Introduction": {
+    "message": "介绍",
+    "description": "The label of footer link with label=Introduction linking to /docs/introduction/why-dayu"
+  },
+  "link.item.label.Development": {
+    "message": "开发",
+    "description": "The label of footer link with label=Development linking to /docs/developer-guide/how-to-develop"
+  },
+  "link.item.label.Contact Us": {
+    "message": "联系我们",
+    "description": "The label of footer link with label=Contact Us linking to /docs/community/contact-us"
+  }
+}

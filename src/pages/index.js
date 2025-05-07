@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import ThemedImage from '@theme/ThemedImage';
+import Translate, {translate} from '@docusaurus/Translate';
 
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
@@ -21,27 +22,32 @@ function HomepageHeader() {
                         dark: require('@site/static/img/dayu-trans.png').default,
                     }}>
                 </ThemedImage>
-                <p className="hero__subtitle">{siteConfig.tagline}</p>
+                <p className="hero__subtitle">
+                    <Translate>
+                        {/*{siteConfig.tagline}*/}
+                        Provide infrastructure for cloud-edge collaborative stream data analysis.
+                    </Translate>
+                </p>
                 <div className={styles.buttons}>
                     <div className="margin-horiz--sm">
                         <Link
                             className="button button--secondary button--lg"
                             to="https://github.com/dayu-autostreamer/dayu/">
-                            Github
+                            <Translate>Github</Translate>
                         </Link>
                     </div>
                     <div className="margin-horiz--sm">
                         <Link
                             className="button button--secondary button--lg"
                             to="https://github.com/dayu-autostreamer/dayu/releases/">
-                            Download
+                            <Translate>Download</Translate>
                         </Link>
                     </div>
                     <div className="margin-horiz--sm">
                         <Link
                             className="button button--secondary button--lg"
                             to="/docs/introduction/why-dayu">
-                            Get Started
+                            <Translate>Get Started</Translate>
                         </Link>
                     </div>
                 </div>

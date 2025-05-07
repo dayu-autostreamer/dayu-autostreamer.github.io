@@ -112,10 +112,10 @@ This is <Highlight color="#1877F2">Facebook blue</Highlight> !
 可以通过运行以下指令进行版本发布：
 
 ```bash
-npm run docusaurus docs:version 1.0
+npm run docusaurus docs:version v1.0
 ```
 
-之后 docs 文件夹会被复制到 versioned_docs/version-1.0，同时会创建 versions.json 文件。
+之后 docs 文件夹会被复制到 versioned_docs/version-v1.0，同时会创建 versions.json 文件。
 
 当前就有两个版本的文档了，这两个都可以进行修改。
 
@@ -125,4 +125,29 @@ npm run docusaurus docs:version 1.0
 为了实现版本跳转，需要在docusaurus.config.js文件中进行配置。
 
 ## 文档多语言管理
-todo
+
+在docusaurus.config.js文件中配置多语言：
+
+```
+i18n: {
+        defaultLocale: 'en',
+        locales: ['en', 'zh'],
+        localeConfigs: {
+            en: {
+                label: 'English',
+                direction: 'ltr',
+            },
+            zh: {
+                label: '简体中文',
+                direction: 'ltr',
+            },
+        },
+    }
+```
+
+生成非默认语言文档配置：
+```shell
+npm run write-translations -- --locale zh
+```
+
+此时会生成i18n/zh目录，可将翻译后的docs和blog复制到对应的文件夹，实现多语言管理
