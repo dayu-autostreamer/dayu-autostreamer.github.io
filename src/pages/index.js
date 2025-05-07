@@ -21,7 +21,6 @@ function HomepageHeader() {
                         dark: require('@site/static/img/dayu-trans.png').default,
                     }}>
                 </ThemedImage>
-                <h1 className="hero__title">{siteConfig.title}</h1>
                 <p className="hero__subtitle">{siteConfig.tagline}</p>
                 <div className={styles.buttons}>
                     <div className="margin-horiz--sm">

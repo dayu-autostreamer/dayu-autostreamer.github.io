@@ -13,4 +13,4 @@ Dayu system Version 1.0 is released!
 - Support heterogeneous hook function extensions for research of different topics (like data configuration, task offloading, video encoding, and so on) and implementation of different methods (for baseline comparison).
 - Include our latest work on video configuration and task offloading: hierarchical-EI, a two-phase hierarchical scheduling framework based on Embodied Intelligence. It helps adjust system configuration with low cost and high scenario adaption.  [(link)](https://github.com/dayu-autostreamer/dayu/template/scheduler/hei.yaml)
 
-For more details, please refer to [dayu-v1.0](https://github.com/dayu-autostreamer/dayu/releases/tag/v1.0)
+For more details, please refer to [dayu-v1.0](https://github.com/dayu-autostreamer/dayu/releases/tag/v1.0).
