@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://your-docusaurus-test-site.com/zh/blog</id>
+    <id>https://dayu-autostreamer.github.io/zh/blog</id>
     <title>Dayu Blog</title>
     <updated>2025-05-07T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://your-docusaurus-test-site.com/zh/blog"/>
+    <link rel="alternate" href="https://dayu-autostreamer.github.io/zh/blog"/>
     <subtitle>Dayu Blog</subtitle>
-    <icon>https://your-docusaurus-test-site.com/zh/img/dayu-logo.png</icon>
+    <icon>https://dayu-autostreamer.github.io/zh/img/dayu-logo.png</icon>
     <entry>
         <title type="html"><![CDATA[Dayu v1.1 Released]]></title>
         <id>version1.1</id>
-        <link href="https://your-docusaurus-test-site.com/zh/blog/version1.1"/>
+        <link href="https://dayu-autostreamer.github.io/zh/blog/version1.1"/>
         <updated>2025-05-07T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.1 is released!]]></summary>
         <author>
-            <name>Wenhui Zhou</name>
+            <name>周文晖</name>
             <uri>https://github.com/zwh2119</uri>
         </author>
         <author>
-            <name>Hao Wu</name>
+            <name>吴昊</name>
             <uri>https://github.com/skyrimforest</uri>
         </author>
         <author>
-            <name>Bingyun Yang</name>
+            <name>杨冰云</name>
             <uri>https://github.com/AdaYangOlzz</uri>
         </author>
         <author>
-            <name>Wenyi Dai</name>
+            <name>戴文艺</name>
             <uri>https://github.com/kangarin</uri>
         </author>
     </entry>
     <entry>
         <title type="html"><![CDATA[New Accepted Paper: CRAVE]]></title>
         <id>crave</id>
-        <link href="https://your-docusaurus-test-site.com/zh/blog/crave"/>
+        <link href="https://dayu-autostreamer.github.io/zh/blog/crave"/>
         <updated>2025-03-27T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!]]></summary>
         <author>
-            <name>Lei Xie</name>
+            <name>谢磊</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>
         </author>
         <author>
-            <name>Bingyun Yang</name>
+            <name>杨冰云</name>
             <uri>https://github.com/AdaYangOlzz</uri>
         </author>
     </entry>
     <entry>
         <title type="html"><![CDATA[Dayu v1.0 Released]]></title>
         <id>version1.0</id>
-        <link href="https://your-docusaurus-test-site.com/zh/blog/version1.0"/>
+        <link href="https://dayu-autostreamer.github.io/zh/blog/version1.0"/>
         <updated>2025-02-21T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.0 is released!]]></summary>
         <author>
-            <name>Wenhui Zhou</name>
+            <name>周文晖</name>
             <uri>https://github.com/zwh2119</uri>
         </author>
         <author>
-            <name>Bingyun Yang</name>
+            <name>杨冰云</name>
             <uri>https://github.com/AdaYangOlzz</uri>
         </author>
     </entry>
     <entry>
         <title type="html"><![CDATA[Welcome to Dayu]]></title>
         <id>welcome</id>
-        <link href="https://your-docusaurus-test-site.com/zh/blog/welcome"/>
+        <link href="https://dayu-autostreamer.github.io/zh/blog/welcome"/>
         <updated>2025-01-13T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[dayu]]></summary>
         <author>
-            <name>Lei Xie</name>
+            <name>谢磊</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>
         </author>
         <author>
-            <name>Wenhui Zhou</name>
+            <name>周文晖</name>
             <uri>https://github.com/zwh2119</uri>
         </author>
     </entry>
