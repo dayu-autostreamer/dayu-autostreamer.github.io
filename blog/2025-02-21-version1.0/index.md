@@ -4,7 +4,7 @@ title: Dayu v1.0 Released
 authors: [whzhou, adayang]
 ---
 
-Dayu system Version 1.0 is released!
+**Dayu system Version 1.0 is released!**
 
 ### Features
 - Complete online processing, scheduling and displaying flow of video analytics pipelines.
