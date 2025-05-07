@@ -13,8 +13,8 @@ The basic structure of tasks in dayu is updated from linear pipeline to topologi
 - A brand-new forwarding mechanism in the dayu system for tasks with dag structure, including splitting nodes with forking and merging nodes with redis.
 - A fine-grained and flexible deployment and offloading mechanism for topological logic nodes and physical nodes, which separates the process of model deployment and task offloading and allows collaboration among multi-edges and cloud.
 - A more flexible visualization module in frontend to display customized visualization views for system analysis.
-- Add our work on model evolution, adaptively switch models based on scenarios. [(link)](https://github.com/dayu-autostreamer/dayu/template/scheduler/model-switch.yaml)
-- Add our latest work on video encoding: CRAVE (Collaborative Region-aware Adaptive Video Encoding). It is a region-adaptive video encoding algorithm for cloud-edge collaborative object detection. [(link)](https://github.com/dayu-autostreamer/dayu/template/scheduler/crave.yaml)
+- Add our work on model evolution, adaptively switch models based on scenarios. [(link)](https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/model-switch.yaml)
+- Add our latest work on video encoding: CRAVE (Collaborative Region-aware Adaptive Video Encoding). It is a region-adaptive video encoding algorithm for cloud-edge collaborative object detection. [(link)](https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/crave.yaml)
 
 ### Bug Fix
 - Fix problem of write queue full in rtsp datasource server (`datasource`).
