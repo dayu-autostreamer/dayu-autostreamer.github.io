@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="atom.xsl"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dayu-autostreamer.github.io/blog</id>
     <title>Dayu Blog</title>
@@ -9,10 +9,36 @@
     <icon>https://dayu-autostreamer.github.io/img/dayu-logo.png</icon>
     <entry>
         <title type="html"><![CDATA[Dayu v1.1 Released]]></title>
-        <id>version1.1</id>
+        <id>https://dayu-autostreamer.github.io/blog/version1.1</id>
         <link href="https://dayu-autostreamer.github.io/blog/version1.1"/>
         <updated>2025-05-07T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.1 is released!]]></summary>
+        <content type="html"><![CDATA[<p><strong>Dayu system Version 1.1 is released!</strong></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/blog/version1.1#breaking-changes" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes">​</a></h3>
+<p>The basic structure of tasks in dayu is updated from linear pipeline to topological dag (directed acyclic graph) to support more complicated application scenarios.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.1#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<ul>
+<li>A brand-new forwarding mechanism in the dayu system for tasks with dag structure, including splitting nodes with forking and merging nodes with redis.</li>
+<li>A fine-grained and flexible deployment and offloading mechanism for topological logic nodes and physical nodes, which separates the process of model deployment and task offloading and allows collaboration among multi-edges and cloud.</li>
+<li>A more flexible visualization module in frontend to display customized visualization views for system analysis.</li>
+<li>Add our work on model evolution, adaptively switch models based on scenarios. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/model-switch.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
+<li>Add our latest work on video encoding: CRAVE (Collaborative Region-aware Adaptive Video Encoding). It is a region-adaptive video encoding algorithm for cloud-edge collaborative object detection. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/crave.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.1#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h3>
+<ul>
+<li>Fix problem of write queue full in rtsp datasource server (<code>datasource</code>).</li>
+<li>Fix possible task loss in the system (<code>controller</code> / <code>distributor</code>).</li>
+<li>Add optional cloud/edge parameters filling in template files for flexible parameter specification in cloud-edge pods.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.1#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update">​</a></h3>
+<ul>
+<li>Add cloud and edge template supplementary to support heterogeneous parameters (<code>backend</code>).</li>
+<li>Beatify frontend pages (<code>frontend</code>).</li>
+<li>Refactor template directory to simplify file structure.</li>
+<li>Unify the base image for system components.</li>
+<li>Add application of age classification. (Current available applications: car-detection, face-detection, gender-classification, age-classification)</li>
+</ul>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.1" target="_blank" rel="noopener noreferrer">dayu-v1.1</a>.</p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
@@ -32,10 +58,15 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[New Accepted Paper: CRAVE]]></title>
-        <id>crave</id>
+        <id>https://dayu-autostreamer.github.io/blog/crave</id>
         <link href="https://dayu-autostreamer.github.io/blog/crave"/>
         <updated>2025-03-27T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!]]></summary>
+        <content type="html"><![CDATA[<p>Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!</p>
+<p>This paper proposes CRAVE (Collaborative Region-aware Adaptive Video Encoding), which achieves efficient candidate region extraction through lightweight foreground detection and historical inference result analysis.</p>
+<p>For more information, please refer to:</p>
+<p><strong>Bingyun Yang, Jingyi Ning, Wenhui Zhou, Chuyu Wang, Lei Xie, Zhenjie Lin, Liming Wang. Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection. Accepted to Appear In Proceeding of IEEE International Conference on Distributed Computing Systems (ICDCS 2025, poster paper).</strong></p>
+<p><img decoding="async" loading="lazy" alt="crave-paper-img" src="https://dayu-autostreamer.github.io/assets/images/crave-paper-1d10e694eddd9027bc8f98803d9d0a79.png" width="639" height="823" class="img_ev3q"></p>]]></content>
         <author>
             <name>Lei Xie</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>
@@ -47,10 +78,20 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[Dayu v1.0 Released]]></title>
-        <id>version1.0</id>
+        <id>https://dayu-autostreamer.github.io/blog/version1.0</id>
         <link href="https://dayu-autostreamer.github.io/blog/version1.0"/>
         <updated>2025-02-21T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.0 is released!]]></summary>
+        <content type="html"><![CDATA[<p><strong>Dayu system Version 1.0 is released!</strong></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.0#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<ul>
+<li>Complete online processing, scheduling and displaying flow of video analytics pipelines.</li>
+<li>Compatible with different operations among the whole flow with various hook functions.</li>
+<li>Easy to deploy on distributed systems and scalable to heterogeneous devices based on KubeEdge.</li>
+<li>Support heterogeneous hook function extensions for research of different topics (like data configuration, task offloading, video encoding, and so on) and implementation of different methods (for baseline comparison).</li>
+<li>Include our latest work on video configuration and task offloading: hierarchical-EI, a two-phase hierarchical scheduling framework based on Embodied Intelligence. It helps adjust system configuration with low cost and high scenario adaption.  <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.0/template/scheduler/hei.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
+</ul>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.0" target="_blank" rel="noopener noreferrer">dayu-v1.0</a>.</p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
@@ -62,10 +103,15 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[Welcome to Dayu]]></title>
-        <id>welcome</id>
+        <id>https://dayu-autostreamer.github.io/blog/welcome</id>
         <link href="https://dayu-autostreamer.github.io/blog/welcome"/>
         <updated>2025-01-13T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[dayu]]></summary>
+        <content type="html"><![CDATA[<p>Welcome to <strong>Dayu</strong>, an auto scheduling system for stream data processing on distributed cloud-edge platforms.</p>
+<p>We provide infrastructure for cloud-edge collaborative stream data analysis and focus on scheduling tasks like configuration optimization, model evolution, task offloading, and so on.</p>
+<p><img decoding="async" loading="lazy" alt="dayu-img" src="https://dayu-autostreamer.github.io/assets/images/dayu-b1d0ff7f57d8f63493bf2f9ae1e6c6cb.png" width="2838" height="896" class="img_ev3q"></p>
+<p>For more information of dayu, please refer to <a href="https://dayu-autostreamer.github.io/docs/introduction/why-dayu">Introduction</a>.</p>
+<p>For a quick start, please refer to <a href="https://dayu-autostreamer.github.io/docs/getting-started">Getting Started</a>.</p>]]></content>
         <author>
             <name>Lei Xie</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>
