@@ -1,10 +1,10 @@
 ---
-sidebar_label: Contact Us
+sidebar_label: 联系我们
 slug: /community/contact-us
 custom_edit_url: null
 ---
 
-# Contact Us
+# 联系我们
 
 如果您有任何问题，请随时通过以下方式联系我们：
 

@@ -1,3 +1,5 @@
 {
-  "label": "Instruction"
+  "label": "Introduction",
+  "collapsible": true,
+  "collapsed": false
 }

@@ -1,26 +1,32 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+// @ts-check
+// `@type` JSDoc annotations allow editor autocompletion and type checking
+// (when paired with `@ts-check`).
+// There are various equivalent ways to declare your Docusaurus config.
+// See: https://docusaurus.io/docs/api/docusaurus-config
 
-// With JSDoc @type annotations, IDEs can provide config autocompletion
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-(module.exports = {
+import {themes as prismThemes} from 'prism-react-renderer';
+
+// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+
+/** @type {import('@docusaurus/types').Config} */
+const config = {
     title: 'Dayu',
-    // disableHeaderTitle: true,
-    // tagline: 'Dayu is all you need',
     tagline: /** @type {import('@docusaurus/Translate').translate} */ ('Provide infrastructure for cloud-edge collaborative stream data analysis.'),
-    url: 'https://dayu-autostreamer.github.io',
-    baseUrl: '/',
     favicon: 'img/dayu-logo.png',
+
+    // Set the production url of your site here
+    url: 'https://dayu-autostreamer.github.io',
+    // Set the /<baseUrl>/ pathname under which your site is served
+    // For GitHub pages deployment, it is often '/<projectName>/'
+    baseUrl: '/',
 
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'dayu-autostreamer', // Usually your GitHub org/user name.
     projectName: 'dayu', // Usually your repo name.
-    trailingSlash: false,
 
-    onBrokenLinks: 'warn',
+    onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
-    // staticDirectories: ['public', 'static'],
 
     // Even if you don't use internationalization, you can use this field to set
     // useful metadata like html lang. For example, if your site is Chinese, you
@@ -42,22 +48,31 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
     presets: [
         [
-            '@docusaurus/preset-classic',
+            'classic',
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
                 docs: {
-                    sidebarPath: require.resolve('./sidebars.js'),
+                    sidebarPath: './sidebars.js',
                     // Please change this to your repo.
+                    // Remove this to remove the "edit this page" links.
                     editUrl: 'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/tree/main',
                 },
                 blog: {
                     showReadingTime: true,
+                    feedOptions: {
+                        type: ['rss', 'atom'],
+                        xslt: true,
+                    },
                     // Please change this to your repo.
-                    editUrl:
-                        'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/tree/main',
+                    // Remove this to remove the "edit this page" links.
+                    editUrl: 'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/tree/main',
+                    // Useful options to enforce blogging best practices
+                    onInlineTags: 'warn',
+                    onInlineAuthors: 'warn',
+                    onUntruncatedBlogPosts: 'warn',
                 },
                 theme: {
-                    customCss: require.resolve('./src/css/custom.css'),
+                    customCss: './src/css/custom.css',
                 },
             }),
         ],
@@ -66,8 +81,10 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
+            // Replace with your project's social card
+            image: 'img/dayu_logo_all.png',
             navbar: {
-                // title: 'Dayu',
+                title: '',
                 logo: {
                     alt: 'Dayu Site Logo',
                     src: 'img/dayu.png',
@@ -113,11 +130,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
                                 },
                                 {
                                     label: 'Tutorial',
-                                    to: '/docs/getting-start/quick-start',
+                                    to: '/docs/getting-started',
                                 },
                                 {
                                     label: 'Development',
-                                    to: '/docs/developer-guide/how-to-develop',
+                                    to: '/docs/developer-guide',
                                 },
 
                             ],
@@ -129,6 +146,11 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
                                     label: 'Github Issue',
                                     href: 'https://github.com/dayu-autostreamer/dayu/issues',
                                 },
+                                {
+                                    label: 'Contributing',
+                                    to: '/docs/community/contributing',
+                                },
+
                                 {
                                     label: 'Contact Us',
                                     to: '/docs/community/contact-us',
@@ -148,14 +170,12 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
                     ],
                 copyright:
                     `Copyright © ${new Date().getFullYear()} Dayu Project Authors. All rights reserved.`,
-            }
-            ,
+            },
             prism: {
-                theme: lightCodeTheme,
-                darkTheme:
-                darkCodeTheme,
-            }
-            ,
+                theme: prismThemes.github,
+                darkTheme: prismThemes.dracula,
+            },
         }),
-})
-;
+};
+
+export default config;

@@ -1,10 +1,10 @@
 ---
-sidebar_label: Contributing
+sidebar_label: 贡献代码
 slug: /community/contributing
 custom_edit_url: null
 ---
 
-# Contributing
+# 贡献代码
 
 ## Before you get started
 
@@ -15,7 +15,7 @@ Please make sure to read and observe our [Code of Conduct](https://github.com/da
 ## Getting started
 
 - Fork the [repository](https://github.com/dayu-autostreamer/dayu/) on GitHub
-- Read the [quick start](https://dayu-autostreamer.github.io/docs/getting-start/quick-start) for deployment.
+- Read the [quick start](https://dayu-autostreamer.github.io/docs/getting-started/quick-start) for deployment.
 - Read the [Developer Guide](https://dayu-autostreamer.github.io/docs/developer-guide/how-to-develop) for development guide.
 
 

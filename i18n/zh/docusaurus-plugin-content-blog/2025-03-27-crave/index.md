@@ -2,11 +2,14 @@
 slug: crave
 title: "New Accepted Paper: CRAVE"
 authors: [lxie, adayang]
+hide_reading_time: true
 ---
 
 Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!
 
 This paper proposes CRAVE (Collaborative Region-aware Adaptive Video Encoding), which achieves efficient candidate region extraction through lightweight foreground detection and historical inference result analysis.
+
+<!-- truncate -->
 
 For more information, please refer to:
 

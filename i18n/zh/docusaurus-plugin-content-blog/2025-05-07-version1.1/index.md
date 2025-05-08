@@ -2,9 +2,12 @@
 slug: version1.1
 title: Dayu v1.1 Released
 authors: [whzhou, haowu, adayang, wydai]
+hide_reading_time: true
 ---
 
 **Dayu system Version 1.1 is released!**
+
+<!-- truncate -->
 
 ### Breaking Changes
 The basic structure of tasks in dayu is updated from linear pipeline to topological dag (directed acyclic graph) to support more complicated application scenarios.

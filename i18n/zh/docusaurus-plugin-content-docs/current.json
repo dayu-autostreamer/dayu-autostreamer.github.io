@@ -3,24 +3,36 @@
     "message": "Next",
     "description": "The label for version current"
   },
-  "sidebar.tutorialSidebar.category.Instruction": {
-    "message": "Instruction",
-    "description": "The label for category Instruction in sidebar tutorialSidebar"
-  },
   "sidebar.tutorialSidebar.category.Architecture": {
-    "message": "Architecture",
+    "message": "系统架构",
     "description": "The label for category Architecture in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.Getting Started": {
-    "message": "Getting Started",
+    "message": "快速开始",
     "description": "The label for category Getting Started in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.Developer Guide": {
-    "message": "Developer Guide",
+    "message": "开发者指南",
     "description": "The label for category Developer Guide in sidebar tutorialSidebar"
   },
   "sidebar.tutorialSidebar.category.Community": {
-    "message": "Community",
+    "message": "社区",
     "description": "The label for category Community in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Install Lower Layer System": {
+    "message": "安装底层系统",
+    "description": "The label for category Install Lower Layer System in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Start Upper Layer System": {
+    "message": "启动上层系统",
+    "description": "The label for category Start Upper Layer System in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.How to Build": {
+    "message": "如何构建",
+    "description": "The label for category How to Build in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Introduction": {
+    "message": "介绍",
+    "description": "The label for category Introduction in sidebar tutorialSidebar"
   }
 }
