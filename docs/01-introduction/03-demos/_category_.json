@@ -1,0 +1,9 @@
+{
+  "label": "Demos",
+   "link": {
+    "type": "doc",
+    "id": "introduction/demos/index"
+  },
+  "collapsible": true,
+  "collapsed": true
+}
