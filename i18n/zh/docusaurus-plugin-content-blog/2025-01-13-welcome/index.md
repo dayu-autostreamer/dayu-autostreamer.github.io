@@ -3,7 +3,6 @@ slug: welcome
 title: Welcome to Dayu
 description: dayu
 authors: [lxie, whzhou]
-hide_reading_time: true
 ---
 
 Welcome to **Dayu**, an auto scheduling system for stream data processing on distributed cloud-edge platforms.

@@ -1,0 +1,9 @@
+{
+  "label": "API",
+  "link": {
+    "type": "doc",
+    "id": "developer-guide/api/index"
+  },
+  "collapsible": true,
+  "collapsed": true
+}

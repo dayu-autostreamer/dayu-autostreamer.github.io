@@ -58,7 +58,7 @@ const config = {
                     editUrl: 'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/tree/main',
                 },
                 blog: {
-                    showReadingTime: true,
+                    showReadingTime: false,
                     feedOptions: {
                         type: ['rss', 'atom'],
                         xslt: true,
