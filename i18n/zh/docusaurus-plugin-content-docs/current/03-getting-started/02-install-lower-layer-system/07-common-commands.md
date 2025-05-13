@@ -1,10 +1,10 @@
 ---
-sidebar_label: 常用命令
+sidebar_label: 常用指令
 slug: /getting-started/install-lower-layer-system/common-commands
 custom_edit_url: null
 ---
 
-# 常用命令
+# 常用指令
 
 ```bash
 # 进入root用户
