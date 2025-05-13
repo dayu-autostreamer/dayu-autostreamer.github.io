@@ -10,7 +10,7 @@ whzhou:
   url: https://github.com/zwh2119
   image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/zhouwenhui.jpg
 
-adayang:
+byyang:
   name: 杨冰云
   title: Dayu Project Contributor
   url: https://github.com/AdaYangOlzz
@@ -22,9 +22,20 @@ wydai:
   url: https://github.com/kangarin
   image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/daiwenyi.jpg
 
-haowu:
+sycao:
+  name: 曹书与
+  title: Dayu Project Contributor
+  url: https://github.com/hgssczj
+  image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/caoshuyu.jpg
+
+hwu:
   name: 吴昊
   title: Dayu Project Contributor
   url: https://github.com/skyrimforest
   image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/wuhao.png
 
+yshang:
+  name: 杭业晟
+  title: Dayu Project Contributor
+  url: https://github.com/hangyesheng
+  image_url: https://cs.nju.edu.cn/lxie/research_group/avatar/hangyesheng.jpg
