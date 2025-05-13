@@ -6,6 +6,8 @@ custom_edit_url: null
 
 # 构建准备工作
 
+[TBD]
+
 ## Introduction
 Dayu is deployed on a cloud-edge collaborative environment with heterogeneous devices, which requires components in dayu has multi-architecture (like `amd64`/`arm64`). 
 

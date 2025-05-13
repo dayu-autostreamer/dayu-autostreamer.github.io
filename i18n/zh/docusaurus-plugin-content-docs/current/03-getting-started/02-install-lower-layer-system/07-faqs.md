@@ -26,27 +26,32 @@ iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 Failed to create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to set up pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout, failed to clean up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to teardown pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout]
 ```
 
-原因：应该不是第一次初始化 k8s 集群，所以会遇到这样的问题。出现的原因是之前没有删除 k8s 的网络配置（文档里的每一步都有它存在的意义...）
+原因：应该不是第一次初始化 k8s 集群，所以会遇到这样的问题。出现的原因是之前没有删除 k8s 的网络配置。
 
 解决：
-
 ```bash
-rm -rf /etc/cni/net.d/  # 删除网络配置
-# maybe需要重新init一下
+# 删除网络配置
+rm -rf /etc/cni/net.d/  
+# 可能需要重新init一下
 ```
 
 ### 问题三：metrics-server一直无法成功
 
 原因：master 没有加污点
-解决：`kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io/master-`
+
+解决：
+```bash
+kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io/master-
+```
+
 
 ### 问题四：10002 already in use
 
 `journalctl -u cloudcore.service -xe` 时看到 xxx already in use
 
 原因：应该是之前的记录没有清理干净
-解决：找到占用端口的进程，直接 Kill 即可
 
+解决：找到占用端口的进程，直接 Kill 即可
 ```bash
 lsof -i:xxxx
 kill xxxxx
@@ -587,14 +592,10 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 
 ### 问题二十五：边端join报错
 
-#### 问题描述
+问题描述：边端执行keadm join报错
 
-边端执行keadm join报错
-
-#### 解决方法
-
+解决方法：
 检查edgecore.yaml文件
-
 ```bash
 vim /etc/kubeedge/config/edgecore.yaml
 ```

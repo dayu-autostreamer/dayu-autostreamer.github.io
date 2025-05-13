@@ -5,6 +5,8 @@ custom_edit_url: null
 
 # Getting Started
 
+[TBD]
+
 - Install KubeEdge system on your devices ([instruction](https://box.nju.edu.cn/f/63e12c4ea0794718b16c/)). Our dayu system is based on KubeEdge.
 
 - Modify template files in template directory '[template](https://github.com/dayu-autostreamer/dayu/tree/main/template)'
