@@ -13,7 +13,7 @@ Please prepare for pre-requisites before installation, involving
 ufw disable	
 ```
 
-## Enable IPv4 forwarding configuration iptables parameters (both cloud/edge)
+## Enable IPv4 forwarding in iptables (both cloud/edge)
 Translate the bridged `IPv4/IPv6` traffic to the iptables chain
 ```bash
 modprobe br_netfilter
