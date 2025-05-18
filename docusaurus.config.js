@@ -174,7 +174,7 @@ const config = {
             prism: {
                 theme: prismThemes.github,
                 darkTheme: prismThemes.dracula,
-                additionalLanguages: ['bash'],
+                additionalLanguages: ['bash', 'json'],
                 magicComments: [
                     {
                         className: 'code-highlight-line',

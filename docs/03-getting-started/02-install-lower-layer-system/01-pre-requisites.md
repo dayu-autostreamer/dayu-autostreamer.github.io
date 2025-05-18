@@ -6,7 +6,7 @@ custom_edit_url: null
 
 # Pre-requisites
 
-Please prepare for pre-requisites before installation, involving 
+Please prepare for pre-requisites before installation.
 
 ## Turn off the firewall (both cloud/edge)
 ```bash
