@@ -58,8 +58,7 @@ kill xxxxx
 ## 问题五：edgecore 符号链接已存在
 
 ```
-execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edgecore.service /etc/systemd/system/edgecore.service && sudo systemctl daemon-reload && sudo systemctl enable edgecore && sudo systemctl start edgecore', err: ln: failed to create hard link '/etc/systemd/system/edgecore.service': File exists
-, err: exit status 1
+execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edgecore.service /etc/systemd/system/edgecore.service && sudo systemctl daemon-reload && sudo systemctl enable edgecore && sudo systemctl start edgecore', err: ln: failed to create hard link '/etc/systemd/system/edgecore.service': File exists, err: exit status 1
 ```
 
 在尝试创建符号链接时，目标路径已经存在，因此无法创建。这通常是因为 `edgecore.service` 已经存在于 `/etc/systemd/system/` 目录中。
@@ -86,19 +85,21 @@ sudo rm /etc/systemd/system/edgecore.service
 
 **排查：**
 
-先复习一下**定位模型**，确定**被访问节点**上的 edgemesh-agent(右)容器是否存在、是否处于正常运行中。
+先复习一下**定位模型**，确定**被访问节点**上的 edgemesh-agent容器是否存在、是否处于正常运行中。
 
-**这个情况是非常经常出现的**，因为 master 节点一般都有污点，会驱逐其他 pod，进而导致 edgemesh-agent 部署不上去。这种情况可以通过去除节点污点，使 edgemesh-agent 部署上去解决。
+![Q7-2](/img/FAQs/Q7-2.png)
+
+这个情况是非常经常出现的，因为 master 节点一般都有污点，会驱逐其他 pod，进而导致 edgemesh-agent 部署不上去。这种情况可以通过去除节点污点，使 edgemesh-agent 部署上去解决。
 
 如果访问节点和被访问节点的 edgemesh-agent 都正常启动了，但是还报这个错误，可能是因为访问节点和被访问节点没有互相发现导致，请这样排查：
 
-1. 首先每个节点上的 edgemesh-agent 都具有 peer ID，比如
+1. 首先每个节点上的 edgemesh-agent 都具有 peer ID，比如：
 
 ```
 edge2: 
 I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
 
-edge1.kubeedge:
+edge1:
 I'm {12D3KooWFz1dKY8L3JC8wAY6sJ5MswvPEGKysPCfcaGxFmeH7wkz: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.2/tcp/20006]}
 
 注意：
@@ -106,7 +107,7 @@ a. peer ID是根据节点名称哈希出来的，相同的节点名称会哈希�
 b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl get nodes查看
 ```
 
-2. 如果访问节点和被访问节点处于同一个局域网内（**所有节点应该具备内网 IP（10.0.0.0/8、172.16.0.0/12、192.168.0.0/16**），请看[全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)**问题十二**同一个局域网内 edgemesh-agent 互相发现对方时的日志是 `[MDNS] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`
+2. 如果访问节点和被访问节点处于同一个局域网内（**所有节点应该具备内网 IP（10.0.0.0/8、172.16.0.0/12、192.168.0.0/16**），请看[全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)中的**问题十二**，同一个局域网内 edgemesh-agent 互相发现对方时的日志是 `[MDNS] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`
 
 3. 如果访问节点和被访问节点跨子网，这时候应该看看 relayNodes 设置的正不正确，为什么中继节点没办法协助两个节点交换 peer 信息。详细材料请阅读：[KubeEdge EdgeMesh 高可用架构详解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)。跨子网的 edgemesh-agent 互相发现对方时的日志是 `[DHT] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`
 
@@ -118,9 +119,7 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 
 ## 问题八：master 的gpu 存在但是找不到 gpu 资源
 
-主要针对的是服务器的gpu使用情况，可以使用 `nvidia-smi` 查看服务器显卡情况。
-
-需要配置容器的GPU支持
+主要针对的是云服务器的gpu使用情况，可以使用 `nvidia-smi` 查看服务器显卡情况，云服务器上的k8s pod需要使用GPU需要额外的插件支持。
 
 > 参考如下链接：
 > [Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.14.3 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuration)
@@ -140,7 +139,7 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 
 ## 问题九：jeston 的 gpu 存在但是找不到 gpu 资源
 
-理论上 `k8s-device-plugin` 已经支持了 tegra 即 jetson 系列板子，会在查看 GPU 之前判断是否是 tegra 架构，如果是则采用 tegra 下查看 GPU 的方式（原因在 [[#GPU 支持]]里 quote 过了 ），但是很奇怪的是明明是 tegra 的架构却没有检测到：
+理论上 `k8s-device-plugin` 已经支持了 tegra 即 jetson 系列板子，会在查看 GPU 之前判断是否是 tegra 架构，，但是log显示未检测到 tegra 架构：
 
 ```bash
 2024/01/04 07:43:58 Retreiving plugins.
@@ -171,8 +170,7 @@ dpkg -l '*nvidia*'
 >
 > There are no Tegra-specific changes in the `v1.12.0` release, so using the `v1.11.0` release should be sufficient in this case.
 
-那么应该需要升级**NVIDIA Container Toolkit**
-
+**解决：** 需要升级**NVIDIA Container Toolkit**：
 ```bash
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
   && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
@@ -186,15 +184,15 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ## 问题十：lc127.0.0. 53:53 no such host/connection refused
 
-在安装Sedna阶段，检查正确性时报错lc127.0.0. 53:53 no such host/connection refused
+在安装Sedna阶段，检查正确性时报错`lc127.0.0. 53:53 no such host/connection refused`。
 
-**原因：** 错误原理参见[链接](https://zhuanlan.zhihu.com/p/585749690)中的问题五。
+**原因：** 错误原理参见[链接](https://zhuanlan.zhihu.com/p/585749690)中的**问题五**。
 
 **解决：**
 
-首先，检查准备阶段中的Sedna安装脚本install.sh，观察其中是否有Hostnetwork键值对，如果没有，一般说明不会有问题。
+首先，检查准备阶段中的Sedna安装脚本install.sh，观察其中是否有Hostnetwork键值对，如果没有，一般说明不会有问题（[dayu定制版sedna仓库](https://github.com/dayu-autostreamer/dayu-sedna)中的install.sh是没有这个问题的）。
 
-如果确认没有这个键值对却依然报错，按照如下方法暂时解决问题（不推荐）：
+如果确认没有这个键值对却依然报错，按照如下方法暂时解决问题（**不推荐**）：
 
 （1）在边/云（取决于是哪一个sedna的pod出问题了）用vim /etc/resolv.conf打开文件，然后在文件最后一行添加nameserver 169.254.96.16，哪怕文件中本来就有nameserver键。但是一般不推荐这样做。
 
@@ -228,9 +226,9 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ## 问题十三： `kubectl logs <pod-name>` 卡住 
 
-**原因：** 可能由于之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住
+**原因：** 可能由于之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住。
 
-**解决：** 重启 edgecore/cloudcore `systemctl restart edgecore.service`
+**解决：** 重启 edgecore/cloudcore `systemctl restart edgecore.service`。
 
 
 
@@ -238,14 +236,14 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ![Q14](/img/FAQs/Q14.png)
 
-**原因：** 因为是重装，主节点 token 变了，但是边缘节点一直以过去的 token 尝试进行连接
+**原因：** 因为reset环境后主节点 `token` 变了，但是边缘节点一直以过去的 `token` 尝试进行连接。
 
-**解决：**边端用新的 token 连接就好
+**解决：** 边端获取并使用新的 `token` 连接。
 
 
 ##  问题十五：删除命名空间卡在 terminating
 
-**方法一** （很大可能不起作用）
+**方法一** （很可能不起作用）
 
 ```bash
 kubectl delete ns sedna --force --grace-period=0
