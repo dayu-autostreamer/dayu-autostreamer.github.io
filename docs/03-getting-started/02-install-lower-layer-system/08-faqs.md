@@ -594,9 +594,10 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 
 原因：docker国内无法访问，新加入的edge没有做对应配置，导致拉取不到 kubeedge/edgemesh-agent 镜像。配置后重启docker和edgecore即可。
 
+
 ### Question 25：keadm join error on edge nodes
 
-边端执行`keadm join`报错
+Execution of `keadm join` on edges reported errors.
 
 Solution: Check the `edgecore.yaml` file
 ```bash

@@ -42,7 +42,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 This step may occur [Question 1: kube-proxy report iptables problems](/docs/getting-started/install-lower-layer-system/faqs#question-1-kube-proxy-report-iptables-problems), [Question 2: calico and coredns are always in initializing state](/docs/getting-started/install-lower-layer-system/faqs#question-2-calico-and-coredns-are-always-in-initializing-state) and [Question 3：metrics-server keeps unsuccessful state](/docs/getting-started/install-lower-layer-system/faqs#question-3metrics-server-keeps-unsuccessful-state)
 
-### Reset Environment (Skip on first installation)
+### Reset environment (Skip on first installation)
 
 ```bash
 swapoff -a
@@ -141,7 +141,6 @@ kubectl get pods -A
 
 Step 5: Configure calico and kube-proxy.
 
-Edge 节点加入时可能会自动部署 calico-node 和 kube-proxy，kube-proxy 会部署成功（但是 edgecore 的 log 会提示不应该部署 kube-proxy），calico 会初始化失败。为了避免上述情况，做如下操作：
 
 When an Edge node joins, calico-node and kube-proxy may be automatically deployed. 
 Kube-proxy will deploy successfully (but the edgecore log will prompt that kube-proxy should not be deployed), 
