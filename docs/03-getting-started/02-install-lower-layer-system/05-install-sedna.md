@@ -6,32 +6,30 @@ custom_edit_url: null
 
 # Install Sedna
 
-[TBD]
-
-## 下载Sedna（云端）
+## Download Sedna (cloud)
 ```bash
-# clone修改版sedna
+# clone sedna code (customized by dayu)
 git clone https://github.com/dayu-autostreamer/dayu-sedna.git
-# 进入dayu-sedna文件目录
+# move to code directory
 cd dayu-sedna
 ```
 
-## 安装Sedna （云端）
+## Install Sedna (cloud)
 
-可能遇到 [问题十：lc12700-5353-no-such-hostconnection-refused](/docs/getting-started/install-lower-layer-system/faqs#问题十lc12700-5353-no-such-hostconnection-refused)
+This step may occur [Question 10: lc127.0.0. 53:53 no such host/connection refused](/docs/getting-started/install-lower-layer-system/faqs#question-10-lc12700-5353-no-such-hostconnection-refused).
 
 ```bash
-# 设置镜像源，不设置默认为dockerhub(docker.io)
+# Set image source. The default source is dockerhub (docker.io).
 export REG=xxx
-# 安装
+# Install
 SEDNA_ACTION=create bash - install.sh
-# 卸载
+# Uninstall
 SEDNA_ACTION=delete bash - install.sh
 ```
 
-安装完后通过`kubectl logs xxx -n sedna`检查log，需着重查看 lc 是否连接 gm 成功。
+After installation, check the logs with `kubectl logs xxx -n sedna`, and pay special attention to whether lc has successfully connected to gm.
 
-## 检查Sedna运行状态
+## Check running state of Sedna
 
 ![lc](/img/install/sedna_lc.png)
 

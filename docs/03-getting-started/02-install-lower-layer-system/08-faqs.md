@@ -197,15 +197,17 @@ sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 ```
 
-### 问题十：lc127.0.0. 53:53 no such host/connection refused
+### Question 10: lc127.0.0. 53:53 no such host/connection refused
 
-#### 问题描述
+During the Sedna installation stage, an error occurs in logs: `lc127.0.0. 53:53 no such host/connection refused`.
 
-在安装Sedna阶段，检查正确性时报错lc127.0.0. 53:53 no such host/connection refused
-
-#### 解决方法
+Reason:
 
 错误原理参见：https://zhuanlan.zhihu.com/p/585749690  链接中的问题五。
+
+Solution:
+
+
 
 首先，检查准备阶段中的Sedna安装脚本install.sh，观察其中是否有Hostnetwork键值对，如果没有，一般说明不会有问题。
 

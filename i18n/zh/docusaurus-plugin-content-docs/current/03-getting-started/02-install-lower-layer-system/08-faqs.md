@@ -12,7 +12,7 @@ custom_edit_url: null
 E0627 09:28:54.054930 1 proxier.go:1598] Failed to execute iptables-restore: exit status 1 (iptables-restore: line 86 failed ) I0627 09:28:54.054962 1 proxier.go:879] Sync failed; retrying in 30s
 ```
 
-解决：直接清理 iptables
+**解决：** 直接清理 iptables
 
 ```
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
@@ -26,9 +26,9 @@ iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 Failed to create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to set up pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout, failed to clean up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to teardown pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout]
 ```
 
-原因：应该不是第一次初始化 k8s 集群，所以会遇到这样的问题。出现的原因是之前没有删除 k8s 的网络配置。
+**原因：** 应该不是第一次初始化 k8s 集群，所以会遇到这样的问题。出现的原因是之前没有删除 k8s 的网络配置。
 
-解决：
+**解决：**
 ```bash
 # 删除网络配置
 rm -rf /etc/cni/net.d/  
@@ -37,9 +37,9 @@ rm -rf /etc/cni/net.d/
 
 ### 问题三：metrics-server一直无法成功
 
-原因：master 没有加污点
+**原因：** master 没有加污点
 
-解决：
+**解决：**
 ```bash
 kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io/master-
 ```
@@ -49,9 +49,9 @@ kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io
 
 `journalctl -u cloudcore.service -xe` 时看到 xxx already in use
 
-原因：应该是之前的记录没有清理干净
+**原因：** 应该是之前的记录没有清理干净
 
-解决：找到占用端口的进程，直接 Kill 即可
+**解决：** 找到占用端口的进程，直接 Kill 即可
 ```bash
 lsof -i:xxxx
 kill xxxxx
@@ -66,6 +66,7 @@ execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edg
 
 在尝试创建符号链接时，目标路径已经存在，因此无法创建。这通常是因为 `edgecore.service` 已经存在于 `/etc/systemd/system/` 目录中
 
+**解决：**
 ```bash
 sudo rm /etc/systemd/system/edgecore.service
 ```
@@ -80,11 +81,13 @@ sudo rm /etc/systemd/system/edgecore.service
 
 ```
 
+**解决：**
+
 查看 `/etc/kubeedge` 下是否有 `certgen.sh` 并且 `bash certgen.sh stream`
 
 ### 问题七：edgemesh 的 log 边边互联成功，云边无法连接
 
-#### 排查
+**排查：**
 
 先复习一下**定位模型**，确定**被访问节点**上的 edgemesh-agent(右)容器是否存在、是否处于正常运行中。
 
@@ -110,7 +113,7 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 
 3.如果访问节点和被访问节点跨子网，这时候应该看看 relayNodes 设置的正不正确，为什么中继节点没办法协助两个节点交换 peer 信息。详细材料请阅读：[KubeEdge EdgeMesh 高可用架构详解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)。跨子网的 edgemesh-agent 互相发现对方时的日志是 `[DHT] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`（适用于我的情况）
 
-#### 解决
+**解决：**
 
 在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操作时，修改 04-configmap，添加 relayNode（根本原因在于，不符合“访问节点和被访问节点处于同一个局域网内”，所以需要添加 relayNode）
 
@@ -195,13 +198,11 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ### 问题十：lc127.0.0. 53:53 no such host/connection refused
 
-#### 问题描述
-
 在安装Sedna阶段，检查正确性时报错lc127.0.0. 53:53 no such host/connection refused
 
-#### 解决方法
+**原因：** 错误原理参见[链接](https://zhuanlan.zhihu.com/p/585749690)中的问题五。
 
-错误原理参见：https://zhuanlan.zhihu.com/p/585749690  链接中的问题五。
+**解决：**
 
 首先，检查准备阶段中的Sedna安装脚本install.sh，观察其中是否有Hostnetwork键值对，如果没有，一般说明不会有问题。
 
@@ -213,12 +214,6 @@ sudo apt-get install -y nvidia-container-toolkit
 
 （3）在这之后，如果是边端上的pod出问题，就要重装sedna，先delete再create。
 
-#### 原解决方法：
-
-原因：解析 gm.sedna 这个域名失败
-
-1. 如果安装 sedna 脚本有将 hostNetwork 去掉，则检查 edgecore.yaml 的 clusterDNS 部分，**着重注意是否没有二次设置然后被后设置的覆盖掉**
-2. 如果没有将 hostNetwork 去掉，则将宿主机的 `/etc/resolv.conf` 添加 `nameserver 169.254.96.16`
 
 ### 问题十一：169.254.96.16:no such host
 
@@ -233,20 +228,21 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ![Q12-1](/img/FAQs/Q12-1.png)
 
-原因：借鉴 [Kubernetes 边缘节点抓不到监控指标？试试这个方法！ - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/379962934)
+**原因：** 借鉴 [Kubernetes 边缘节点抓不到监控指标？试试这个方法！ - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/379962934)
 
 ![Q12-2](/img/FAQs/Q12-2.png)
 
 可以发现报错访问的端口就是 10350，而在 kubeedge 中 10350 应该会进行转发，所以应该是 cloudcore 的设置问题。
 
-解决：[Enable Kubectl logs/exec to debug pods on the edge | KubeEdge](https://kubeedge.io/docs/advanced/debug/) 根据这个链接设置即可。
+**解决：** [Enable Kubectl logs/exec to debug pods on the edge | KubeEdge](https://kubeedge.io/docs/advanced/debug/) 根据这个链接设置即可。
 
 
 
 ### 问题十三： `kubectl logs <pod-name>` 卡住 
 
-可能的原因：之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住
-解决：重启 edgecore/cloudcore `systemctl restart edgecore.service`
+**原因：** 可能由于之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住
+
+**解决：** 重启 edgecore/cloudcore `systemctl restart edgecore.service`
 
 
 
@@ -254,15 +250,13 @@ sudo apt-get install -y nvidia-container-toolkit
 
 ![Q14](/img/FAQs/Q14.png)
 
-原因：因为是重装，主节点 token 变了，但是边缘节点一直以过去的 token 尝试进行连接
+**原因：** 因为是重装，主节点 token 变了，但是边缘节点一直以过去的 token 尝试进行连接
 
-解决：边端用新的 token 连接就好
-
+**解决：**边端用新的 token 连接就好
 
 
 ###  问题十五：删除命名空间卡在 terminating
 
-理论上一直等待应该是可以的(但是我等了半个钟也没成功啊!!)
 **方法一**，但是没啥用，依旧卡住
 
 ```bash
@@ -434,12 +428,10 @@ guest@cloud:~/yby$ cat sedna.json
 
 ### 问题十六：强制删除 pod 之后部署不成功
 
-#### 问题描述
-
 因为现在 edge 的 pod 是通过创建 deployment 由 deployment 进行创建，但是通过 `kubectl delete deploy <deploy-name>` 删除 deployment 后，pod 一直卡在了 terminating 状态，于是采用了 `kubectl delete pod edgeworker-deployment-7g5hs-58dffc5cd7-b77wz --force --grace-period=0` 命令进行了删除。
 然后发现重新部署时候发现 assigned to edge 的 pod 都卡在 pending 状态。
 
-#### 解决
+**解决：**
 
 因为--force 是不会实际终止运行的，所以本身原来的 docker 可能还在运行，现在的做法是手动去对应的边缘节点上删除对应的容器（包括 pause，关于 pause 可以看这篇文章[大白话 K8S（03）：从 Pause 容器理解 Pod 的本质 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/464712164)），然后重启 edgecore: `systemctl restart edgecore.service`
 
@@ -451,7 +443,7 @@ guest@cloud:~/yby$ cat sedna.json
 
 ![Q17](/img/FAQs/Q17.png)
 
-解决：重启 edgecore
+**解决：** 重启 edgecore
 
 ```
 systemctl restart edgecore.service
@@ -459,18 +451,20 @@ systemctl restart edgecore.service
 
 ### 问题十八：大面积 Evicted（disk pressure）
 
-#### 原因
+**原因：**
 
 - node 上的 kubelet 负责采集资源占用数据，并和预先设置的 threshold 值进行比较，如果超过 threshold 值，kubelet 会杀掉一些 Pod 来回收相关资源，[K8sg官网解读kubernetes配置资源不足处理](https://links.jianshu.com/go?to=https%3A%2F%2Fkubernetes.io%2Fdocs%2Ftasks%2Fadminister-cluster%2Fout-of-resource%2F)
 
 - 默认启动时，node 的可用空间低于15%的时候，该节点上讲会执行 eviction 操作，由于磁盘已经达到了85%,在怎么驱逐也无法正常启动就会一直重启，Pod 状态也是 pending 中
 
- #### 临时解决方法
+**解决：**
 
-- 修改配置文件增加传参数,添加此配置项`--eviction-hard=nodefs.available<5%`
+增大磁盘可用空间。
 
+（临时解决：）修改配置文件增加传参数,添加此配置项`--eviction-hard=nodefs.available<5%`。
 ```bash
-root@cloud:/usr/lib/systemd/system# systemctl status kubelet
+systemctl status kubelet
+
 ● kubelet.service - kubelet: The Kubernetes Node Agent
      Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor preset: enabled)
     Drop-In: /etc/systemd/system/kubelet.service.d
@@ -481,10 +475,9 @@ root@cloud:/usr/lib/systemd/system# systemctl status kubelet
       Tasks: 59 (limit: 309024)
      Memory: 67.2M
      CGroup: /system.slice/kubelet.service
-
 ```
 
-可以看到配置文件目录所在位置是 `/etc/systemd/system/kubelet.service.d`，配置文件是 `10-kubeadm.conf`
+可以看到配置文件目录所在位置是 `/etc/systemd/system/kubelet.service.d`，配置文件是 `10-kubeadm.conf`。
 
 ```bash
 vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
@@ -493,21 +486,18 @@ vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
 Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml --eviction-hard=nodefs.available<5%"
 
-最后添加上--eviction-hard=nodefs.available<5%
+# 最后添加上--eviction-hard=nodefs.available<5%
 ```
 
-然后重启 kubelet
-
+然后重启 kubelet：
 ```bash
 systemctl daemon-reload
 systemctl  restart kubelet
 ```
 
-会发现可以正常部署了(只是应急措施，磁盘空间需要再清理)
+之后可以正常部署(只是应急措施，磁盘空间需要再清理)
 
-### 问题十九：执行iptables 命令时发现系统不支持--dport选项。
-
-#### 问题描述
+### 问题十九：执行iptables 命令时发现系统不支持--dport选项
 
 执行命令：iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003
 
@@ -515,39 +505,34 @@ systemctl  restart kubelet
 
 使用iptables -V查看版本，如果是iptables v1.8.7 (nf_tables)，说明问题出在这里，因为nf_tables版本不支持--dport选项。
 
-#### 解决方法
+**解决：**
 
 此时，使用sudo update-alternatives --config iptables命令可以切换版本，执行此命令会提供3个可供选择的版本，其中编号为1的就是legacy版本（必须用sudo权限才能切换成功）。切换成功后再在root模式下执行 iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003，理想状态下无输出。
 
-### 问题二十：执行完keadm join再执行journalctl时报错token format错误。
-
-#### 问题描述
+### 问题二十：执行完keadm join再执行journalctl时报错token format错误
 
 执行命令：keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=……之后，再执行journalctl -u edegecore.service -f命令后，报错信息指出token format有问题。
 
-#### 解决方法
+**解决：**
 
 此时要么是因为cloudcore.service重启后token变化导致keadm join中的token过时，要么是因为执行keadm join的时候token输入的不对。此时，首先在云端重新获取正确的token，然后在边端从keadm reset开始重新执行一系列操作。
 
 ### 问题二十一：重启edgecore.service后再执行journalctl时报错mapping error
 
-#### 问题描述
-
 在执行EdgeMesh启动阶段，修改/etc/kubeedge/config/edgecore.yaml文件，再用systemctl restart edgecore.service重启服务，然后再执行journalctl -u edegecore.service -f命令后，报错信息指出当前存在mapping error，以及yaml无法转化为json。
 
-#### 解决方法
+**解决：**
 
 检查是不是/etc/kubeedge/config/edgecore.yaml文件内的格式有问题。yaml文件中不能用tab缩进，必需用空格。
 
 ### 问题二十二：重启edgecore.service后再执行journalctl时报错connect refuse
 
-#### 问题描述
-
 在执行EdgeMesh启动阶段，修改/etc/kubeedge/config/edgecore.yaml文件，再用systemctl restart edgecore.service重启服务，然后再执行journalctl -u edegecore.service -f命令后，报错信息指出connect refuse，云端拒绝通信。
 
-#### 解决方法
+**解决：**
 
 检查是不是因为云端cloudcore有问题。首先用systemctl status cloudcore查看云端状态，确保其正常运行；然后用systemctl restart cloudcore.service重启服务，并在重启后journalctl -u cloudcore.service -f查看报错信息。此时，很有可能发现问题四：journalclt -u cloudcore.service -xe 时看到 xxx already in use
+
 原因：应该是之前的记录没有清理干净（一般是占用了10002端口）
 解决：找到占用端口的进程，直接 Kill 即可
 lsof -i:xxxx
@@ -592,9 +577,10 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 
 ### 问题二十五：边端join报错
 
-问题描述：边端执行keadm join报错
+边端执行keadm join报错
 
-解决方法：
+**解决：**
+
 检查edgecore.yaml文件
 ```bash
 vim /etc/kubeedge/config/edgecore.yaml

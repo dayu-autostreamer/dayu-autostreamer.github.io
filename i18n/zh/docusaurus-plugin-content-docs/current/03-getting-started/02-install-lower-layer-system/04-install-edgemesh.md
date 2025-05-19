@@ -88,7 +88,7 @@ curl 127.0.0.1:10550/api/v1/services
 
 下载 edgemesh代码
 ```bash
-# clone edgemesh代码
+# clone edgemesh代码（大禹定制版）
 git clone https://github.com/dayu-autostreamer/dayu-edgemesh.git
 # 进入代码文件夹
 cd dayu-edgemesh

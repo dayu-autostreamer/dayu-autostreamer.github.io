@@ -8,7 +8,7 @@ custom_edit_url: null
 
 ## 下载Sedna（云端）
 ```bash
-# clone修改版sedna
+# clone sedna代码（大禹定制版）
 git clone https://github.com/dayu-autostreamer/dayu-sedna.git
 # 进入dayu-sedna文件目录
 cd dayu-sedna
