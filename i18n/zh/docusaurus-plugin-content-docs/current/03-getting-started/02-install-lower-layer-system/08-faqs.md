@@ -611,6 +611,6 @@ vim /etc/kubeedge/config/edgecore.yaml
 
 ![Q25](/img/FAQs/Q25.png)
 
-edgeHub中的httpServer添加云端地址，例如https://114.212.81.11:10002，websocket中的server删除最开始的冒号。
+edgeHub中的httpServer添加云端地址，例如`https://114.212.81.11:10002`，websocket中的server删除最开始的冒号。
 
 修改完后重新运行keadm join指令。
