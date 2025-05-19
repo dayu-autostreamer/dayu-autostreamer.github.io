@@ -25,7 +25,7 @@ Install the following software packages on the cloud:
 - `kubelet`：used to launch pods on each node in the cluster.
 - `kubectl`：command-line tool used to communicate with the cluster.
 
-See the corresponding Kubernetes and KubeEdge versions at [kubeedge/kubeedge](https://github.com/kubeedge/kubeedge)
+See the corresponding Kubernetes and KubeEdge versions at [kubeedge/kubeedge](https://github.com/kubeedge/kubeedge).
 ```bash
 # Check software version
 apt-cache madison kubeadm
@@ -40,7 +40,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ## Start Kubernetes cluster (cloud)
 
-This step may occur [Question 1: kube-proxy report iptables problems](/docs/getting-started/install-lower-layer-system/faqs#question-1-kube-proxy-report-iptables-problems), [Question 2: calico and coredns are always in initializing state](/docs/getting-started/install-lower-layer-system/faqs#question-2-calico-and-coredns-are-always-in-initializing-state) and [Question 3：metrics-server keeps unsuccessful state](/docs/getting-started/install-lower-layer-system/faqs#question-3metrics-server-keeps-unsuccessful-state)
+This step may occur [Question 1: kube-proxy report iptables problems](/docs/getting-started/install-lower-layer-system/faqs#question-1-kube-proxy-report-iptables-problems), [Question 2: calico and coredns are always in initializing state](/docs/getting-started/install-lower-layer-system/faqs#question-2-calico-and-coredns-are-always-in-initializing-state) and [Question 3：metrics-server keeps unsuccessful state](/docs/getting-started/install-lower-layer-system/faqs#question-3metrics-server-keeps-unsuccessful-state).
 
 ### Reset environment (Skip on first installation)
 

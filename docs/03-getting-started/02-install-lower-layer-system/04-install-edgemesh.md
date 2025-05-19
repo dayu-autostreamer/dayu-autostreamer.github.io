@@ -6,29 +6,26 @@ custom_edit_url: null
 
 # Install EdgeMesh
 
-[TBD]
+## EdgeMesh environment preparation (cloud)
 
-## EdgeMesh 环境准备（云端）
+This Step may occur [Question 6：TLSStreamPrivateKeyFile not exist](/docs/getting-started/install-lower-layer-system/faqs#question-6tlsstreamprivatekeyfile-not-exist)
 
-
-可能出现 [问题六：缺少 TLSStreamCertFile](/docs/getting-started/install-lower-layer-system/faqs#问题六缺少-tlsstreamcertfile)
-
-步骤 1: 去除 K8s master 节点的污点
+Step 1: Remove the taint on the master node.
 ```bash
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
-步骤 2: 给 Kubernetes API 服务添加过滤标签
+Step 2: Add filter tags to Kubernetes API services.
 ```bash
 kubectl label services kubernetes service.edgemesh.kubeedge.io/service-proxy-name=""
 ```
 
-步骤 3: 启用 KubeEdge 的边缘 Kube-API 端点服务
+Step 3: Enable Kube-API endpoint service of KubeEdge on edges.
   
-在云端，开启 dynamicController 模块：
+On the cloud, enable `dynamicController`:
 ```bash
 vim /etc/kubeedge/config/cloudcore.yaml
-# 修改 cloudcore.yaml 内容
+# Modify cloudcore.yaml
 modules:
   ..
   cloudStream:
@@ -38,14 +35,14 @@ modules:
   dynamicController:
     enable: true
     
-# 重启cloucore
+# Restart cloucore
 systemctl restart cloudcore.service
 ```
 
-在边端，打开 metaServer 模块和 edgeStream (注意，keadm reset后需要重新修改)
+On the edges, enable `metaServer` and `edgeStream` (note that this operation should redo after `keadm reset`).
 ```bash
 vim /etc/kubeedge/config/edgecore.yaml
-# 修改 edgecore.yaml 内容
+# Modify edgecore.yaml
 edgeStream:  
 	enable: true  
 	handshakeTimeout: 30  
@@ -61,47 +58,44 @@ metaManager:
       enable: true
 ...
 
-#重启edgecore
+# Restart edgecore
 systemctl restart edgecore.service
-#检查状况
+# Check running state
 journalctl -u edgecore.service -f
-#确定正常运行
 ```
 
-步骤 4: 在边缘节点，测试边缘 Kube-API 端点功能是否正常
-
+Step 4: On the edge, test whether the edge Kube-API endpoint functions normally.
 ```bash
-# 边缘节点上
+# Execute on edges
 curl 127.0.0.1:10550/api/v1/services
 ```
 
 ![api](/img/install/api.png)
 
-如果返回值是空列表，或者响应时长很久（接近 10 s）才拿到返回值，说明配置可能有误，请仔细检查。
+If the return value is an empty list, or it takes a long time (close to 10 seconds) to receive the return value, it indicates that there may be an error in the configuration, please check it carefully.
 
-## 启动 EdgeMesh（云边共用）
+## Start EdgeMesh (both cloud/edge)
 
-> 此处问题重灾区，遇到问题可参照EdgeMesh官方手册排查：
+> This is a hot spot for problems, when encountering issues, please refer to the EdgeMesh official manual for troubleshooting:
 > 
 > [快速上手 | EdgeMesh](https://edgemesh.netlify.app/zh/guide/#%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85)
 > 
 > [全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)
 
-### 部署edgemesh-agent（云端）
+### Deploy edgemesh-agent (cloud)
 
-下载 edgemesh代码
+Download edgemesh code:
 ```bash
-# clone edgemesh代码
+# clone edgemesh code (customized by dayu)
 git clone https://github.com/dayu-autostreamer/dayu-edgemesh.git
-# 进入代码文件夹
+# move in code directory
 cd dayu-edgemesh
 ```
 
-添加relay node
+Add `relay node`:
 ```bash
 vim build/agent/resources/04-configmap.yaml
-
-# 添加云服务器为relay node, 以便云边通信，如：
+# Add the master node (cloud) as relay node for cloud-edge communication：
 ....
 edgeTunnel:
         enable: true
@@ -110,29 +104,28 @@ edgeTunnel:
           advertiseAddress:
           - <ip>
 ....
-
-# （<hostname> <ip> 分别需要填入云服务器的hostname与ip
+# Fulfill <hostname> <ip> with hostname and ip of the cloud.
 ```
 
-部署edgemesh
+Deploy edgemesh:
 ```bash
-# crd 文件部署
+# Deploy crd files
 kubectl apply -f build/crds/istio/
-# 在集群中部署 edgemesh-agent
+# Deploy edgemesh-agent
 kubectl apply -f build/agent/resources/
 ```
 
-
-提示: 如果使用[内网镜像仓库](/docs/developer-guide/how-to-build/docker-registry/)，请进入yaml文件中修改image源，如:
+NOTE: If using the [Intranet Image Repository](/docs/developer-guide/how-to-build/docker-registry/), please modify the image in the yaml file, such as:
 ```
 dayuhub/edgemesh-gateway:v1.0 -> repo:5000/dayuhub/edgemesh-gateway:v1.0
 ```
 
-### 配置edge端网络（边端）
-配置 edge
+### Configure edge network (edge)
+
+Configure the edge:
 ```bash
 vim /etc/kubeedge/config/edgecore.yaml
-# 修改 edgecore.yaml 内容
+# Modify edgecore.yaml
 edged:
     clusterDNS: 169.254.96.16
     clusterDomain: cluster.local
@@ -142,43 +135,43 @@ edged:
 
 ![edgecore](/img/install/edgecore2.png)
 
-重启edgecore：
+Restart edgecore:
 ```bash
 systemctl restart edgecore
 ```
 
-### 正常运行状态
+### Check running state
 
-查看iptables状态：
+Check iptables state:
 ```bash
 iptables -t nat -nvL
 ```
 ![iptables](/img/install/iptables.png)
 
-查看edgemesh pods状态：
+Check the state of edgemesh pods:
 ```bash
 kubectl get pods -n kubeedge
 ```
 ![normal-run](/img/install/EdgeMeshNormalRun.jpg)
 
-云端logs：
+Logs on the cloud：
 ```bash
 kubectl logs -n kubeedge [pod-name]
 ```
 ![cloud-agent](/img/install/cloud-agent.png)
 
-边端logs：
+Logs on the edge：
 ```bash
-# 查看边端edgemesh
+# Check edgemesh logs on the edge
 kubectl logs -n kubeedge [pod-name]
 ```
 
 ![edge-agent.png](/img/install/edge-agent.png)
 
 
-### 卸载Edgemesh
+### Uninstall Edgemesh
 
-如需重装Edgemesh，请先卸载
+If you need to reinstall Edgemesh, please uninstall it first.
 ```bash
 cd dayu-edgemesh
 kubectl delete -f build/crds/istio/

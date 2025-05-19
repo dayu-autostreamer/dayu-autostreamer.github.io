@@ -58,11 +58,11 @@ metaManager:
       enable: true
 ...
 
-#重启edgecore
+# 重启edgecore
 systemctl restart edgecore.service
-#检查状况
+# 检查状况
 journalctl -u edgecore.service -f
-#确定正常运行
+# 确定正常运行
 ```
 
 步骤 4: 在边缘节点，测试边缘 Kube-API 端点功能是否正常
@@ -108,7 +108,7 @@ edgeTunnel:
           - <ip>
 ....
 
-# （<hostname> <ip> 分别需要填入云服务器的hostname与ip
+# <hostname> <ip> 分别需要填入云服务器的hostname与ip
 ```
 
 部署edgemesh

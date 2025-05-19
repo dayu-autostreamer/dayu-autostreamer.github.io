@@ -10,7 +10,7 @@ custom_edit_url: null
 
 keadm is mainly used for kubeedge management, installation, and usage.
 
-Official release version link: [Release KubeEdge v1.9.2 release · kubeedge/kubeedge (github.com)](https://github.com/kubeedge/kubeedge/releases/)
+Official release version link: [Release KubeEdge v1.9.2 release · kubeedge/kubeedge (github.com)](https://github.com/kubeedge/kubeedge/releases/).
 
 ```bash
 # Check machine architecture
@@ -27,7 +27,7 @@ cp keadm-v1.9.2-linux-amd64/keadm/keadm /usr/local/bin/
 
 ## Start KubeEdge (cloud)
 
-This step may occur [Question 4：10002 already in use](/docs/getting-started/install-lower-layer-system/faqs#question-410002-already-in-use)
+This step may occur [Question 4：10002 already in use](/docs/getting-started/install-lower-layer-system/faqs#question-410002-already-in-use).
 
 ### Reset environment (Skip on first installation)
 
@@ -37,7 +37,7 @@ keadm reset
 
 ### Start cloudcore
 
-Start cloudcore by keadm
+Start cloudcore by keadm.
 ```bash
 # Modify the ip address of '--adverse-address'
 keadm init --advertise-address=114.212.81.11 --kubeedge-version=1.9.2
@@ -90,7 +90,7 @@ Use `journalctl -u cloudcore.service -xe` to check if cloudcore is running norma
 
 ## Join KubeEdge cluster (edge)
 
-This step may occur [Question 5：edgecore file exists](/docs/getting-started/install-lower-layer-system/faqs#question-5edgecore-file-exists)
+This step may occur [Question 5：edgecore file exists](/docs/getting-started/install-lower-layer-system/faqs#question-5edgecore-file-exists).
 
 If `keadm join` fails, you can retry from `keadm reset`.
 

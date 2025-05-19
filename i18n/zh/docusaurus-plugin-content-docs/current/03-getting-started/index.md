@@ -3,7 +3,7 @@ slug: /getting-started
 custom_edit_url: null
 ---
 
-# Getting Started
+# 快速开始
 
 [TBD]
 

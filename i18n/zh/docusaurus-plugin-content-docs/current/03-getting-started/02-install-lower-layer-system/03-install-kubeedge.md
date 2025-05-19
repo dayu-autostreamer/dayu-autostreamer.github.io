@@ -39,16 +39,16 @@ keadm reset
 
 通过 keadm 启动
 ```bash
-#注意修改--advertise-address的ip地址
+# 注意修改--advertise-address的ip地址
 keadm init --advertise-address=114.212.81.11 --kubeedge-version=1.9.2
 
-#打开转发路由
+# 打开转发路由
 kubectl get cm tunnelport -n kubeedge -o yaml
-#找到10350 或者10351
-#set the rule of trans，设置自己的端口
-export CLOUDCOREIPS=xxx.xxx.xxx.xxx
+# 找到10350 或者 10351
 
-# dport的内容对应tunnelport
+# 设置CLOUDCOREIPS
+export CLOUDCOREIPS=xxx.xxx.xxx.xxx
+# 设置dport（内容对应之前获取的tunnelport）
 iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003
 
 cd /etc/kubeedge/
