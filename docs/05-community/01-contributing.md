@@ -23,7 +23,7 @@ Please make sure to read and observe our [Code of Conduct](https://github.com/da
 
 We will help you to contribute in different areas like filing issues, developing features, fixing critical bugs and getting your work reviewed and merged.
 
-If you have questions about the development process, feel free to [contact us](https://dayu-autostreamer.github.io/docs/community/contact-us)
+If you have questions about the development process, feel free to [contact us](https://dayu-autostreamer.github.io/docs/community/contact-us).
 
 ### Find something to work on
 

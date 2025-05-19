@@ -6,8 +6,6 @@ custom_edit_url: null
 
 # Install Kubernetes
 
-[TBD]
-
 
 ##  Add sources（both cloud/edge）
 ```bash
@@ -77,20 +75,23 @@ kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io
 In the Kubernetes cluster, pods are distributed across different hosts. 
 To enable inter-host communication for these pods, it is necessary to install the CNI network plugin, and here, Calico network is chosen.
 
-在 k8s 集群初始化后，如果不配置 calico 等相关网络插件，会发现 coredns 一直处在 pending 或 containerCreating 状态，通过 `kubectl describe` 会发现提示缺少网络组件。
+(After the k8s cluster is initialized, if you do not configure calico and other related network plugins, 
+you will find that coredns is always in a pending or containerCreating state. 
+Through `kubectl describe`, you will find that there is a lack of network components.)
 
-步骤 1：在 master 上下载配置 calico 网络的 yaml
+
+Step 1: Download YAML for configuring calico network on master.
 
 ```bash
 # pay attention to the corresponding version, v1.22 and v3.20
 wget https://docs.projectcalico.org/v3.20/manifests/calico.yaml --no-check-certificate
 ```
 
-步骤 2：修改 calico.yaml 里的 pod 网段
+Step 2: Modify the pod network in `calico.yaml`.
 
 ```bash
-# 把calico.yaml里pod所在网段改成kubeadm init时选项--pod-network-cidr所指定的网段，
- #直接用vim编辑打开此文件查找192，按如下标记进行修改：
+# Change the pod network in 'calico.yaml' to the segment specified by the option '--pod-network-cidr' during kubeadm init.
+ # Use vim to open 'calico.yaml' and find '192'. Modify as following:
 
 # no effect. This should fall within `--cluster-cidr`.
 # - name: CALICO_IPV4POOL_CIDR
@@ -99,7 +100,7 @@ wget https://docs.projectcalico.org/v3.20/manifests/calico.yaml --no-check-certi
 - name: CALICO_DISABLE_FILE_LOGGING
   value: "true"
 
-# 把两个#及#后面的空格去掉，并把192.168.0.0/16改成10.244.0.0/16，如下：
+# Remove the two '#' symbols and the spaces following them, and change 192.168.0.0/16 to 10.244.0.0/16, as follows:
 
 # no effect. This should fall within `--cluster-cidr`.
 - name: CALICO_IPV4POOL_CIDR
@@ -109,9 +110,10 @@ wget https://docs.projectcalico.org/v3.20/manifests/calico.yaml --no-check-certi
   value: "true"
 ```
 
-步骤 3：提前下载所需要的镜像。
+Step 3: Pre-download the required images.
+
+Check images used in 'calico.yaml':
 ```bash
-# 查看此文件用哪些镜像：
 grep image calico.yaml
 
 # image: calico/cni:v3.20.6
@@ -121,33 +123,37 @@ grep image calico.yaml
 # image: calico/kube-controllers:v3.20.6
 ```
 
-在 master 节点中下载上述镜像
+In the master node, download the aforementioned image.
 ```bash
-# 换成自己的版本
+# Pull image (change the version if needed)
 for i in calico/cni:v3.20.6 calico/pod2daemon-flexvol:v3.20.6 calico/node:v3.20.6 calico/kube-controllers:v3.20.6 ; do docker pull $i ; done
 ```
 
-> calico 只需要在 master 上存在
+> Calico only needs to exist on the master node.
 
-步骤 4：启动 calico
+Step 4: Start calico.
 ```bash
-# 一定要执行，不然coredns无法初始化
 kubectl apply -f calico.yaml
 
-# 检查启动状态，需要都running，除了calico可以不用
+# Check pod state (should in running)
 kubectl get pods -A
 ```
 
-步骤 5：对 calico 和 kube-proxy 进行配置
+Step 5: Configure calico and kube-proxy.
 
 Edge 节点加入时可能会自动部署 calico-node 和 kube-proxy，kube-proxy 会部署成功（但是 edgecore 的 log 会提示不应该部署 kube-proxy），calico 会初始化失败。为了避免上述情况，做如下操作：
+
+When an Edge node joins, calico-node and kube-proxy may be automatically deployed. 
+Kube-proxy will deploy successfully (but the edgecore log will prompt that kube-proxy should not be deployed), 
+and Calico will fail to initialize. 
+
+To avoid the above situation, perform the following operations:
 
 ```bash
 kubectl get daemonset -n kube-system | grep -v NAME | awk '{print $1}' |xargs -n 1 kubectl patch daemonset -n kube-system --type='json' -p='[{"op":"replace","path":"/spec/template/spec/affinity","value":{"nodeAffinity":{"requireDuringSchedulingIgnoredDuringExecution":{"nodeSelectorTerms":[{"matchExpressions":[{"key":"node-role.kubernetes.io/edge","operator":"DoesNotExist"}]}]}}}}]'
 
 kubectl edit daemonset -n kube-system kube-proxy
-
-# 添加以下内容
+# add the following content:
     spec:
       affinity:
         nodeAffinity:
@@ -157,44 +163,45 @@ kubectl edit daemonset -n kube-system kube-proxy
               - key: node-role.kubernetes.io/edge
                 operator: DoesNotExist
 
-# calico-node添加相同内容
+# add the same content in calico-node
 kubectl edit daemonset -n kube-system calico-node
 ```
 
 ![kube-proxy.png](/img/install/kube-proxy.png)
 
-使用 `kubectl get pods -A` 看看calico相关的 pod 是否都在 running，通过 `kubectl logs [pod_name] -n [namespace]` 查看calico组件内部是否有报错。
-
+Use `kubectl get pods -A` to check if all calico related pods are running, and use `kubectl logs [pod_name] -n [namespace]` to check if there are any errors within the calico component.
 
 [//]: # (<img src="/img/install/kube-proxy.png" alt="kube-proxy" style="zoom:60%;" />)
 
 
-## 下载配置 metrics-service（云端）
+## Download and configure metrics-service (cloud)
 
-### 下载metrics-service
+### Download metrics-service
 
-metrics-service 用于追踪边缘节点日志，可以安装metrics-service来帮助监测云边分布式集群。
+metrics-service is used to track edge node logs, 
+and installing metrics-service can help monitor cloud-edge distributed clusters.
 
-下载方法包括官网安装与本地安装，如果官网安装方式失败可尝试本地安装方式。
+There are official installation and local installation. 
+If the official installation fails, you can try local installation.
 
-**官网安装** (可能会出错, 拉取镜像超时问题)：
+**Official installation.** (There may be errors for pulling images timeout.)
 ```bash
-# 安装metrics-service
+# Install metrics-service
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-# 检查pod状态
+# Check pod state
 kubectl get pods -A
 ```
 
 ![metrics-service-official-install](/img/install/metrics-service-official-install.png)
 
-**本地安装**
+**Local installation.**
 
-先下载官方提供的yaml
+First download the official YAML file.
 ```bash
 wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
-使用`vim components.yaml`，先查看yaml文件中官方的镜像版本，然后去 [dockerhub](https://hub.docker.com/) 搜索对应版本的非官方镜像，并在yaml文件中添加`- --kubelet-insecure-tls`，修改镜像名：
+Check the official image version in `components.yaml` and search for the corresponding version of the unofficial image in [dockerhub](https://hub.docker.com/). Add `- --kubelet-insecure-tls` in the YAML file and modify the image name as follows:
 ```bash
     spec:
       containers:
@@ -210,17 +217,18 @@ wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/
 
 ![metrics-service-local-install](/img/install/metrics-service-local-install.png)
 
-从定制后的yaml文件安装
+Install from the customized YAML file.
 ```bash
-# 手动 pull 镜像
+# Manually pull image
 docker pull mingyangtech/klogserver:v0.6.4
-# 安装
+# Install
 kubectl apply -f components.yaml
 ```
 
-### 验证metrics-service
+### Verify metrics-service
 
-检验是否部署成功
+Verify the deployment of metrics-service.
+
 ```bash
 kubectl top nodes
 ```
