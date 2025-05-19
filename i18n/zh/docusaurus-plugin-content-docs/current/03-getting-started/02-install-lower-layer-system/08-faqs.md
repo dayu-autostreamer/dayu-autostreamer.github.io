@@ -6,7 +6,7 @@ custom_edit_url: null
 
 # FAQs
 
-### 问题一：kube-proxy 报 iptables 问题
+## 问题一：kube-proxy 报 iptables 问题
 
 ```
 E0627 09:28:54.054930 1 proxier.go:1598] Failed to execute iptables-restore: exit status 1 (iptables-restore: line 86 failed ) I0627 09:28:54.054962 1 proxier.go:879] Sync failed; retrying in 30s
@@ -18,7 +18,7 @@ E0627 09:28:54.054930 1 proxier.go:1598] Failed to execute iptables-restore: exi
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 ```
 
-### 问题二：calico 和 coredns 一直处于初始化
+## 问题二：calico 和 coredns 一直处于初始化
 
 用 `kubectl describe <podname>` 应该会有 failed 的报错，大致内容是跟 network 和 sandbox 相关的 
 
@@ -35,7 +35,7 @@ rm -rf /etc/cni/net.d/
 # 可能需要重新init一下
 ```
 
-### 问题三：metrics-server一直无法成功
+## 问题三：metrics-server一直无法成功
 
 **原因：** master 没有加污点
 
@@ -45,7 +45,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io
 ```
 
 
-### 问题四：10002 already in use
+## 问题四：10002 already in use
 
 `journalctl -u cloudcore.service -xe` 时看到 xxx already in use
 
@@ -57,7 +57,7 @@ lsof -i:xxxx
 kill xxxxx
 ```
 
-### 问题五：edgecore 符号链接已存在
+## 问题五：edgecore 符号链接已存在
 
 ```
 execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edgecore.service /etc/systemd/system/edgecore.service && sudo systemctl daemon-reload && sudo systemctl enable edgecore && sudo systemctl start edgecore', err: ln: failed to create hard link '/etc/systemd/system/edgecore.service': File exists
@@ -71,7 +71,7 @@ execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edg
 sudo rm /etc/systemd/system/edgecore.service
 ```
 
-### 问题六：缺少 TLSStreamCertFile
+## 问题六：缺少 TLSStreamCertFile
 
 ```bash
  TLSStreamPrivateKeyFile: Invalid value: "/etc/kubeedge/certs/stream.key": TLSStreamPrivateKeyFile not exist
@@ -85,7 +85,7 @@ sudo rm /etc/systemd/system/edgecore.service
 
 查看 `/etc/kubeedge` 下是否有 `certgen.sh` 并且 `bash certgen.sh stream`
 
-### 问题七：edgemesh 的 log 边边互联成功，云边无法连接
+## 问题七：edgemesh 的 log 边边互联成功，云边无法连接
 
 **排查：**
 
@@ -119,7 +119,7 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 
 ![Q7](/img/FAQs/Q7.png)
 
-### 问题八：master 的gpu 存在但是找不到 gpu 资源
+## 问题八：master 的gpu 存在但是找不到 gpu 资源
 
 主要针对的是服务器的情况，可以使用 `nvidia-smi` 查看显卡情况。
 
@@ -149,7 +149,7 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 
 ```
 
-### 问题九：jeston 的 gpu 存在但是找不到 gpu 资源
+## 问题九：jeston 的 gpu 存在但是找不到 gpu 资源
 
 理论上 `k8s-device-plugin` 已经支持了 tegra 即 jetson 系列板子，会在查看 GPU 之前判断是否是 tegra 架构，如果是则采用 tegra 下查看 GPU 的方式（原因在 [[#GPU 支持]]里 quote 过了 ），但是很奇怪的是明明是 tegra 的架构却没有检测到：
 
@@ -196,7 +196,7 @@ sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 ```
 
-### 问题十：lc127.0.0. 53:53 no such host/connection refused
+## 问题十：lc127.0.0. 53:53 no such host/connection refused
 
 在安装Sedna阶段，检查正确性时报错lc127.0.0. 53:53 no such host/connection refused
 
@@ -215,7 +215,7 @@ sudo apt-get install -y nvidia-container-toolkit
 （3）在这之后，如果是边端上的pod出问题，就要重装sedna，先delete再create。
 
 
-### 问题十一：169.254.96.16:no such host
+## 问题十一：169.254.96.16:no such host
 
 检查 edgemesh 的配置是否正确：
 
@@ -224,7 +224,7 @@ sudo apt-get install -y nvidia-container-toolkit
 
 
 
-### 问题十二： `kubectl logs <pod-name>` 超时
+## 问题十二： `kubectl logs <pod-name>` 超时
 
 ![Q12-1](/img/FAQs/Q12-1.png)
 
@@ -238,7 +238,7 @@ sudo apt-get install -y nvidia-container-toolkit
 
 
 
-### 问题十三： `kubectl logs <pod-name>` 卡住 
+## 问题十三： `kubectl logs <pod-name>` 卡住 
 
 **原因：** 可能由于之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住
 
@@ -246,7 +246,7 @@ sudo apt-get install -y nvidia-container-toolkit
 
 
 
-### 问题十四：CloudCore报certficate错误
+## 问题十四：CloudCore报certficate错误
 
 ![Q14](/img/FAQs/Q14.png)
 
@@ -255,9 +255,9 @@ sudo apt-get install -y nvidia-container-toolkit
 **解决：**边端用新的 token 连接就好
 
 
-###  问题十五：删除命名空间卡在 terminating
+##  问题十五：删除命名空间卡在 terminating
 
-**方法一**，但是没啥用，依旧卡住
+**方法一** （很大可能不起作用）
 
 ```bash
 kubectl delete ns sedna --force --grace-period=0
@@ -265,17 +265,26 @@ kubectl delete ns sedna --force --grace-period=0
 
 **方法二**：
 
+开启一个代理终端：
 ```bash
-开启一个代理终端
-$ kubectl proxy
-Starting to serve on 127.0.0.1:8001
+kubectl proxy
 
-再开启一个操作终端
-将test namespace的配置文件输出保存
-$ kubectl get ns sedna -o json > sedna.json
-删除spec及status部分的内容还有metadata字段后的","号，切记！
-剩下内容大致如下
-guest@cloud:~/yby$ cat sedna.json
+Starting to serve on 127.0.0.1:8001
+```
+
+再开启一个操作终端:
+```bash
+# 将test namespace的配置文件输出保存
+kubectl get ns sedna -o json > sedna.json
+# 删除spec及status部分的内容还有metadata字段后的","号，切记！
+```
+
+`sedna.json`中剩下内容大致如下:
+
+<details>
+
+
+```json
 {
     "apiVersion": "v1",
     "kind": "Namespace",
@@ -355,10 +364,23 @@ guest@cloud:~/yby$ cat sedna.json
         "uid": "99cb8afb-a4c1-45e6-960d-ff1b4894773d"
     }
 }
+```
 
+</details>
 
-调接口删除
-# curl -k -H "Content-Type: application/json" -X PUT --data-binary @sedna.json http://127.0.0.1:8001/api/v1/namespaces/sedna/finalize
+调用接口删除：
+
+<details>
+
+<summary>
+
+```bash
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @sedna.json http://127.0.0.1:8001/api/v1/namespaces/sedna/finalize
+```
+
+</summary>
+
+```bash
 {
   "kind": "Namespace",
   "apiVersion": "v1",
@@ -423,10 +445,10 @@ guest@cloud:~/yby$ cat sedna.json
     ]
   }
 }
-
 ```
+</details>
 
-### 问题十六：强制删除 pod 之后部署不成功
+## 问题十六：强制删除 pod 之后部署不成功
 
 因为现在 edge 的 pod 是通过创建 deployment 由 deployment 进行创建，但是通过 `kubectl delete deploy <deploy-name>` 删除 deployment 后，pod 一直卡在了 terminating 状态，于是采用了 `kubectl delete pod edgeworker-deployment-7g5hs-58dffc5cd7-b77wz --force --grace-period=0` 命令进行了删除。
 然后发现重新部署时候发现 assigned to edge 的 pod 都卡在 pending 状态。
@@ -435,7 +457,7 @@ guest@cloud:~/yby$ cat sedna.json
 
 因为--force 是不会实际终止运行的，所以本身原来的 docker 可能还在运行，现在的做法是手动去对应的边缘节点上删除对应的容器（包括 pause，关于 pause 可以看这篇文章[大白话 K8S（03）：从 Pause 容器理解 Pod 的本质 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/464712164)），然后重启 edgecore: `systemctl restart edgecore.service`
 
-### 问题十七：删除 deployment、pod 等，容器依旧自动重启
+## 问题十七：删除 deployment、pod 等，容器依旧自动重启
 
 ```
  journalctl -u edgecore.service  -f
@@ -449,7 +471,7 @@ guest@cloud:~/yby$ cat sedna.json
 systemctl restart edgecore.service
 ```
 
-### 问题十八：大面积 Evicted（disk pressure）
+## 问题十八：大面积 Evicted（disk pressure）
 
 **原因：**
 
@@ -497,7 +519,7 @@ systemctl  restart kubelet
 
 之后可以正常部署(只是应急措施，磁盘空间需要再清理)
 
-### 问题十九：执行iptables 命令时发现系统不支持--dport选项
+## 问题十九：执行iptables 命令时发现系统不支持--dport选项
 
 执行命令：iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003
 
@@ -509,7 +531,7 @@ systemctl  restart kubelet
 
 此时，使用sudo update-alternatives --config iptables命令可以切换版本，执行此命令会提供3个可供选择的版本，其中编号为1的就是legacy版本（必须用sudo权限才能切换成功）。切换成功后再在root模式下执行 iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003，理想状态下无输出。
 
-### 问题二十：执行完keadm join再执行journalctl时报错token format错误
+## 问题二十：执行完keadm join再执行journalctl时报错token format错误
 
 执行命令：keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=……之后，再执行journalctl -u edegecore.service -f命令后，报错信息指出token format有问题。
 
@@ -517,7 +539,7 @@ systemctl  restart kubelet
 
 此时要么是因为cloudcore.service重启后token变化导致keadm join中的token过时，要么是因为执行keadm join的时候token输入的不对。此时，首先在云端重新获取正确的token，然后在边端从keadm reset开始重新执行一系列操作。
 
-### 问题二十一：重启edgecore.service后再执行journalctl时报错mapping error
+## 问题二十一：重启edgecore.service后再执行journalctl时报错mapping error
 
 在执行EdgeMesh启动阶段，修改/etc/kubeedge/config/edgecore.yaml文件，再用systemctl restart edgecore.service重启服务，然后再执行journalctl -u edegecore.service -f命令后，报错信息指出当前存在mapping error，以及yaml无法转化为json。
 
@@ -525,34 +547,33 @@ systemctl  restart kubelet
 
 检查是不是/etc/kubeedge/config/edgecore.yaml文件内的格式有问题。yaml文件中不能用tab缩进，必需用空格。
 
-### 问题二十二：重启edgecore.service后再执行journalctl时报错connect refuse
+## 问题二十二：重启edgecore.service后再执行journalctl时报错connect refuse
 
 在执行EdgeMesh启动阶段，修改/etc/kubeedge/config/edgecore.yaml文件，再用systemctl restart edgecore.service重启服务，然后再执行journalctl -u edegecore.service -f命令后，报错信息指出connect refuse，云端拒绝通信。
 
 **解决：**
 
-检查是不是因为云端cloudcore有问题。首先用systemctl status cloudcore查看云端状态，确保其正常运行；然后用systemctl restart cloudcore.service重启服务，并在重启后journalctl -u cloudcore.service -f查看报错信息。此时，很有可能发现问题四：journalclt -u cloudcore.service -xe 时看到 xxx already in use
+检查是不是因为云端cloudcore有问题。首先用systemctl status cloudcore查看云端状态，确保其正常运行；然后用systemctl restart cloudcore.service重启服务，并在重启后journalctl -u cloudcore.service -f查看报错信息。此时，很有可能发现[问题四](#问题四10002-already-in-use)：journalclt -u cloudcore.service -xe 时看到 xxx already in use
 
 原因：应该是之前的记录没有清理干净（一般是占用了10002端口）
+
 解决：找到占用端口的进程，直接 Kill 即可
+```bash
 lsof -i:xxxx
 kill xxxxx
+```
 
-### 问题二十三：部署metrics-service时遇到Shutting down相关问题
-
-#### 问题描述
+## 问题二十三：部署metrics-service时遇到Shutting down相关问题
 
 部署metrics-service过程中按照文档中修改components.yaml文件中端口号为4443，而后续metrics-service运行失败，
 产生Shutting down RequestHeaderAuthRequestController等相关错误。
 
-#### 解决方法
+**解决：**
 
 在部署kubeedge时，metrics-service参数中暴露的端口会被自动覆盖为10250端口，components.yaml文件中后续实际服务
 所在的端口一致。也可以手动修改参数中的端口为10250即可。
 
 ### 问题二十四：169.254.96. 16:53: i/o timeout
-
-#### 问题描述
 
 集群新加入节点，KubeEdge的edgemesh以及sedna等组件会自动部署。查看lc的log会发现报错
 
@@ -560,7 +581,7 @@ kill xxxxx
 client tries to connect global manager(address: gm.sedna:9000) failed, error: dial tcp: lookup gm.sedna on 169.254.96.16:53: read udp 172.17.0.3:49991->169.254.96.16:53: i/o timeout
 ```
 
-#### 解决方法
+**解决：**
 
 由于是pod与edgemesh-agent的交互问题，首先检查该edge上的edgemesh-agent的状态，发现会是edgemesh-agent的问题。
 ![Q24-1](/img/FAQs/Q24-1.png)
@@ -573,11 +594,13 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 
 ![Q24-3](/img/FAQs/Q24-3.png)
 
-原因：docker国内无法访问，新加入的edge没有做对应配置，导致拉取不到 kubeedge/edgemesh-agent 镜像。配置后重启docker和edgecore即可。
+**原因：** docker国内无法访问，新加入的edge没有做对应配置，导致拉取不到 kubeedge/edgemesh-agent 镜像。
+
+**解决：** 配置后重启docker和edgecore即可。
 
 ### 问题二十五：边端join报错
 
-边端执行keadm join报错
+边端执行keadm join报错。
 
 **解决：**
 
@@ -588,6 +611,6 @@ vim /etc/kubeedge/config/edgecore.yaml
 
 ![Q25](/img/FAQs/Q25.png)
 
-edgeHub中的httpServer添加云端地址，例如https://114.212.81.11:10002 ，websocket中的server删除最开始的冒号
+edgeHub中的httpServer添加云端地址，例如https://114.212.81.11:10002，websocket中的server删除最开始的冒号。
 
 修改完后重新运行keadm join指令。
