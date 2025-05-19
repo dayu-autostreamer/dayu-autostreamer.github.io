@@ -8,21 +8,20 @@ custom_edit_url: null
 
 ## 问题一：kube-proxy 报 iptables 问题
 
-```
+```bash
 E0627 09:28:54.054930 1 proxier.go:1598] Failed to execute iptables-restore: exit status 1 (iptables-restore: line 86 failed ) I0627 09:28:54.054962 1 proxier.go:879] Sync failed; retrying in 30s
 ```
 
-**解决：** 直接清理 iptables
-
-```
+**解决：** 直接清理 iptables：
+```bash
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 ```
 
 ## 问题二：calico 和 coredns 一直处于初始化
 
-用 `kubectl describe <podname>` 应该会有 failed 的报错，大致内容是跟 network 和 sandbox 相关的 
+用 `kubectl describe <podname>` 应该会有 failed 的报错，大致内容是跟 network 和 sandbox 相关的。 
 
-```
+```bash
 Failed to create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to set up pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout, failed to clean up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to teardown pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout]
 ```
 
@@ -37,21 +36,20 @@ rm -rf /etc/cni/net.d/
 
 ## 问题三：metrics-server一直无法成功
 
-**原因：** master 没有加污点
+**原因：** master 没有加污点。
 
 **解决：**
 ```bash
 kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io/master-
 ```
 
-
 ## 问题四：10002 already in use
 
-`journalctl -u cloudcore.service -xe` 时看到 xxx already in use
+`journalctl -u cloudcore.service -xe` 时看到 `xxx already in use`。
 
-**原因：** 应该是之前的记录没有清理干净
+**原因：** 应该是之前的记录没有清理干净。
 
-**解决：** 找到占用端口的进程，直接 Kill 即可
+**解决：** 找到占用端口的进程，直接 Kill 即可：
 ```bash
 lsof -i:xxxx
 kill xxxxx
@@ -64,7 +62,7 @@ execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edg
 , err: exit status 1
 ```
 
-在尝试创建符号链接时，目标路径已经存在，因此无法创建。这通常是因为 `edgecore.service` 已经存在于 `/etc/systemd/system/` 目录中
+在尝试创建符号链接时，目标路径已经存在，因此无法创建。这通常是因为 `edgecore.service` 已经存在于 `/etc/systemd/system/` 目录中。
 
 **解决：**
 ```bash
@@ -78,12 +76,11 @@ sudo rm /etc/systemd/system/edgecore.service
 12月 14 23:02:23 cloud.kubeedge cloudcore[196229]:   TLSStreamCertFile: Invalid value: "/etc/kubeedge/certs/stream.crt": TLSStreamCertFile not exist
 12月 14 23:02:23 cloud.kubeedge cloudcore[196229]:   TLSStreamCAFile: Invalid value: "/etc/kubeedge/ca/streamCA.crt": TLSStreamCAFile not exist
 12月 14 23:02:23 cloud.kubeedge cloudcore[196229]: ]
-
 ```
 
 **解决：**
 
-查看 `/etc/kubeedge` 下是否有 `certgen.sh` 并且 `bash certgen.sh stream`
+查看 `/etc/kubeedge` 下是否有 `certgen.sh` 并且 `bash certgen.sh stream`。
 
 ## 问题七：edgemesh 的 log 边边互联成功，云边无法连接
 
@@ -97,7 +94,7 @@ sudo rm /etc/systemd/system/edgecore.service
 
 1. 首先每个节点上的 edgemesh-agent 都具有 peer ID，比如
 
-```bash
+```
 edge2: 
 I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
 
@@ -109,35 +106,28 @@ a. peer ID是根据节点名称哈希出来的，相同的节点名称会哈希�
 b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl get nodes查看
 ```
 
-2.如果访问节点和被访问节点处于同一个局域网内（**所有节点应该具备内网 IP（10.0.0.0/8、172.16.0.0/12、192.168.0.0/16**），请看[全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)**问题十二**同一个局域网内 edgemesh-agent 互相发现对方时的日志是 `[MDNS] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>` ^d3939d
+2. 如果访问节点和被访问节点处于同一个局域网内（**所有节点应该具备内网 IP（10.0.0.0/8、172.16.0.0/12、192.168.0.0/16**），请看[全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)**问题十二**同一个局域网内 edgemesh-agent 互相发现对方时的日志是 `[MDNS] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`
 
-3.如果访问节点和被访问节点跨子网，这时候应该看看 relayNodes 设置的正不正确，为什么中继节点没办法协助两个节点交换 peer 信息。详细材料请阅读：[KubeEdge EdgeMesh 高可用架构详解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)。跨子网的 edgemesh-agent 互相发现对方时的日志是 `[DHT] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`（适用于我的情况）
+3. 如果访问节点和被访问节点跨子网，这时候应该看看 relayNodes 设置的正不正确，为什么中继节点没办法协助两个节点交换 peer 信息。详细材料请阅读：[KubeEdge EdgeMesh 高可用架构详解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)。跨子网的 edgemesh-agent 互相发现对方时的日志是 `[DHT] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`
 
 **解决：**
 
-在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操作时，修改 04-configmap，添加 relayNode（根本原因在于，不符合“访问节点和被访问节点处于同一个局域网内”，所以需要添加 relayNode）
+在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操作时，修改 04-configmap，添加 relayNode（根本原因在于，不符合“访问节点和被访问节点处于同一个局域网内”，所以需要添加 relayNode）。
 
 ![Q7](/img/FAQs/Q7.png)
 
 ## 问题八：master 的gpu 存在但是找不到 gpu 资源
 
-主要针对的是服务器的情况，可以使用 `nvidia-smi` 查看显卡情况。
+主要针对的是服务器的gpu使用情况，可以使用 `nvidia-smi` 查看服务器显卡情况。
 
-需要配置GPU支持
+需要配置容器的GPU支持
 
->[!quote]
->[Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.14.3 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuration)
+> 参考如下链接：
+> [Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.14.3 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuration)
 
-按上述内容进行配置，然后还需要 `vim /etc/docker/daemon.json`，添加 default-runtime。按照 quote 的内容设置后会有“runtimes”但是 default-runtime 不会设置，可能会导致找不到 GPU 资源
-
-```
+按上述内容进行配置，然后还需要 `vim /etc/docker/daemon.json`，添加 default-runtime：
+```json
 {
-    "exec-opts": [
-        "native.cgroupdriver=systemd"
-    ],
-    "registry-mirrors": [
-        "https://b9pmyelo.mirror.aliyuncs.com"
-    ],
     "default-runtime": "nvidia",
     "runtimes": {
         "nvidia": {
@@ -146,7 +136,6 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
         }
     }
 }
-
 ```
 
 ## 问题九：jeston 的 gpu 存在但是找不到 gpu 资源
@@ -163,25 +152,24 @@ b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl
 2024/01/04 07:43:58 You can learn how to set the runtime at: https://github.com/NVIDIA/k8s-device-plugin#quick-start
 2024/01/04 07:43:58 If this is not a GPU node, you should set up a toleration or nodeSelector to only deploy this plugin on GPU nodes
 2024/01/04 07:43:58 No devices found. Waiting indefinitely.
-
 ```
 
 ![Q9-1](/img/FAQs/Q9-1.png)
 
 ```bash
-$ dpkg -l '*nvidia*'
+dpkg -l '*nvidia*'
 ```
 
 ![Q9-2](/img/FAQs/Q9-2.png)
 
 ![Q9-3](/img/FAQs/Q9-3.png)
 
->[!quote]
+>
 >[Plug in does not detect Tegra device Jetson Nano · Issue #377 · NVIDIA/k8s-device-plugin (github.com)](https://github.com/NVIDIA/k8s-device-plugin/issues/377)
 >
->Note that looking at the initial logs that you provided you may have been using `v1.7.0` of the NVIDIA Container Toolkit. This is quite an old version and we greatly improved our support for Tegra-based systems with the `v1.10.0` release. It should also be noted that in order to use the GPU Device Plugin on Tegra-based systems (specifically targetting the integrated GPUs) at least `v1.11.0` of the NVIDIA Container Toolkit is required.
+> Note that looking at the initial logs that you provided you may have been using `v1.7.0` of the NVIDIA Container Toolkit. This is quite an old version and we greatly improved our support for Tegra-based systems with the `v1.10.0` release. It should also be noted that in order to use the GPU Device Plugin on Tegra-based systems (specifically targetting the integrated GPUs) at least `v1.11.0` of the NVIDIA Container Toolkit is required.
 >
->There are no Tegra-specific changes in the `v1.12.0` release, so using the `v1.11.0` release should be sufficient in this case.
+> There are no Tegra-specific changes in the `v1.12.0` release, so using the `v1.11.0` release should be sufficient in this case.
 
 那么应该需要升级**NVIDIA Container Toolkit**
 
@@ -573,7 +561,7 @@ kill xxxxx
 在部署kubeedge时，metrics-service参数中暴露的端口会被自动覆盖为10250端口，components.yaml文件中后续实际服务
 所在的端口一致。也可以手动修改参数中的端口为10250即可。
 
-### 问题二十四：169.254.96. 16:53: i/o timeout
+## 问题二十四：169.254.96. 16:53: i/o timeout
 
 集群新加入节点，KubeEdge的edgemesh以及sedna等组件会自动部署。查看lc的log会发现报错
 
@@ -598,7 +586,7 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 
 **解决：** 配置后重启docker和edgecore即可。
 
-### 问题二十五：边端join报错
+## 问题二十五：边端join报错
 
 边端执行keadm join报错。
 
