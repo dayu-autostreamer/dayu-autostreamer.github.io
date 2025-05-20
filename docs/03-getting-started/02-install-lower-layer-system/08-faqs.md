@@ -6,31 +6,29 @@ custom_edit_url: null
 
 # FAQs
 
-[TBD]
+## Question 1: kube-proxy report iptables problems
 
-### Question 1: kube-proxy report iptables problems
-
-```
+```bash
 E0627 09:28:54.054930 1 proxier.go:1598] Failed to execute iptables-restore: exit status 1 (iptables-restore: line 86 failed ) I0627 09:28:54.054962 1 proxier.go:879] Sync failed; retrying in 30s
 ```
 
-Solution：clear iptables directly.
+**Solution:** clear iptables directly.
 
-```
+```bash
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 ```
 
-### Question 2: calico and coredns are always in initializing state
+## Question 2: calico and coredns are always in initializing state
 
 The follwoing message will occur when using `kubectl describe <podname>`  which is roughly related to network and sandbox issues.
-```
+```bash
 Failed to create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to set up pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout, failed to clean up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to teardown pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout]
 ```
 
-Reason: Such a problem occurs when a k8s cluster is initialized more than once 
+**Reason:** Such a problem occurs when a k8s cluster is initialized more than once 
 and the network configuration of k8s was not deleted previously.
 
-Solution：
+**Solution:**
 ```bash
 # delete k8s network configuration
 rm -rf /etc/cni/net.d/  
@@ -38,45 +36,44 @@ rm -rf /etc/cni/net.d/
 # reinitialize k8s with the instruction
 ```
 
-### Question 3：metrics-server keeps unsuccessful state
+## Question 3: metrics-server keeps unsuccessful state
 
-Reason：master node does not add taint.
+**Reason:** master node does not add taint.
 
-Solution：
+**Solution:**
 ```bash
 # add taint on master node
 kubectl taint nodes --all node-role.kubernetes.io/master node-role.kubernetes.io/master
 ```
 
-### Question 4：10002 already in use
+## Question 4: 10002 already in use
 
 Error message 'xxx already in use' occurs when using `journalctl -u cloudcore.service -xe`.
 
-Reason：The previous processes were not cleaned up.
+**Reason:** The previous processes were not cleaned up.
 
-Solution: Find the process occupying the port and directly kill it.
+**Solution:** Find the process occupying the port and directly kill it.
 ```bash
 lsof -i:xxxx
 kill xxxxx
 ```
 
-### Question 5：edgecore file exists
+## Question 5: edgecore file exists
 
 When attempting to create a symbolic link in installing edgecore, the target path already exists and cannot be created. 
-```
-execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edgecore.service /etc/systemd/system/edgecore.service && sudo systemctl daemon-reload && sudo systemctl enable edgecore && sudo systemctl start edgecore', err: ln: failed to create hard link '/etc/systemd/system/edgecore.service': File exists
-, err: exit status 1
+```bash
+execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edgecore.service /etc/systemd/system/edgecore.service && sudo systemctl daemon-reload && sudo systemctl enable edgecore && sudo systemctl start edgecore', err: ln: failed to create hard link '/etc/systemd/system/edgecore.service': File exists, err: exit status 1
 ```
 
-Reason: `edgecore.service` already exists in the `/etc/systemd/system/` directory 
+**Reason:** `edgecore.service` already exists in the `/etc/systemd/system/` directory 
 if edgecore is installed more than once.
 
-Solution: Just delete it.
+**Solution:** Just delete it.
 ```bash
 sudo rm /etc/systemd/system/edgecore.service
 ```
 
-### Question 6：TLSStreamPrivateKeyFile not exist
+## Question 6: TLSStreamPrivateKeyFile not exist
 
 ```bash
  TLSStreamPrivateKeyFile: Invalid value: "/etc/kubeedge/certs/stream.key": TLSStreamPrivateKeyFile not exist
@@ -86,21 +83,25 @@ sudo rm /etc/systemd/system/edgecore.service
 
 ```
 
-Solution: Check whether directory `/etc/kubeedge` has file `certgen.sh` and run `bash certgen.sh stream`.
+**Solution:** Check whether directory `/etc/kubeedge` has file `certgen.sh` and run `bash certgen.sh stream`.
 
-### Question 7：edgemesh 的 log 边边互联成功，云边无法连接
+## Question 7: edgemesh 的 log 边边互联成功，云边无法连接
 
-#### 排查
+**Troubleshooting:**
 
-先复习一下**定位模型**，确定**被访问节点**上的 edgemesh-agent(右)容器是否存在、是否处于正常运行中。
+First, based on the **location model**, ensure whether the edgemesh-agent container exists on the **visited node** and whether it is operating normally.
 
-**这个情况是非常经常出现的**，因为 master 节点一般都有污点，会驱逐其他 pod，进而导致 edgemesh-agent 部署不上去。这种情况可以通过去除节点污点，使 edgemesh-agent 部署上去解决。
+![Q7-2](/img/FAQs/Q7-2.png)
 
-如果访问节点和被访问节点的 edgemesh-agent 都正常启动了，但是还报这个错误，可能是因为访问节点和被访问节点没有互相发现导致，请这样排查：
+This situation is common since the master node usually has taints, which will evict other pods, thereby causing the deployment failure of edgemesh-agent. 
+This issue can be resolved by **removing the node taints**.
+
+If both the visiting node and the visited node's edgemesh-agent have been started normally while this error is still reported, 
+it may be due to unsucessful discovering between the visiting node and the visited node. Please troubleshoot in this way:
 
 1. 首先每个节点上的 edgemesh-agent 都具有 peer ID，比如
 
-```bash
+```
 edge2: 
 I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
 
@@ -120,7 +121,7 @@ Solution:在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操
 
 ![Q7](/img/FAQs/Q7.png)
 
-### 问题八：master 的gpu 存在但是找不到 gpu 资源
+## 问题八：master 的gpu 存在但是找不到 gpu 资源
 
 主要针对的是服务器的情况，可以使用 `nvidia-smi` 查看显卡情况。
 
@@ -150,7 +151,7 @@ Solution:在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操
 
 ```
 
-### 问题九：jeston 的 gpu 存在但是找不到 gpu 资源
+## 问题九：jeston 的 gpu 存在但是找不到 gpu 资源
 
 理论上 `k8s-device-plugin` 已经支持了 tegra 即 jetson 系列板子，会在查看 GPU 之前判断是否是 tegra 架构，如果是则采用 tegra 下查看 GPU 的方式（原因在 [[#GPU 支持]]里 quote 过了 ），但是很奇怪的是明明是 tegra 的架构却没有检测到：
 
@@ -197,7 +198,7 @@ sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 ```
 
-### Question 10: lc127.0.0. 53:53 no such host/connection refused
+## Question 10: lc127.0.0. 53:53 no such host/connection refused
 
 During the Sedna installation stage, an error occurs in logs: `lc127.0.0. 53:53 no such host/connection refused`.
 
@@ -226,7 +227,7 @@ Solution:
 1. 如果安装 sedna 脚本有将 hostNetwork 去掉，则检查 edgecore.yaml 的 clusterDNS 部分，**着重注意是否没有二次设置然后被后设置的覆盖掉**
 2. 如果没有将 hostNetwork 去掉，则将宿主机的 `/etc/resolv.conf` 添加 `nameserver 169.254.96.16`
 
-### 问题十一：169.254.96.16:no such host
+## 问题十一：169.254.96.16:no such host
 
 检查 edgemesh 的配置是否正确：
 
@@ -235,7 +236,7 @@ Solution:
 
 
 
-### 问题十二： `kubectl logs <pod-name>` 超时
+## 问题十二： `kubectl logs <pod-name>` 超时
 
 ![Q12-1](/img/FAQs/Q12-1.png)
 
@@ -249,14 +250,14 @@ Solution:
 
 
 
-### 问题十三： `kubectl logs <pod-name>` 卡住 
+## 问题十三： `kubectl logs <pod-name>` 卡住 
 
 可能的原因：之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住
 解决：重启 edgecore/cloudcore `systemctl restart edgecore.service`
 
 
 
-### 问题十四：CloudCore报certficate错误
+## 问题十四：CloudCore报certficate错误
 
 ![Q14](/img/FAQs/Q14.png)
 
@@ -266,7 +267,7 @@ Solution:
 
 
 
-###  问题十五：删除命名空间卡在 terminating
+##  问题十五：删除命名空间卡在 terminating
 
 理论上一直等待应该是可以的(但是我等了半个钟也没成功啊!!)
 **方法一**，但是没啥用，依旧卡住
@@ -438,7 +439,7 @@ guest@cloud:~/yby$ cat sedna.json
 
 ```
 
-### 问题十六：强制删除 pod 之后部署不成功
+## 问题十六：强制删除 pod 之后部署不成功
 
 #### 问题描述
 
@@ -449,7 +450,7 @@ guest@cloud:~/yby$ cat sedna.json
 
 因为--force 是不会实际终止运行的，所以本身原来的 docker 可能还在运行，现在的做法是手动去对应的边缘节点上删除对应的容器（包括 pause，关于 pause 可以看这篇文章[大白话 K8S（03）：从 Pause 容器理解 Pod 的本质 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/464712164)），然后重启 edgecore: `systemctl restart edgecore.service`
 
-### 问题十七：删除 deployment、pod 等，容器依旧自动重启
+## 问题十七：删除 deployment、pod 等，容器依旧自动重启
 
 ```
  journalctl -u edgecore.service  -f
@@ -463,7 +464,7 @@ guest@cloud:~/yby$ cat sedna.json
 systemctl restart edgecore.service
 ```
 
-### 问题十八：大面积 Evicted（disk pressure）
+## 问题十八：大面积 Evicted（disk pressure）
 
 #### 原因
 
@@ -511,7 +512,7 @@ systemctl  restart kubelet
 
 会发现可以正常部署了(只是应急措施，磁盘空间需要再清理)
 
-### 问题十九：执行iptables 命令时发现系统不支持--dport选项。
+## 问题十九：执行iptables 命令时发现系统不支持--dport选项。
 
 #### 问题描述
 
@@ -525,7 +526,7 @@ systemctl  restart kubelet
 
 此时，使用sudo update-alternatives --config iptables命令可以切换版本，执行此命令会提供3个可供选择的版本，其中编号为1的就是legacy版本（必须用sudo权限才能切换成功）。切换成功后再在root模式下执行 iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003，理想状态下无输出。
 
-### 问题二十：执行完keadm join再执行journalctl时报错token format错误。
+## 问题二十：执行完keadm join再执行journalctl时报错token format错误。
 
 #### 问题描述
 
@@ -535,7 +536,7 @@ systemctl  restart kubelet
 
 此时要么是因为cloudcore.service重启后token变化导致keadm join中的token过时，要么是因为执行keadm join的时候token输入的不对。此时，首先在云端重新获取正确的token，然后在边端从keadm reset开始重新执行一系列操作。
 
-### 问题二十一：重启edgecore.service后再执行journalctl时报错mapping error
+## 问题二十一：重启edgecore.service后再执行journalctl时报错mapping error
 
 #### 问题描述
 
@@ -545,7 +546,7 @@ systemctl  restart kubelet
 
 检查是不是/etc/kubeedge/config/edgecore.yaml文件内的格式有问题。yaml文件中不能用tab缩进，必需用空格。
 
-### 问题二十二：重启edgecore.service后再执行journalctl时报错connect refuse
+## 问题二十二：重启edgecore.service后再执行journalctl时报错connect refuse
 
 #### 问题描述
 
@@ -559,7 +560,7 @@ systemctl  restart kubelet
 lsof -i:xxxx
 kill xxxxx
 
-### 问题二十三：部署metrics-service时遇到Shutting down相关问题
+## 问题二十三：部署metrics-service时遇到Shutting down相关问题
 
 #### 问题描述
 
@@ -571,7 +572,7 @@ kill xxxxx
 在部署kubeedge时，metrics-service参数中暴露的端口会被自动覆盖为10250端口，components.yaml文件中后续实际服务
 所在的端口一致。也可以手动修改参数中的端口为10250即可。
 
-### 问题二十四：169.254.96. 16:53: i/o timeout
+## 问题二十四：169.254.96. 16:53: i/o timeout
 
 #### 问题描述
 
@@ -597,7 +598,7 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 原因：docker国内无法访问，新加入的edge没有做对应配置，导致拉取不到 kubeedge/edgemesh-agent 镜像。配置后重启docker和edgecore即可。
 
 
-### Question 25：keadm join error on edge nodes
+## Question 25: keadm join error on edge nodes
 
 Execution of `keadm join` on edges reported errors.
 

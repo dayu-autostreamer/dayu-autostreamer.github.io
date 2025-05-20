@@ -8,8 +8,9 @@
 }
 /* var(--hero-border-color) */
 .heroSubtitle {
-  /* color: var(--ifm-font-color-base); */
-  color: var(--ifm-font-color-base-inverse);
+  /*color: var(--ifm-font-color-base);*/
+    color: var(--ifm-color-primary);
+  /*color: var(--ifm-font-color-base-inverse);*/
   font-size: 1.5rem;
 }
 

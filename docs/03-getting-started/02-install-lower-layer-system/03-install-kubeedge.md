@@ -27,7 +27,7 @@ cp keadm-v1.9.2-linux-amd64/keadm/keadm /usr/local/bin/
 
 ## Start KubeEdge (cloud)
 
-This step may occur [Question 4：10002 already in use](/docs/getting-started/install-lower-layer-system/faqs#question-410002-already-in-use).
+This step may occur [Question 4：10002 already in use](/docs/getting-started/install-lower-layer-system/faqs#question-4-10002-already-in-use).
 
 ### Reset environment (Skip on first installation)
 
@@ -90,7 +90,7 @@ Use `journalctl -u cloudcore.service -xe` to check if cloudcore is running norma
 
 ## Join KubeEdge cluster (edge)
 
-This step may occur [Question 5：edgecore file exists](/docs/getting-started/install-lower-layer-system/faqs#question-5edgecore-file-exists).
+This step may occur [Question 5：edgecore file exists](/docs/getting-started/install-lower-layer-system/faqs#question-5-edgecore-file-exists).
 
 If `keadm join` fails, you can retry from `keadm reset`.
 
@@ -121,7 +121,7 @@ Execute on the edge:
 keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=9e1832528ae701aba2c4f7dfb49183ab2487e874c8090e68c19c95880cd93b50.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTk1NjU4MzF9.1B4su4QwvQy_ZCPs-PIyDT9ixsDozfN1oG4vX59tKDs
 ```
 
-This step may occur [Question 25：keadm join error on edge nodes](/docs/getting-started/install-lower-layer-system/faqs#question-25keadm-join-error-on-edge-nodes).
+This step may occur [Question 25：keadm join error on edge nodes](/docs/getting-started/install-lower-layer-system/faqs#question-25-keadm-join-error-on-edge-nodes).
 
 ```bash
 # Check for logs

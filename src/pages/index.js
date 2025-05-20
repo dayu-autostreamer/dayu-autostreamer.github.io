@@ -22,7 +22,7 @@ function HomepageHeader() {
                         dark: require('@site/static/img/dayu-trans.png').default,
                     }}>
                 </ThemedImage>
-                <p className="hero__subtitle">
+                <p className={clsx('hero__subtitle', styles.heroSubtitle)}>
                     <Translate>
                         {/*{siteConfig.tagline}*/}
                         Provide infrastructure for cloud-edge collaborative stream data analysis.

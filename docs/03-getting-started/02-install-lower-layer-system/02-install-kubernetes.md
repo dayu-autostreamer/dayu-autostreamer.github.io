@@ -40,7 +40,7 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 ## Start Kubernetes cluster (cloud)
 
-This step may occur [Question 1: kube-proxy report iptables problems](/docs/getting-started/install-lower-layer-system/faqs#question-1-kube-proxy-report-iptables-problems), [Question 2: calico and coredns are always in initializing state](/docs/getting-started/install-lower-layer-system/faqs#question-2-calico-and-coredns-are-always-in-initializing-state) and [Question 3：metrics-server keeps unsuccessful state](/docs/getting-started/install-lower-layer-system/faqs#question-3metrics-server-keeps-unsuccessful-state).
+This step may occur [Question 1: kube-proxy report iptables problems](/docs/getting-started/install-lower-layer-system/faqs#question-1-kube-proxy-report-iptables-problems), [Question 2: calico and coredns are always in initializing state](/docs/getting-started/install-lower-layer-system/faqs#question-2-calico-and-coredns-are-always-in-initializing-state) and [Question 3：metrics-server keeps unsuccessful state](/docs/getting-started/install-lower-layer-system/faqs#question-3-metrics-server-keeps-unsuccessful-state).
 
 ### Reset environment (Skip on first installation)
 

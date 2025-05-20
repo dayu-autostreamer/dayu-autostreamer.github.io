@@ -8,7 +8,7 @@ custom_edit_url: null
 
 ## EdgeMesh environment preparation (cloud)
 
-This Step may occur [Question 6：TLSStreamPrivateKeyFile not exist](/docs/getting-started/install-lower-layer-system/faqs#question-6tlsstreamprivatekeyfile-not-exist)
+This Step may occur [Question 6：TLSStreamPrivateKeyFile not exist](/docs/getting-started/install-lower-layer-system/faqs#question-6-tlsstreamprivatekeyfile-not-exist)
 
 Step 1: Remove the taint on the master node.
 ```bash
