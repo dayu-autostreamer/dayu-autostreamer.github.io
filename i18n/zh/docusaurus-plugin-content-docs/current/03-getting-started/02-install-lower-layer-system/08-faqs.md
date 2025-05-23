@@ -96,11 +96,11 @@ sudo rm /etc/systemd/system/edgecore.service
 1. 首先每个节点上的 edgemesh-agent 都具有 peer ID，比如：
 
 ```
-edge2: 
-I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
-
 edge1:
 I'm {12D3KooWFz1dKY8L3JC8wAY6sJ5MswvPEGKysPCfcaGxFmeH7wkz: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.2/tcp/20006]}
+
+edge2: 
+I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
 
 注意：
 a. peer ID是根据节点名称哈希出来的，相同的节点名称会哈希出相同的peer ID

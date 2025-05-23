@@ -99,17 +99,16 @@ This issue can be resolved by **removing the node taints**.
 If both the visiting node and the visited node's edgemesh-agent have been started normally while this error is still reported, 
 it may be due to unsucessful discovering between the visiting node and the visited node. Please troubleshoot in this way:
 
-1. 首先每个节点上的 edgemesh-agent 都具有 peer ID，比如
-
+1. edgemesh-agent at each node has a peer ID (generated with the hash of node name):
 ```
-edge2: 
-I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
-
 edge1:
 I'm {12D3KooWFz1dKY8L3JC8wAY6sJ5MswvPEGKysPCfcaGxFmeH7wkz: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.2/tcp/20006]}
+
+edge2: 
+I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
 ```
 
-2. If visiting node and visited node are in the same LAN with internet IP, refer to Question 12 in [EdgeMesh Q&A (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690). Logs of discovering node in the same LAN is  `[MDNS] Discovery found peer: <visited node peer ID: [visited IP list(include relay node IP)]>`.
+2. If visiting node and visited node are in the same LAN with internet IP, refer to Question 12 in [EdgeMesh Q&A](https://zhuanlan.zhihu.com/p/585749690). Logs of discovering node in the same LAN is  `[MDNS] Discovery found peer: <visited node peer ID: [visited IP list(include relay node IP)]>`.
 
 3. If visiting node and visited node are across different LANs, check setting of relayNodes (Details at [KubeEdge EdgeMesh Architecture](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)). Logs of discovering node across LANs is `[DHT] Discovery found peer: <visited node peer ID: [visited IP list(include relay node IP)]>`.
 
@@ -189,7 +188,7 @@ sudo apt-get install -y nvidia-container-toolkit
 
 During the Sedna installation stage, an error occurs in logs: `lc127.0.0. 53:53 no such host/connection refused`.
 
-**Reason:** See question 5 in the link [https://zhuanlan.zhihu.com/p/585749690](https://zhuanlan.zhihu.com/p/585749690).
+**Reason:** See question 5 in [EdgeMesh Q&A](https://zhuanlan.zhihu.com/p/585749690).
 
 **Solution:**
 
@@ -213,7 +212,7 @@ Check the configuration of EdgeMesh:
 
 ![Q12-1](/img/FAQs/Q12-1.png)
 
-**Reason:** Reference [Kubernetes nodes cannot capture monitoring metrics(zhihu.com)](https://zhuanlan.zhihu.com/p/379962934)
+**Reason:** Refer to [Kubernetes nodes cannot capture monitoring metrics(zhihu.com)](https://zhuanlan.zhihu.com/p/379962934)
 
 ![Q12-2](/img/FAQs/Q12-2.png)
 
@@ -624,6 +623,6 @@ vim /etc/kubeedge/config/edgecore.yaml
 ![Q25](/img/FAQs/Q25.png)
 
 Add the address of master node (cloud) in edgeHub/httpServer, such as `https://114.212.81.11:10002`, 
-delete the redundant ':' in websocket/server
+delete the redundant ':' in websocket/server.
 
 Re-run the `keadm join` command after modification.
