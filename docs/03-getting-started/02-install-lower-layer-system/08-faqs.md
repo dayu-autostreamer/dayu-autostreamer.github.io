@@ -12,7 +12,7 @@ custom_edit_url: null
 E0627 09:28:54.054930 1 proxier.go:1598] Failed to execute iptables-restore: exit status 1 (iptables-restore: line 86 failed ) I0627 09:28:54.054962 1 proxier.go:879] Sync failed; retrying in 30s
 ```
 
-**Solution:** clear iptables directly.
+**Solution:** Clear iptables directly.
 
 ```bash
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
@@ -38,7 +38,7 @@ rm -rf /etc/cni/net.d/
 
 ## Question 3: metrics-server keeps unsuccessful state
 
-**Reason:** master node does not add taint.
+**Reason:** Master node does not add taint.
 
 **Solution:**
 ```bash
@@ -85,7 +85,7 @@ sudo rm /etc/systemd/system/edgecore.service
 
 **Solution:** Check whether directory `/etc/kubeedge` has file `certgen.sh` and run `bash certgen.sh stream`.
 
-## Question 7: edgemesh 的 log 边边互联成功，云边无法连接
+## Question 7: EdgeMesh has successful edge-edge but failed cloud-edge connection
 
 **Troubleshooting:**
 
@@ -105,41 +105,30 @@ it may be due to unsucessful discovering between the visiting node and the visit
 edge2: 
 I'm {12D3KooWPpY4GqqNF3sLC397fMz5ZZfxmtMTNa1gLYFopWbHxZDt: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.4/tcp/20006]}
 
-edge1.kubeedge:
+edge1:
 I'm {12D3KooWFz1dKY8L3JC8wAY6sJ5MswvPEGKysPCfcaGxFmeH7wkz: [/ip4/127.0.0.1/tcp/20006 /ip4/192.168.1.2/tcp/20006]}
-
-注意：
-a. peer ID是根据节点名称哈希出来的，相同的节点名称会哈希出相同的peer ID
-b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl get nodes查看
 ```
 
-2.如果访问节点和被访问节点处于同一个局域网内（**所有节点应该具备内网 IP（10.0.0.0/8、172.16.0.0/12、192.168.0.0/16**），请看[全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)**问题十二**同一个局域网内 edgemesh-agent 互相发现对方时的日志是 `[MDNS] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>` ^d3939d
+2. If visiting node and visited node are in the same LAN with internet IP, refer to Question 12 in [EdgeMesh Q&A (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690). Logs of discovering node in the same LAN is  `[MDNS] Discovery found peer: <visited node peer ID: [visited IP list(include relay node IP)]>`.
 
-3.如果访问节点和被访问节点跨子网，这时候应该看看 relayNodes 设置的正不正确，为什么中继节点没办法协助两个节点交换 peer 信息。详细材料请阅读：[KubeEdge EdgeMesh 高可用架构详解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)。跨子网的 edgemesh-agent 互相发现对方时的日志是 `[DHT] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`（适用于我的情况）
+3. If visiting node and visited node are across different LANs, check setting of relayNodes (Details at [KubeEdge EdgeMesh Architecture](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)). Logs of discovering node across LANs is `[DHT] Discovery found peer: <visited node peer ID: [visited IP list(include relay node IP)]>`.
 
-Solution:在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操作时，修改 04-configmap，添加 relayNode（根本原因在于，不符合“访问节点和被访问节点处于同一个局域网内”，所以需要添加 relayNode）
+**Solution:**
+
+Before deploy EdgeMesh with `kubectl apply -f build/agent/resources/`, modify file `04-configmap.yaml` and add relayNode.
 
 ![Q7](/img/FAQs/Q7.png)
 
-## 问题八：master 的gpu 存在但是找不到 gpu 资源
+## Question 8: GPU is not found on master
 
-主要针对的是服务器的情况，可以使用 `nvidia-smi` 查看显卡情况。
+Use `nvidia-smi` to see GPU status on the cloud server. To support GPU in k8s pod on cloud server, extra plugin is needed.
 
-需要配置GPU支持
-
->[!quote]
+> Please refer to the following link:
 >[Installing the NVIDIA Container Toolkit — NVIDIA Container Toolkit 1.14.3 documentation](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#configuration)
 
-按上述内容进行配置，然后还需要 `vim /etc/docker/daemon.json`，添加 default-runtime。按照 quote 的内容设置后会有“runtimes”但是 default-runtime 不会设置，可能会导致找不到 GPU 资源
-
-```
+Configure as the link, and add `default-runtime` in '/etc/docker/daemon.json' (remember to restart docker after modification):
+```json
 {
-    "exec-opts": [
-        "native.cgroupdriver=systemd"
-    ],
-    "registry-mirrors": [
-        "https://b9pmyelo.mirror.aliyuncs.com"
-    ],
     "default-runtime": "nvidia",
     "runtimes": {
         "nvidia": {
@@ -148,12 +137,11 @@ Solution:在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操
         }
     }
 }
-
 ```
 
-## 问题九：jeston 的 gpu 存在但是找不到 gpu 资源
+## Question 9: cannot find GPU resources in jetson
 
-理论上 `k8s-device-plugin` 已经支持了 tegra 即 jetson 系列板子，会在查看 GPU 之前判断是否是 tegra 架构，如果是则采用 tegra 下查看 GPU 的方式（原因在 [[#GPU 支持]]里 quote 过了 ），但是很奇怪的是明明是 tegra 的架构却没有检测到：
+`k8s-device-plugin` has been installed successfully, but nvidia pod on jetson nodes (with tegra architecture) reveals that gpu is not found:
 
 ```bash
 2024/01/04 07:43:58 Retreiving plugins.
@@ -165,7 +153,6 @@ Solution:在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操
 2024/01/04 07:43:58 You can learn how to set the runtime at: https://github.com/NVIDIA/k8s-device-plugin#quick-start
 2024/01/04 07:43:58 If this is not a GPU node, you should set up a toleration or nodeSelector to only deploy this plugin on GPU nodes
 2024/01/04 07:43:58 No devices found. Waiting indefinitely.
-
 ```
 
 ![Q9-1](/img/FAQs/Q9-1.png)
@@ -178,14 +165,14 @@ $ dpkg -l '*nvidia*'
 
 ![Q9-3](/img/FAQs/Q9-3.png)
 
->[!quote]
->[Plug in does not detect Tegra device Jetson Nano · Issue #377 · NVIDIA/k8s-device-plugin (github.com)](https://github.com/NVIDIA/k8s-device-plugin/issues/377)
 >
->Note that looking at the initial logs that you provided you may have been using `v1.7.0` of the NVIDIA Container Toolkit. This is quite an old version and we greatly improved our support for Tegra-based systems with the `v1.10.0` release. It should also be noted that in order to use the GPU Device Plugin on Tegra-based systems (specifically targetting the integrated GPUs) at least `v1.11.0` of the NVIDIA Container Toolkit is required.
+> [Plug in does not detect Tegra device Jetson Nano · Issue #377 · NVIDIA/k8s-device-plugin (github.com)](https://github.com/NVIDIA/k8s-device-plugin/issues/377)
 >
->There are no Tegra-specific changes in the `v1.12.0` release, so using the `v1.11.0` release should be sufficient in this case.
+> Note that looking at the initial logs that you provided you may have been using `v1.7.0` of the NVIDIA Container Toolkit. This is quite an old version and we greatly improved our support for Tegra-based systems with the `v1.10.0` release. It should also be noted that in order to use the GPU Device Plugin on Tegra-based systems (specifically targetting the integrated GPUs) at least `v1.11.0` of the NVIDIA Container Toolkit is required.
+>
+> There are no Tegra-specific changes in the `v1.12.0` release, so using the `v1.11.0` release should be sufficient in this case.
 
-那么应该需要升级**NVIDIA Container Toolkit**
+**Solution:** Upgrade the **NVIDIA Container Toolkit** on jetson nodes.
 
 ```bash
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
@@ -202,93 +189,91 @@ sudo apt-get install -y nvidia-container-toolkit
 
 During the Sedna installation stage, an error occurs in logs: `lc127.0.0. 53:53 no such host/connection refused`.
 
-Reason:
+**Reason:** See question 5 in the link [https://zhuanlan.zhihu.com/p/585749690](https://zhuanlan.zhihu.com/p/585749690).
 
-错误原理参见：https://zhuanlan.zhihu.com/p/585749690  链接中的问题五。
+**Solution:**
 
-Solution:
+First check whether `Hostnetwork` is in the script `install.sh`. Delete `Hostnetwork` options if it exists (`install.sh` in [dayu-cusomized sedna](https://github.com/dayu-autostreamer/dayu-sedna) is correct).
 
+If `Hostnetwork` does not exist but the error is still reported, use the following method to temporarily solve (**not recommend**):
 
+1. Add `nameserver 169.254.96.16` to the last line of file `/etc/resolv.conf` on edge nodes with sedna pod error.
+2. Check whether clusterDNS is `169.254.96.16` in `/etc/kubeedge/config/edgecore.yaml` on edge nodes.
+3. If error still exists, reinstall Sedna.
 
-首先，检查准备阶段中的Sedna安装脚本install.sh，观察其中是否有Hostnetwork键值对，如果没有，一般说明不会有问题。
+## Question 11: 169.254.96.16:no such host
 
-如果确认没有这个键值对却依然报错，按照如下方法暂时解决问题（不推荐）：
+Check the configuration of EdgeMesh:
 
-（1）在边/云（取决于是哪一个sedna的pod出问题了）用vim /etc/resolv.conf打开文件，然后在文件最后一行添加nameserver 169.254.96.16，哪怕文件中本来就有nameserver键。但是一般不推荐这样做。
-
-（2）再去边端用vim /etc/kubeedge/config/edgecore.yam打开edgecore.yaml，查看edge部分的clusterDNS内是否对应169.254.96.16，有没有被覆盖。如果没覆盖就成功。
-
-（3）在这之后，如果是边端上的pod出问题，就要重装sedna，先delete再create。
-
-#### 原解决方法：
-
-原因：解析 gm.sedna 这个域名失败
-
-1. 如果安装 sedna 脚本有将 hostNetwork 去掉，则检查 edgecore.yaml 的 clusterDNS 部分，**着重注意是否没有二次设置然后被后设置的覆盖掉**
-2. 如果没有将 hostNetwork 去掉，则将宿主机的 `/etc/resolv.conf` 添加 `nameserver 169.254.96.16`
-
-## 问题十一：169.254.96.16:no such host
-
-检查 edgemesh 的配置是否正确：
-
-1. 检查 iptables 的链的顺序如[混合代理 | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html) 所示
-2. 着重检查 clusterDNS
+1. Check the chain in iptables as [Hybrid proxy | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html).
+2. Check `clusterDNS` as required in [EdgeMesh Installation](/docs/getting-started/install-lower-layer-system/install-edgemesh#configure-edge-network-edge).
 
 
-
-## 问题十二： `kubectl logs <pod-name>` 超时
+## Question 12: `kubectl logs <pod-name>` timeout
 
 ![Q12-1](/img/FAQs/Q12-1.png)
 
-原因：借鉴 [Kubernetes 边缘节点抓不到监控指标？试试这个方法！ - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/379962934)
+**Reason:** Reference [Kubernetes nodes cannot capture monitoring metrics(zhihu.com)](https://zhuanlan.zhihu.com/p/379962934)
 
 ![Q12-2](/img/FAQs/Q12-2.png)
 
-可以发现报错访问的端口就是 10350，而在 kubeedge 中 10350 应该会进行转发，所以应该是 cloudcore 的设置问题。
+It can be found that the error happened in port `10350`, which is responsible for forwarding in kubeedge. 
+Therefore, it should be a configuration issue with `cloudcore`.
 
-解决：[Enable Kubectl logs/exec to debug pods on the edge | KubeEdge](https://kubeedge.io/docs/advanced/debug/) 根据这个链接设置即可。
+**Solution:** Please set as [Enable Kubectl logs/exec to debug pods on the edge | KubeEdge](https://kubeedge.io/docs/advanced/debug/).
+
+## Question 13: Stuck in `kubectl logs <pod-name>`
+
+**Reason:** It maybe caused by the force termination of `kubectl logs` command.
+
+**Solution:** Restart edgecore/cloudcore: 
+```bash
+# on cloud
+systemctl restart cloudcore.service
+# on edge
+systemctl restart edgecore.service
+```
 
 
-
-## 问题十三： `kubectl logs <pod-name>` 卡住 
-
-可能的原因：之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住
-解决：重启 edgecore/cloudcore `systemctl restart edgecore.service`
-
-
-
-## 问题十四：CloudCore报certficate错误
+## Question 14: CloudCore reports certficate error
 
 ![Q14](/img/FAQs/Q14.png)
 
-原因：因为是重装，主节点 token 变了，但是边缘节点一直以过去的 token 尝试进行连接
+**Reason:** Token of master has changed.
 
-解决：边端用新的 token 连接就好
+**Solution:** Use new token from cloud to join.
 
 
+## Question 15: deleting namespace stucks in terminating state
 
-##  问题十五：删除命名空间卡在 terminating
-
-理论上一直等待应该是可以的(但是我等了半个钟也没成功啊!!)
-**方法一**，但是没啥用，依旧卡住
+**Method 1** (Probably won't work)
 
 ```bash
 kubectl delete ns sedna --force --grace-period=0
 ```
 
-**方法二**：
+**Method 2**：
 
+Open a proxy terminal:
 ```bash
-开启一个代理终端
-$ kubectl proxy
-Starting to serve on 127.0.0.1:8001
+kubectl proxy
 
-再开启一个操作终端
-将test namespace的配置文件输出保存
-$ kubectl get ns sedna -o json > sedna.json
-删除spec及status部分的内容还有metadata字段后的","号，切记！
-剩下内容大致如下
-guest@cloud:~/yby$ cat sedna.json
+Starting to serve on 127.0.0.1:8001
+```
+
+Open an operating terminal:
+```bash
+# save configuration file of namespace (use sedna as example here)
+kubectl get ns sedna -o json > sedna.json
+# Delete the contents of spec and status sections and the "," sign after the metadata field.
+```
+
+The remaining content in `sedna.json` is shown as follows:
+
+<details>
+
+
+```json
 {
     "apiVersion": "v1",
     "kind": "Namespace",
@@ -368,10 +353,23 @@ guest@cloud:~/yby$ cat sedna.json
         "uid": "99cb8afb-a4c1-45e6-960d-ff1b4894773d"
     }
 }
+```
 
+</details>
 
-调接口删除
-# curl -k -H "Content-Type: application/json" -X PUT --data-binary @sedna.json http://127.0.0.1:8001/api/v1/namespaces/sedna/finalize
+Delete namespace by call the interface:
+
+<details>
+
+<summary>
+
+```bash
+curl -k -H "Content-Type: application/json" -X PUT --data-binary @sedna.json http://127.0.0.1:8001/api/v1/namespaces/sedna/finalize
+```
+
+</summary>
+
+```bash
 {
   "kind": "Namespace",
   "apiVersion": "v1",
@@ -436,21 +434,33 @@ guest@cloud:~/yby$ cat sedna.json
     ]
   }
 }
+```
+</details>
 
+
+## Question 16: Deployment failed after forcibly deleting pod
+
+Deployment creates pods. But after deleting deployment through `kubectl delete deploy <deploy-name>`, pods are stuck in 'terminating' status. 
+
+Then, use `kubectl delete pod edgeworker-deployment-7g5hs-58dffc5cd7-b77wz --force --grace-period=0` to delete pods. And the re-deployed pods are stuck in 'pending' state after assigning to node.
+
+**Solution:**
+
+Deleting pods with option `--force` does not actually terminate pods.
+
+You should go to the specific node and manually delete the corresponding docker containers (including pause, see details at [Pause in K8S Pod](https://zhuanlan.zhihu.com/p/464712164))
+```bash
+# Check pod position on cloud
+kubectl get pods -A -owide
+# Delete docker containers on specific node (the position of pod)
+docker ps -A
+docker stop <container>
+docker rm <container>
+# Restart edgecore on specific node (the pod)
+systemctl restart edgecore.service
 ```
 
-## 问题十六：强制删除 pod 之后部署不成功
-
-#### 问题描述
-
-因为现在 edge 的 pod 是通过创建 deployment 由 deployment 进行创建，但是通过 `kubectl delete deploy <deploy-name>` 删除 deployment 后，pod 一直卡在了 terminating 状态，于是采用了 `kubectl delete pod edgeworker-deployment-7g5hs-58dffc5cd7-b77wz --force --grace-period=0` 命令进行了删除。
-然后发现重新部署时候发现 assigned to edge 的 pod 都卡在 pending 状态。
-
-#### 解决
-
-因为--force 是不会实际终止运行的，所以本身原来的 docker 可能还在运行，现在的做法是手动去对应的边缘节点上删除对应的容器（包括 pause，关于 pause 可以看这篇文章[大白话 K8S（03）：从 Pause 容器理解 Pod 的本质 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/464712164)），然后重启 edgecore: `systemctl restart edgecore.service`
-
-## 问题十七：删除 deployment、pod 等，容器依旧自动重启
+## Question 17: After deleting deployments and pods, the pods still restart automatically
 
 ```
  journalctl -u edgecore.service  -f
@@ -458,26 +468,27 @@ guest@cloud:~/yby$ cat sedna.json
 
 ![Q17](/img/FAQs/Q17.png)
 
-解决：重启 edgecore
-
+**Solution:** Restart `edgecore`:
 ```
 systemctl restart edgecore.service
 ```
 
-## 问题十八：大面积 Evicted（disk pressure）
+## Question 18: Large-scale Evicted (disk pressure)
 
-#### 原因
+**Reason:**
 
-- node 上的 kubelet 负责采集资源占用数据，并和预先设置的 threshold 值进行比较，如果超过 threshold 值，kubelet 会杀掉一些 Pod 来回收相关资源，[K8sg官网解读kubernetes配置资源不足处理](https://links.jianshu.com/go?to=https%3A%2F%2Fkubernetes.io%2Fdocs%2Ftasks%2Fadminister-cluster%2Fout-of-resource%2F)
+The free disk space (usually root directory) is below the threshold (15%), and kubelet will kill pods to recycle resources (Details at [K8S Insufficient Resource](https://links.jianshu.com/go?to=https%3A%2F%2Fkubernetes.io%2Fdocs%2Ftasks%2Fadminister-cluster%2Fout-of-resource%2F)).
 
-- 默认启动时，node 的可用空间低于15%的时候，该节点上讲会执行 eviction 操作，由于磁盘已经达到了85%,在怎么驱逐也无法正常启动就会一直重启，Pod 状态也是 pending 中
+**Solution:**
 
- #### 临时解决方法
+The fundamental solution is to increase the available disk space.
 
-- 修改配置文件增加传参数,添加此配置项`--eviction-hard=nodefs.available<5%`
+If a temporary solution is needed, the threshold can be changed by modifying the k8s configuration.
 
+Specifically, modify the configuration file and add `--eviction-hard=nodefs.available<5%`:
 ```bash
-root@cloud:/usr/lib/systemd/system# systemctl status kubelet
+systemctl status kubelet
+
 ● kubelet.service - kubelet: The Kubernetes Node Agent
      Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor preset: enabled)
     Drop-In: /etc/systemd/system/kubelet.service.d
@@ -488,10 +499,10 @@ root@cloud:/usr/lib/systemd/system# systemctl status kubelet
       Tasks: 59 (limit: 309024)
      Memory: 67.2M
      CGroup: /system.slice/kubelet.service
-
 ```
 
-可以看到配置文件目录所在位置是 `/etc/systemd/system/kubelet.service.d`，配置文件是 `10-kubeadm.conf`
+From the outputs you can see that configuration file is at directory `/etc/systemd/system/kubelet.service.d` 
+and configuration file is `10-kubeadm.conf`.
 
 ```bash
 vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
@@ -500,109 +511,112 @@ vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
 Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml --eviction-hard=nodefs.available<5%"
 
-最后添加上--eviction-hard=nodefs.available<5%
+# add '--eviction-hard=nodefs.available<5%' at the end
 ```
 
-然后重启 kubelet
-
+Restart `kubelet`:
 ```bash
 systemctl daemon-reload
 systemctl  restart kubelet
 ```
 
-会发现可以正常部署了(只是应急措施，磁盘空间需要再清理)
+You will find that it can be deployed normally (it's just a temporary method, the disk space needs to be cleaned up).
 
-## 问题十九：执行iptables 命令时发现系统不支持--dport选项。
+## Question 19: Executing 'iptables' report that system does not support '--dport'
 
-#### 问题描述
+When executing command `iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003`, an error of not supporting `--dport` is reported.
 
-执行命令：iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003
+**Reason:** The `iptables` version not support `--dport`:
+```bash
+# Check iptables version
+iptables -V
+# Version of 'iptables v1.8.7 (nf_tables)' does not support '--dport'
+```
 
-报错信息中指出系统不支持--dport选项，这是因为iptables版本不支持。
+**Solution:**
+```bash
+# Switch version. In the three options, choose 'legacy'
+sudo update-alternatives --config iptables
+# verify (success with no error)
+iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003
+```
 
-使用iptables -V查看版本，如果是iptables v1.8.7 (nf_tables)，说明问题出在这里，因为nf_tables版本不支持--dport选项。
+## Question 20: Report 'token format error' after 'keadm join'
 
-#### 解决方法
+After executing command `keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=……`, `journalctl -u edegecore.service -f`report error of token format.
 
-此时，使用sudo update-alternatives --config iptables命令可以切换版本，执行此命令会提供3个可供选择的版本，其中编号为1的就是legacy版本（必须用sudo权限才能切换成功）。切换成功后再在root模式下执行 iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003，理想状态下无输出。
+**Solution:**
 
-## 问题二十：执行完keadm join再执行journalctl时报错token format错误。
+Token is error or expired when joining. Therefore, get the latest token from cloud and redo from `keadm reset`.
 
-#### 问题描述
+## Question 21: Report mapping errors after restart edgecore.service
 
-执行命令：keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=……之后，再执行journalctl -u edegecore.service -f命令后，报错信息指出token format有问题。
+After executing command `systemctl restart edgecore.service` to restart edgecore, `journalctl -u edegecore.service -f` report mapping error of failing to translate yaml to json.
 
-#### 解决方法
+**Solution:**
 
-此时要么是因为cloudcore.service重启后token变化导致keadm join中的token过时，要么是因为执行keadm join的时候token输入的不对。此时，首先在云端重新获取正确的token，然后在边端从keadm reset开始重新执行一系列操作。
+Check the format in file`/etc/kubeedge/config/edgecore.yaml`. Note that tab is not allowed in YAML files (use space instead).
 
-## 问题二十一：重启edgecore.service后再执行journalctl时报错mapping error
+## Question 22: Restart edgecore and find error of 'connect refuse'
 
-#### 问题描述
+During the startup of EdgeMesh, modify the `/etc/kubeedge/config/edgecore.yaml` file and restart the service with `systemctl restart edgecore.service`. 
+Command `journalctl -u edegecore.service -f` report an error of 'connect refuse' and the cloud denies communication.
 
-在执行EdgeMesh启动阶段，修改/etc/kubeedge/config/edgecore.yaml文件，再用systemctl restart edgecore.service重启服务，然后再执行journalctl -u edegecore.service -f命令后，报错信息指出当前存在mapping error，以及yaml无法转化为json。
+**Solution:**
 
-#### 解决方法
+Check the status of `cloudcore` on cloud:
+```bash
+# check cloudcore status
+systemctl status cloudcore
+# restart cloudcore
+systemctl restart cloudcore.service
+# check error message
+journalctl -u cloudcore.service -f
+```
 
-检查是不是/etc/kubeedge/config/edgecore.yaml文件内的格式有问题。yaml文件中不能用tab缩进，必需用空格。
+An error of [Question 4](#question-4-10002-already-in-use) maybe found.
 
-## 问题二十二：重启edgecore.service后再执行journalctl时报错connect refuse
+## Question 23: Error of 'Shutting down' is reported when deploying metrics-service
 
-#### 问题描述
+During the deployment of metrics-service, the port in the `components.yaml` file is modified to '4443', but metrics-service still failed with error `Shutting down RequestHeaderAuthRequestController occurred`.
 
-在执行EdgeMesh启动阶段，修改/etc/kubeedge/config/edgecore.yaml文件，再用systemctl restart edgecore.service重启服务，然后再执行journalctl -u edegecore.service -f命令后，报错信息指出connect refuse，云端拒绝通信。
+**Solution:**
 
-#### 解决方法
+When deploying KubeEdge, the port in the metrics-service will be automatically overwritten to '10250'. Manually modify the port in `components.yaml` file to '10250'.
 
-检查是不是因为云端cloudcore有问题。首先用systemctl status cloudcore查看云端状态，确保其正常运行；然后用systemctl restart cloudcore.service重启服务，并在重启后journalctl -u cloudcore.service -f查看报错信息。此时，很有可能发现问题四：journalclt -u cloudcore.service -xe 时看到 xxx already in use
-原因：应该是之前的记录没有清理干净（一般是占用了10002端口）
-解决：找到占用端口的进程，直接 Kill 即可
-lsof -i:xxxx
-kill xxxxx
 
-## 问题二十三：部署metrics-service时遇到Shutting down相关问题
+## Question 24: 169.254.96. 16:53: i/o timeout
 
-#### 问题描述
-
-部署metrics-service过程中按照文档中修改components.yaml文件中端口号为4443，而后续metrics-service运行失败，
-产生Shutting down RequestHeaderAuthRequestController等相关错误。
-
-#### 解决方法
-
-在部署kubeedge时，metrics-service参数中暴露的端口会被自动覆盖为10250端口，components.yaml文件中后续实际服务
-所在的端口一致。也可以手动修改参数中的端口为10250即可。
-
-## 问题二十四：169.254.96. 16:53: i/o timeout
-
-#### 问题描述
-
-集群新加入节点，KubeEdge的edgemesh以及sedna等组件会自动部署。查看lc的log会发现报错
-
+When a new node joins in the cluster, Sedna will be deployed automatically. 
+An error is reported in the log of `sedna-lc`:
 ```
 client tries to connect global manager(address: gm.sedna:9000) failed, error: dial tcp: lookup gm.sedna on 169.254.96.16:53: read udp 172.17.0.3:49991->169.254.96.16:53: i/o timeout
 ```
 
-#### 解决方法
+**Troubleshooting:**
 
-由于是pod与edgemesh-agent的交互问题，首先检查该edge上的edgemesh-agent的状态，发现会是edgemesh-agent的问题。
+First check status of `edgemesh-agent` on the new node. The error is reported from `edgemesh-agent`:
+
 ![Q24-1](/img/FAQs/Q24-1.png)
 
-通过describe pod发现该pod被分配到新edge后就没有其余事件记录
+Use `kubectl describe pod <pod-name>` and find that assigning to new node is the latest event:
 
 ![Q24-2](/img/FAQs/Q24-2.png)
 
-可以去edge上查看信息。通过`journalctl -u edgecore.service -xe`可以看到相关报错
+Use `journalctl -u edgecore.service -xe` on the new node to check errors:
 
 ![Q24-3](/img/FAQs/Q24-3.png)
 
-原因：docker国内无法访问，新加入的edge没有做对应配置，导致拉取不到 kubeedge/edgemesh-agent 镜像。配置后重启docker和edgecore即可。
+**Reason:** The new node cannot access dockerhub directly and has not been configured of docker registry. Thus, docker image cannot be pulled.
+
+**Solution:** Configure docker registry and restart docker and edgecore. Refer to [Docker Registry Configuration](/docs/developer-guide/how-to-build/docker-registry/) for details.
 
 
 ## Question 25: keadm join error on edge nodes
 
 Execution of `keadm join` on edges reported errors.
 
-Solution: Check the `edgecore.yaml` file
+Solution: Check the `edgecore.yaml` file:
 ```bash
 vim /etc/kubeedge/config/edgecore.yaml
 ```
@@ -612,4 +626,4 @@ vim /etc/kubeedge/config/edgecore.yaml
 Add the address of master node (cloud) in edgeHub/httpServer, such as `https://114.212.81.11:10002`, 
 delete the redundant ':' in websocket/server
 
-Re-run the keadm join command after modification.
+Re-run the `keadm join` command after modification.

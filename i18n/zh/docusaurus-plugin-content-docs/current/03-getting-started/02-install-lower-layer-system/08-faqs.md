@@ -107,13 +107,13 @@ a. peer ID是根据节点名称哈希出来的，相同的节点名称会哈希�
 b. 另外，节点名称不是服务器名称，是k8s node name，请用kubectl get nodes查看
 ```
 
-2. 如果访问节点和被访问节点处于同一个局域网内（**所有节点应该具备内网 IP（10.0.0.0/8、172.16.0.0/12、192.168.0.0/16**），请看[全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)中的**问题十二**，同一个局域网内 edgemesh-agent 互相发现对方时的日志是 `[MDNS] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`
+2. 如果访问节点和被访问节点处于同一个局域网内（**所有节点应该具备内网 IP（10.0.0.0/8、172.16.0.0/12、192.168.0.0/16**），请看[全网最全EdgeMesh Q&A手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/585749690)中的**问题十二**，同一个局域网内 edgemesh-agent 互相发现对方时的日志是 `[MDNS] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`。
 
-3. 如果访问节点和被访问节点跨子网，这时候应该看看 relayNodes 设置的正不正确，为什么中继节点没办法协助两个节点交换 peer 信息。详细材料请阅读：[KubeEdge EdgeMesh 高可用架构详解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)。跨子网的 edgemesh-agent 互相发现对方时的日志是 `[DHT] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`
+3. 如果访问节点和被访问节点跨子网，这时候应该看看 relayNodes 设置的正不正确，为什么中继节点没办法协助两个节点交换 peer 信息。详细材料请阅读：[KubeEdge EdgeMesh 高可用架构详解](https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s/4whnkMM9oOaWRsI1ICsvSA)。跨子网的 edgemesh-agent 互相发现对方时的日志是 `[DHT] Discovery found peer: <被访问端peer ID: [被访问端IP列表(可能会包含中继节点IP)]>`。
 
 **解决：**
 
-在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操作时，修改 04-configmap，添加 relayNode（根本原因在于，不符合“访问节点和被访问节点处于同一个局域网内”，所以需要添加 relayNode）。
+在部署 edgemesh 进行 `kubectl apply -f build/agent/resources/` 操作时，修改 `04-configmap.yaml`，添加 relayNode（根本原因在于，不符合“访问节点和被访问节点处于同一个局域网内”，所以需要添加 relayNode）。
 
 ![Q7](/img/FAQs/Q7.png)
 
@@ -194,9 +194,9 @@ sudo apt-get install -y nvidia-container-toolkit
 
 如果确认没有这个键值对却依然报错，按照如下方法暂时解决问题（**不推荐**）：
 
-（1）在边/云（取决于是哪一个sedna的pod出问题了）用vim /etc/resolv.conf打开文件，然后在文件最后一行添加nameserver 169.254.96.16，哪怕文件中本来就有nameserver键。但是一般不推荐这样做。
+（1）在边/云（取决于是哪一个sedna的pod出问题了）用`vim /etc/resolv.conf`打开文件，然后在文件最后一行添加`nameserver 169.254.96.16`，哪怕文件中本来就有nameserver键。但是一般不推荐这样做。
 
-（2）再去边端用vim /etc/kubeedge/config/edgecore.yam打开edgecore.yaml，查看edge部分的clusterDNS内是否对应169.254.96.16，有没有被覆盖。如果没覆盖就成功。
+（2）再去边端用`vim /etc/kubeedge/config/edgecore.yaml`打开`edgecore.yaml`，查看edge部分的clusterDNS内是否对应169.254.96.16，有没有被覆盖。如果没覆盖就成功。
 
 （3）在这之后，如果是边端上的pod出问题，就要重装sedna，先delete再create。
 
@@ -206,7 +206,7 @@ sudo apt-get install -y nvidia-container-toolkit
 检查 edgemesh 的配置是否正确：
 
 1. 检查 iptables 的链的顺序如[混合代理 | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html) 所示
-2. 着重检查 clusterDNS
+2. 着重检查 [EdgeMesh安装](/docs/getting-started/install-lower-layer-system/install-edgemesh#configure-edge-network-edge)中的 `clusterDNS`
 
 
 
@@ -228,8 +228,13 @@ sudo apt-get install -y nvidia-container-toolkit
 
 **原因：** 可能由于之前 `kubectl logs` 时未结束就 ctrl+c 结束了导致后续卡住。
 
-**解决：** 重启 edgecore/cloudcore `systemctl restart edgecore.service`。
-
+**解决：** 重启 edgecore/cloudcore：
+```bash
+# 在云端
+systemctl restart cloudcore.service
+# 在边端
+systemctl restart edgecore.service
+```
 
 
 ## 问题十四：CloudCore报certficate错误
@@ -507,11 +512,11 @@ systemctl  restart kubelet
 
 之后可以正常部署(只是应急措施，磁盘空间需要再清理)。
 
-## 问题十九：执行iptables 命令时发现系统不支持--dport选项
+## 问题十九：执行 iptables 命令时发现系统不支持--dport选项
 
 执行命令：`iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003`时报错信息中指出系统不支持`--dport`选项，这是因为iptables版本不支持。
 
-使用`iptables -V`查看版本，如果是`iptables v1.8.7 (nf_tables)`，这需要更改版本，因为nf_tables版本不支持`--dport`选项。
+使用`iptables -V`查看版本，如果是`iptables v1.8.7 (nf_tables)`，说明需要更改版本，因为nf_tables版本不支持`--dport`选项。
 
 **解决：**
 
@@ -529,7 +534,9 @@ iptables -t nat -A OUTPUT -p tcp --dport 10351 -j DNAT --to $CLOUDCOREIPS:10003
 
 **解决：**
 
-要么是因为cloudcore.service重启后token变化导致`keadm join`中的token过时，要么是因为执行keadm join的时候token输入的不对。此时，首先在云端重新获取正确的token，然后在边端从`keadm reset`开始重新执行一系列操作。
+要么是因为cloudcore.service重启后token变化导致`keadm join`中的token过时，要么是因为执行`keadm join`的时候token输入的不对。
+
+此时，首先在云端重新获取正确的token，然后在边端从`keadm reset`开始重新执行一系列操作。
 
 
 ## 问题二十一：重启edgecore.service后再执行journalctl时报错mapping error
@@ -556,15 +563,7 @@ systemctl restart cloudcore.service
 journalctl -u cloudcore.service -f
 ```
 
-此时，很有可能发现[问题四](#问题四10002-already-in-use)。
-
-**原因：** 应该是之前的记录没有清理干净（一般是占用了10002端口）。
-
-**解决：** 找到占用端口的进程，直接 Kill 即可。
-```bash
-lsof -i:xxxx
-kill xxxxx
-```
+此时，很有可能发现[问题四](#问题四10002-already-in-use)。 
 
 ## 问题二十三：部署metrics-service时遇到Shutting down相关问题
 
@@ -573,23 +572,22 @@ kill xxxxx
 
 **解决：**
 
-在部署kubeedge时，metrics-service参数中暴露的端口会被自动覆盖为10250端口，`components.yaml`文件中的端口参数应当与后续实际服务
+在部署KubeEdge时，metrics-service参数中暴露的端口会被自动覆盖为10250端口，`components.yaml`文件中的端口参数应当与后续实际服务
 所在的端口一致，手动修改参数中的端口为10250即可。
 
 ## 问题二十四：169.254.96. 16:53: i/o timeout
 
-集群新加入节点，KubeEdge的edgemesh以及sedna等组件会自动部署，但查看lc的log发现报错
-
+集群新加入节点，KubeEdge的edgemesh以及sedna等组件会自动部署，但查看lc的log发现报错：
 ```
 client tries to connect global manager(address: gm.sedna:9000) failed, error: dial tcp: lookup gm.sedna on 169.254.96.16:53: read udp 172.17.0.3:49991->169.254.96.16:53: i/o timeout
 ```
 
-**解决：**
+**排查：**
 
-由于是pod与edgemesh-agent的交互问题，首先检查该edge上的edgemesh-agent的状态，发现会是edgemesh-agent的问题。
+由于是pod与edgemesh-agent的交互问题，首先检查该edge上的edgemesh-agent的状态，发现会是edgemesh-agent的问题:
 ![Q24-1](/img/FAQs/Q24-1.png)
 
-通过describe pod发现该pod被分配到新edge后就没有其余事件记录：
+通过`kubectl describe pod <pod-name>`发现该pod被分配到新edge后就没有其余事件记录：
 
 ![Q24-2](/img/FAQs/Q24-2.png)
 
@@ -597,7 +595,7 @@ client tries to connect global manager(address: gm.sedna:9000) failed, error: di
 
 ![Q24-3](/img/FAQs/Q24-3.png)
 
-**原因：** dockerhub无法访问，新加入的edge没有做对应配置，导致拉取不到 kubeedge/edgemesh-agent 镜像。
+**原因：** dockerhub无法直接访问，新加入的edge没有做镜像源等对应配置，导致拉取不到镜像。
 
 **解决：** 配置后重启docker和edgecore即可，具体配置详见[Docker镜像源配置](/docs/developer-guide/how-to-build/docker-registry/)。
 
