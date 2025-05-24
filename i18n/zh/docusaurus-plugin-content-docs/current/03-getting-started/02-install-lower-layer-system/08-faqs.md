@@ -206,7 +206,7 @@ sudo apt-get install -y nvidia-container-toolkit
 检查 edgemesh 的配置是否正确：
 
 1. 检查 iptables 的链的顺序如[混合代理 | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html) 所示
-2. 着重检查 [EdgeMesh安装](/docs/getting-started/install-lower-layer-system/install-edgemesh#configure-edge-network-edge)中的 `clusterDNS`
+2. 着重检查 [EdgeMesh安装](/docs/getting-started/install-lower-layer-system/install-edgemesh#配置edge端网络边端)中的 `clusterDNS`
 
 
 
