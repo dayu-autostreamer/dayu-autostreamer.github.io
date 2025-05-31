@@ -7,6 +7,10 @@ custom_edit_url: null
 
 [TBD]
 
+Dayu system has a five-layer architecture. Among them, the **basic system layer** and **intermediate interface layer** form the lower-layer system, mainly containing infrastructure structures that support container orchestration, custom task deployment, and cross-heterogeneous node communication, providing basic guarantees for stream data processing applications;
+
+The system support layer, collaborative scheduling layer, and application service layer form the upper system, mainly containing functional components that support context awareness, computational decision-making, and process control, providing integrated processing, scheduling, and monitoring services for the full process of stream data processing applications.
+
 大禹系统拥有五层架构，
 其中，基础系统层和中间接口层构成了下层系统，主要包含支持容器化编排、自定义任务下装、跨异构节点通信的基础设施结构，为流数据处理应用提供底层保障；
 系统支撑层、协同调度层、应用服务层构成了上层系统，主要包含支撑情境感知、计算决策、流程控制的功能组件，为流数据处理应用提供感算控一体化处理、调度、监控的全流程服务。
