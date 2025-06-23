@@ -626,3 +626,20 @@ Add the address of master node (cloud) in edgeHub/httpServer, such as `https://1
 delete the redundant ':' in websocket/server.
 
 Re-run the `keadm join` command after modification.
+
+
+## Question 26: failed to build map of initial containers from runtime
+
+Edgecore report error when `journalctl -u edgecore.service -f`:
+```
+initialize module error: failed to build map of initial containers from runtime: no PodsandBox found with Id 'c45ed1592e75e885e119664d777107645a7e7904703c690664691c61a9f79ed3'
+```
+
+*Solution:*
+
+Find the docker ID and delete it:
+```bash
+docker ps -a --filter "label=io.kubernetes.sandbox.id=c45ed1592e75e885e119664d777107645a7e7904703c690664691c61a9f79ed3"
+# find the related docker ID
+docker rm <docker ID>
+```

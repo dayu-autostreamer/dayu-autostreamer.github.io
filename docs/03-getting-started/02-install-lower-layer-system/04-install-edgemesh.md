@@ -6,7 +6,7 @@ custom_edit_url: null
 
 # Install EdgeMesh
 
-## EdgeMesh environment preparation (cloud)
+## EdgeMesh environment preparation (both cloud/edge)
 
 This Step may occur [Question 6：TLSStreamPrivateKeyFile not exist](/docs/getting-started/install-lower-layer-system/faqs#question-6-tlsstreamprivatekeyfile-not-exist)
 

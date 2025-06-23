@@ -613,3 +613,19 @@ vim /etc/kubeedge/config/edgecore.yaml
 ![Q25](/img/FAQs/Q25.png)
 
 edgeHub中的httpServer添加云端地址（例如`https://114.212.81.11:10002`），同时websocket中的server删除多余的`:`，修改完后重新执行`keadm join`指令。
+
+## 问题二十六：failed to build map of initial containers from runtime
+
+在`journalctl -u edgecore.service -f`时 edgecore 报告错误如下：
+```
+initialize module error: failed to build map of initial containers from runtime: no PodsandBox found with Id 'c45ed1592e75e885e119664d777107645a7e7904703c690664691c61a9f79ed3'
+```
+
+*解决：*
+
+找到对应的docker ID并删除：
+```bash
+docker ps -a --filter "label=io.kubernetes.sandbox.id=c45ed1592e75e885e119664d777107645a7e7904703c690664691c61a9f79ed3"
+# find the related docker ID
+docker rm <docker ID>
+```
