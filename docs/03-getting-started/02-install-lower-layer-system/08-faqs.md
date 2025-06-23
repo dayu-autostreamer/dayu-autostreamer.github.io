@@ -157,7 +157,7 @@ Configure as the link, and add `default-runtime` in '/etc/docker/daemon.json' (r
 ![Q9-1](/img/FAQs/Q9-1.png)
 
 ```bash
-$ dpkg -l '*nvidia*'
+dpkg -l '*nvidia*'
 ```
 
 ![Q9-2](/img/FAQs/Q9-2.png)
