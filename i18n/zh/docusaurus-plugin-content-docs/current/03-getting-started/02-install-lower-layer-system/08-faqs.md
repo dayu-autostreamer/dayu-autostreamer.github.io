@@ -629,3 +629,113 @@ docker ps -a --filter "label=io.kubernetes.sandbox.id=c45ed1592e75e885e119664d77
 # find the related docker ID
 docker rm <docker ID>
 ```
+
+
+
+## 问题二十七：Certificate has expired or is not yet valid
+
+执行 `kubectl get pods -A` 命令时遇到如下报错：
+
+```bash
+Unable to connect to the server: x509: certificate has expired or is not yet valid: current time 2025-06-27T22:23:12+08:00 is after 2025-06-27T08:56:50Z
+```
+
+**原因：**
+
+在云服务器上检查证书：
+```bash
+sudo kubeadm certs check-expiration
+
+# 得到如下结果：
+[check-expiration] Reading configuration from the cluster...
+[check-expiration] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[check-expiration] Error reading configuration from the Cluster. Falling back to default configuration
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Jun 27, 2025 08:56 UTC   <invalid>                               no      
+apiserver                  Jun 27, 2025 08:56 UTC   <invalid>       ca                      no      
+apiserver-etcd-client      Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+apiserver-kubelet-client   Jun 27, 2025 08:56 UTC   <invalid>       ca                      no      
+controller-manager.conf    Jun 27, 2025 08:56 UTC   <invalid>                               no      
+etcd-healthcheck-client    Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+etcd-peer                  Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+etcd-server                Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+front-proxy-client         Jun 27, 2025 08:56 UTC   <invalid>       front-proxy-ca          no      
+scheduler.conf             Jun 27, 2025 08:56 UTC   <invalid>                               no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Jun 25, 2034 08:56 UTC   8y              no      
+etcd-ca                 Jun 25, 2034 08:56 UTC   8y              no      
+front-proxy-ca          Jun 25, 2034 08:56 UTC   8y              no      
+```
+
+可以看到证书的状态都是 `<invalid>` 过期状态。
+
+**解决：**
+
+更新 Kubernetes 证书
+```bash
+sudo kubeadm certs renew all
+
+# 得到如下结果：
+[renew] Reading configuration from the cluster...
+[renew] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[renew] Error reading configuration from the Cluster. Falling back to default configuration
+
+certificate embedded in the kubeconfig file for the admin to use and for kubeadm itself renewed
+certificate for serving the Kubernetes API renewed
+certificate the apiserver uses to access etcd renewed
+certificate for the API server to connect to kubelet renewed
+certificate embedded in the kubeconfig file for the controller manager to use renewed
+certificate for liveness probes to healthcheck etcd renewed
+certificate for etcd nodes to communicate with each other renewed
+certificate for serving etcd renewed
+certificate for the front proxy client renewed
+certificate embedded in the kubeconfig file for the scheduler manager to use renewed
+
+Done renewing certificates. You must restart the kube-apiserver, kube-controller-manager, kube-scheduler and etcd, so that they can use the new certificates.
+```
+
+重新检查证书状态，可以看到所有证书都已被更新
+```bash
+sudo kubeadm certs check-expiration
+
+# 得到如下结果：
+[check-expiration] Reading configuration from the cluster...
+[check-expiration] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[check-expiration] Error reading configuration from the Cluster. Falling back to default configuration
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Jun 27, 2026 14:30 UTC   364d                                    no      
+apiserver                  Jun 27, 2026 14:30 UTC   364d            ca                      no      
+apiserver-etcd-client      Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+apiserver-kubelet-client   Jun 27, 2026 14:30 UTC   364d            ca                      no      
+controller-manager.conf    Jun 27, 2026 14:30 UTC   364d                                    no      
+etcd-healthcheck-client    Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+etcd-peer                  Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+etcd-server                Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+front-proxy-client         Jun 27, 2026 14:30 UTC   364d            front-proxy-ca          no      
+scheduler.conf             Jun 27, 2026 14:30 UTC   364d                                    no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Jun 25, 2034 08:56 UTC   8y              no      
+etcd-ca                 Jun 25, 2034 08:56 UTC   8y              no      
+front-proxy-ca          Jun 25, 2034 08:56 UTC   8y              no      
+```
+
+然而，再次执行命令 `kubectl get pods -A` 仍然得到如下报错：
+```bash
+error: You must be logged in to the server (Unauthorized)
+```
+
+通过更新配置文件并重启 kubelet 来解决问题：
+```bash
+# 备份配置文件
+cp -rp $HOME/.kube/config $HOME/.kube/config.bak
+
+# 更新配置文件
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+# 重启 kubelet
+sudo systemctl restart kubelet
+```

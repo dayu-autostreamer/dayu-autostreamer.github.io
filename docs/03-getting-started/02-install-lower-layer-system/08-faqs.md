@@ -628,7 +628,7 @@ delete the redundant ':' in websocket/server.
 Re-run the `keadm join` command after modification.
 
 
-## Question 26: failed to build map of initial containers from runtime
+## Question 26: Failed to build map of initial containers from runtime
 
 Edgecore report error when `journalctl -u edgecore.service -f`:
 ```
@@ -642,4 +642,113 @@ Find the docker ID and delete it:
 docker ps -a --filter "label=io.kubernetes.sandbox.id=c45ed1592e75e885e119664d777107645a7e7904703c690664691c61a9f79ed3"
 # find the related docker ID
 docker rm <docker ID>
+```
+
+
+## Question 27: Certificate has expired or is not yet valid
+
+Execution of `kubectl get pods -A` reports the following error:
+
+```bash
+Unable to connect to the server: x509: certificate has expired or is not yet valid: current time 2025-06-27T22:23:12+08:00 is after 2025-06-27T08:56:50Z
+```
+
+**Reason:**
+
+Check the certificate of Kubernetes on the cloud server:
+```bash
+sudo kubeadm certs check-expiration
+
+# Get the following results
+[check-expiration] Reading configuration from the cluster...
+[check-expiration] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[check-expiration] Error reading configuration from the Cluster. Falling back to default configuration
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Jun 27, 2025 08:56 UTC   <invalid>                               no      
+apiserver                  Jun 27, 2025 08:56 UTC   <invalid>       ca                      no      
+apiserver-etcd-client      Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+apiserver-kubelet-client   Jun 27, 2025 08:56 UTC   <invalid>       ca                      no      
+controller-manager.conf    Jun 27, 2025 08:56 UTC   <invalid>                               no      
+etcd-healthcheck-client    Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+etcd-peer                  Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+etcd-server                Jun 27, 2025 08:56 UTC   <invalid>       etcd-ca                 no      
+front-proxy-client         Jun 27, 2025 08:56 UTC   <invalid>       front-proxy-ca          no      
+scheduler.conf             Jun 27, 2025 08:56 UTC   <invalid>                               no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Jun 25, 2034 08:56 UTC   8y              no      
+etcd-ca                 Jun 25, 2034 08:56 UTC   8y              no      
+front-proxy-ca          Jun 25, 2034 08:56 UTC   8y              no      
+```
+
+The certificates are in status of `<invalid>`.
+
+**Solution:**
+
+Update Kubernetes certificates:
+```bash
+sudo kubeadm certs renew all
+
+# Get the following results:
+[renew] Reading configuration from the cluster...
+[renew] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[renew] Error reading configuration from the Cluster. Falling back to default configuration
+
+certificate embedded in the kubeconfig file for the admin to use and for kubeadm itself renewed
+certificate for serving the Kubernetes API renewed
+certificate the apiserver uses to access etcd renewed
+certificate for the API server to connect to kubelet renewed
+certificate embedded in the kubeconfig file for the controller manager to use renewed
+certificate for liveness probes to healthcheck etcd renewed
+certificate for etcd nodes to communicate with each other renewed
+certificate for serving etcd renewed
+certificate for the front proxy client renewed
+certificate embedded in the kubeconfig file for the scheduler manager to use renewed
+
+Done renewing certificates. You must restart the kube-apiserver, kube-controller-manager, kube-scheduler and etcd, so that they can use the new certificates.
+```
+
+Recheck the certificates, all certificates are updated:
+```bash
+sudo kubeadm certs check-expiration
+
+# Get the following results:
+[check-expiration] Reading configuration from the cluster...
+[check-expiration] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -o yaml'
+[check-expiration] Error reading configuration from the Cluster. Falling back to default configuration
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Jun 27, 2026 14:30 UTC   364d                                    no      
+apiserver                  Jun 27, 2026 14:30 UTC   364d            ca                      no      
+apiserver-etcd-client      Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+apiserver-kubelet-client   Jun 27, 2026 14:30 UTC   364d            ca                      no      
+controller-manager.conf    Jun 27, 2026 14:30 UTC   364d                                    no      
+etcd-healthcheck-client    Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+etcd-peer                  Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+etcd-server                Jun 27, 2026 14:30 UTC   364d            etcd-ca                 no      
+front-proxy-client         Jun 27, 2026 14:30 UTC   364d            front-proxy-ca          no      
+scheduler.conf             Jun 27, 2026 14:30 UTC   364d                                    no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Jun 25, 2034 08:56 UTC   8y              no      
+etcd-ca                 Jun 25, 2034 08:56 UTC   8y              no      
+front-proxy-ca          Jun 25, 2034 08:56 UTC   8y              no      
+```
+
+However, the execution of command  `kubectl get pods -A` still reports errors:
+```bash
+error: You must be logged in to the server (Unauthorized)
+```
+
+Renew the configuration file and restart kubelet to solve:
+```bash
+# Backup configuration file
+cp -rp $HOME/.kube/config $HOME/.kube/config.bak
+
+# Renew configuration file
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+# Restart kubelet
+sudo systemctl restart kubelet
 ```
