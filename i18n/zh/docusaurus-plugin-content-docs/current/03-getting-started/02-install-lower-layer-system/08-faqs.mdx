@@ -6,18 +6,30 @@ custom_edit_url: null
 
 # FAQs
 
-<div style="background-color:#e6ffe6; border-left:4px solid #4CAF50; padding:12px;">
-  <span style="color:#2E7D32;">⚠️ 大禹系统调试提示</span>
+:::tip[大禹系统调试提示]
 
-Please follow these steps to troubleshoot errors in the dayu system.
+**如果您在使用大禹系统过程中遇到问题，请遵循以下步骤排查定位具体问题，并根据FAQ解决：**
 
-✅
+✅ **检查 Dayu Pods:** 使用 `kubectl get pods -n <your-dayu-namespace>` 检查大禹核心容器的状态；
+并使用 `kubectl logs <pod-name> -n <your-dayu-namespace>` 和 `kubectl describes pod <pod-name> -n <your-dayu-namespace>` 排查异常状态容器的日志信息；
 
-✅
+✅ **检查 Dayu 核心资源:** 如果容器Pods在未知错误状态，可以使用 `kubectl get svc -n <your-dayu-namespace>` 和 `kubectl get svc -n <your-dayu-namespace>` 检查 services 和 deployments 等核心资源状态；
 
-✅
+✅ **检查节点连通性：** 使用 `kubectl get nodes` 检查云边分布式系统中的节点连接状态 ('Ready' 或 'Not Ready')；
 
-</div>
+✅ **检查 Sedna:** 使用 `kubectl get pods -n sedna -owide` 和 `kubectl logs <sedna-pod-name> -n sedna` 检查 Sedna gm 组件和 lc 组件的日志；
+
+✅ **检查 EdgeMesh:** 如果大禹系统中节点间通讯阻塞，使用 `kubectl get pods -n kubeedge -owide` 和 `kubectl logs <edgemesh-pod-name> -n kubeedge`检查 EdgeMesh agent 的日志；
+
+✅ **检查 Cloudcore:** 在云服务器上使用 `systemctl status cloudcore` 或 `journalctl -u cloudcore -xe` 检查 cloudcore 是否正常运行没有报错；
+
+✅ **检查 Edgecore:** 在边缘节点上使用 `systemctl status edgecore` 或 `journalctl -u edgecore -xe` 检查 edgecore 是否正常运行没有报错；
+
+✅ **检查 Kubelet** 在云服务器上使用 `systemctl status kubelet` 或 `journalctl -u kubelet -xe` 检查 k8s 的核心管理服务 kubelet 是否正常运行没有报错
+
+✅ **检查 Docker:** 如果 `kubectl` 指令和其他 k8s 指令均无法正常执行，通过 `docker ps -a` 检查docker容器状态，通过 `systemctl status docker` 和 `journalctl -u docker -xe`检查 docker 服务状态和日志。
+
+:::
 
 ## 问题一：kube-proxy 报 iptables 问题
 

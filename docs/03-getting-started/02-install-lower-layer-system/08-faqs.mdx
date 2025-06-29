@@ -6,19 +6,30 @@ custom_edit_url: null
 
 # FAQs
 
-<div style="background-color:#e6ffe6; border-left:4px solid #4CAF50; padding:12px;">
-  <span style="color:#2E7D32;">⚠️ Debug Tips in Dayu System</span>
+:::tip[Debug Tips in Dayu System]
 
-Please follow these steps to troubleshoot errors in the dayu system.
+**If you encounter errors in dayu system, please follow these steps to troubleshoot and use FAQs to solve:**
 
-✅
+✅ **Check Dayu Pods:** Use `kubectl get pods -n <your-dayu-namespace>` to check dayu pods status.
+Use `kubectl logs <pod-name> -n <your-dayu-namespace>` and `kubectl describes pod <pod-name> -n <your-dayu-namespace>` to check log information in abnormal pods.
 
-✅
+✅ **Check Dayu Core Resources:** Use `kubectl get svc -n <your-dayu-namespace>` and `kubectl get svc -n <your-dayu-namespace>` to check services and deployments if pods are in unknown status.
 
-✅
+✅ **Check Node Connections:** Use `kubectl get nodes` to check node status in the distributed cloud-edge system ('Ready' or 'Not Ready').
 
-</div>
+✅ **Check Sedna:** Check Sedna gm and lc logs with `kubectl get pods -n sedna -owide` and `kubectl logs <sedna-pod-name> -n sedna`.
 
+✅ **Check EdgeMesh:** Check EdgeMesh agent logs with `kubectl get pods -n kubeedge -owide` and `kubectl logs <edgemesh-pod-name> -n kubeedge` if communication between nodes is blocked.
+
+✅ **Check Cloudcore:** Use `systemctl status cloudcore` or `journalctl -u cloudcore -xe` on the cloud server to check cloudcore is running without errors.
+
+✅ **Check Edgecore:** Use `systemctl status edgecore` or `journalctl -u edgecore -xe` on the edge device to check edgecore is running without errors.
+
+✅ **Check Kubelet** Use `systemctl status kubelet` or `journalctl -u kubelet -xe` on the cloud server to check k8s administrator service is running without errors.
+
+✅ **Check Docker:** If none of the `kubectl` commands or other k8s commands works, check docker container status with `docker ps -a` and check docker logs with `systemctl status docker` or `journalctl -u docker -xe`.
+
+:::
 
 ## Question 1: kube-proxy report iptables problems
 
