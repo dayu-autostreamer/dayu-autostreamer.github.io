@@ -6,6 +6,20 @@ custom_edit_url: null
 
 # FAQs
 
+<div style="background-color:#e6ffe6; border-left:4px solid #4CAF50; padding:12px;">
+  <span style="color:#2E7D32;">⚠️ Debug Tips in Dayu System</span>
+
+Please follow these steps to troubleshoot errors in the dayu system.
+
+✅
+
+✅
+
+✅
+
+</div>
+
+
 ## Question 1: kube-proxy report iptables problems
 
 ```bash
@@ -741,14 +755,90 @@ However, the execution of command  `kubectl get pods -A` still reports errors:
 error: You must be logged in to the server (Unauthorized)
 ```
 
-Renew the configuration file and restart kubelet to solve:
+Renew the configuration file and restart core k8s services to solve:
 ```bash
 # Backup configuration file
 cp -rp $HOME/.kube/config $HOME/.kube/config.bak
 
 # Renew configuration file
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo cp -i /etc/kubernetes/admin.conf /root/.kube/config
 
 # Restart kubelet
 sudo systemctl restart kubelet
+# Restart kube-apiserver, kube-controller-manage, kube-scheduler
+docker ps |grep kube-apiserver|grep -v pause|awk '{print $1}'|xargs -i docker restart {}
+docker ps |grep kube-controller-manage|grep -v pause|awk '{print $1}'|xargs -i docker restart {}
+docker ps |grep kube-scheduler|grep -v pause|awk '{print $1}'|xargs -i docker restart {}
+```
+
+Restart Cloudcore and check the status:
+```bash
+# Restart Cloudcore
+sudo systemctl restart cloudcore
+# Check Cloudcore status
+systemctl status cloudcore
+journalctl -u cloudcore -xe
+```
+
+If Cloudcore has the following errors:
+<details>
+
+<summary>
+
+```bash
+cloudcore.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+```
+
+</summary>
+
+```bash
+-- A start job for unit cloudcore.service has finished successfully.
+-- 
+-- The job identifier is 2357999.
+6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125171 3159196 validation.go:154] TLSTunnelPrivateKeyFile does not exist i>
+6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125269 3159196 validation.go:157] TLSTunnelCertFile does not exist in /etc>
+6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125286 3159196 validation.go:160] TLSTunnelCAFile does not exist in /etc/k>
+6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: I0630 00:45:15.125336 3159196 server.go:77] Version: v1.9.2
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: panic: failed to create system namespace
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: goroutine 1 [running]:
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/kubeedge/kubeedge/cloud/cmd/cloudcore/app.NewCloudCoreCommand.func1(0xc00035f8>
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/cloud/cmd/cloudcore/app/server.go:85 +0x81c
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).execute(0xc00035f8c0, 0xc00003c1f0, 0x0, 0x0, 0xc00035f>
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).ExecuteC(0xc00035f8c0, 0xc000180058, 0x1859280, 0x0)
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/vendor/github.com/spf13/cobra/command.go:958 +0x375
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).Execute(...)
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/vendor/github.com/spf13/cobra/command.go:895
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: main.main()
+6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/cloud/cmd/cloudcore/cloudcore.go:16 +0x65
+6月 30 00:45:16 cloud.kubeedge systemd[1]: cloudcore.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+-- Subject: Unit process exited
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- An ExecStart= process belonging to unit cloudcore.service has exited.
+-- 
+-- The process' exit code is 'exited' and its exit status is 2.
+6月 30 00:45:16 cloud.kubeedge systemd[1]: cloudcore.service: Failed with result 'exit-code'.
+-- Subject: Unit failed
+-- Defined-By: systemd
+-- Support: http://www.ubuntu.com/support
+-- 
+-- The unit cloudcore.service has entered the 'failed' state with result 'exit-code'.
+```
+
+</details>
+
+Try to update Cloudcore certs:
+```bash
+# Modify the ip address of '--adverse-address'
+keadm init --advertise-address=114.212.81.11 --kubeedge-version=1.9.2
+
+# Check Cloudcore status
+journalctl -u cloudcore -xe
+
+# if Cloudcore journal report port connection refused, kill the occupied process
+sudo lsof -i:<port>
+sudo kill -9 <pid>
 ```
