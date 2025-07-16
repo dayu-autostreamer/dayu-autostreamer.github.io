@@ -13,7 +13,7 @@ custom_edit_url: null
 ✅ **Check Dayu Pods:** Use `kubectl get pods -n <your-dayu-namespace>` to check dayu pods status.
 Use `kubectl logs <pod-name> -n <your-dayu-namespace>` and `kubectl describes pod <pod-name> -n <your-dayu-namespace>` to check log information in abnormal pods.
 
-✅ **Check Dayu Core Resources:** Use `kubectl get svc -n <your-dayu-namespace>` and `kubectl get svc -n <your-dayu-namespace>` to check services and deployments if pods are in unknown status.
+✅ **Check Dayu Core Resources:** Use `kubectl get svc -n <your-dayu-namespace>` and `kubectl get deployment -n <your-dayu-namespace>` to check services and deployments if pods are in unknown status.
 
 ✅ **Check Node Connections:** Use `kubectl get nodes` to check node status in the distributed cloud-edge system ('Ready' or 'Not Ready').
 

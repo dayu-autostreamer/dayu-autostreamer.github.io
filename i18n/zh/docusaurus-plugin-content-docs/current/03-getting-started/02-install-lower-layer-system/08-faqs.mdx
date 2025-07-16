@@ -13,7 +13,7 @@ custom_edit_url: null
 ✅ **检查 Dayu Pods:** 使用 `kubectl get pods -n <your-dayu-namespace>` 检查大禹核心容器的状态；
 并使用 `kubectl logs <pod-name> -n <your-dayu-namespace>` 和 `kubectl describes pod <pod-name> -n <your-dayu-namespace>` 排查异常状态容器的日志信息；
 
-✅ **检查 Dayu 核心资源:** 如果容器Pods在未知错误状态，可以使用 `kubectl get svc -n <your-dayu-namespace>` 和 `kubectl get svc -n <your-dayu-namespace>` 检查 services 和 deployments 等核心资源状态；
+✅ **检查 Dayu 核心资源:** 如果容器Pods在未知错误状态，可以使用 `kubectl get svc -n <your-dayu-namespace>` 和 `kubectl get deployment -n <your-dayu-namespace>` 检查 services 和 deployments 等核心资源状态；
 
 ✅ **检查节点连通性：** 使用 `kubectl get nodes` 检查云边分布式系统中的节点连接状态 ('Ready' 或 'Not Ready')；
 
