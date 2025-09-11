@@ -23,7 +23,7 @@ devicePluginEnabled: true
 systemctl restart edgecore.service
 ```
 
-修改云边所有设备上的`/etc/dockerdaemon.json`，添加如下内容：
+修改云边所有设备上的`/etc/docker/daemon.json`，添加如下内容：
 ```json
 {
     "default-runtime": "nvidia",

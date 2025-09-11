@@ -23,7 +23,7 @@ devicePluginEnabled: true
 systemctl restart edgecore.service
 ```
 
-Modify `/etc/dockerdaemon.json` on all cloud/edge devices, and add the following content:
+Modify `/etc/docker/daemon.json` on all cloud/edge devices, and add the following content:
 ```json
 {
     "default-runtime": "nvidia",
