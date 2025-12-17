@@ -12,7 +12,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
     title: 'Dayu',
     tagline: /** @type {import('@docusaurus/Translate').translate} */ ('Provide infrastructure for cloud-edge collaborative stream data analysis.'),
-    favicon: 'img/dayu-logo.png',
+    favicon: 'img/favicon.ico',
 
     // Set the production url of your site here
     url: 'https://dayu-autostreamer.github.io',
