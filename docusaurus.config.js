@@ -184,6 +184,25 @@ const config = {
                 ],
             },
         }),
+    headTags: [
+        {
+            tagName: 'script',
+            attributes: {type: 'text/javascript'},
+            innerHTML: `
+        var sc_project=13194138;
+        var sc_invisible=1;
+        var sc_security="d4073d04";
+      `,
+        },
+        {
+            tagName: 'script',
+            attributes: {
+                type: 'text/javascript',
+                src: 'https://www.statcounter.com/counter/counter.js',
+                async: true,
+            },
+        },
+    ],
 };
 
 export default config;
