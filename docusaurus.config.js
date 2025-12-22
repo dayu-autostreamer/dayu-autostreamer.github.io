@@ -199,7 +199,7 @@ const config = {
             attributes: {
                 type: 'text/javascript',
                 src: 'https://www.statcounter.com/counter/counter.js',
-                async: true,
+                async: 'true',
             },
         },
     ],
