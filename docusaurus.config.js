@@ -5,6 +5,7 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
+import statcounterPlugin from './plugins/statcounter';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -184,25 +185,7 @@ const config = {
                 ],
             },
         }),
-    bodyTags: [
-        {
-            tagName: 'script',
-            attributes: {type: 'text/javascript'},
-            innerHTML: `
-        var sc_project=13194138;
-        var sc_invisible=1;
-        var sc_security="d4073d04";
-      `,
-        },
-        {
-            tagName: 'script',
-            attributes: {
-                type: 'text/javascript',
-                src: 'https://www.statcounter.com/counter/counter.js',
-                async: 'true',
-            },
-        },
-    ],
+    plugins: [statcounterPlugin],
 };
 
 export default config;
