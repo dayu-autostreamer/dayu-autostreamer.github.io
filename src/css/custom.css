@@ -29,3 +29,22 @@
   --ifm-color-primary-lightest: #4fbfdd;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* --- Fix: blog author avatar image squashed --- */
+img.avatar__photo {
+  width: var(--ifm-avatar-photo-size);
+  height: var(--ifm-avatar-photo-size);
+  aspect-ratio: 1 / 1;
+  object-fit: cover; /* 不变形，必要时裁切 */
+}
+
+/* 兼容不同尺寸的 avatar（lg/xl 等） */
+img.avatar__photo--lg {
+  width: var(--ifm-avatar-photo-size-lg);
+  height: var(--ifm-avatar-photo-size-lg);
+}
+
+img.avatar__photo--xl {
+  width: var(--ifm-avatar-photo-size-xl);
+  height: var(--ifm-avatar-photo-size-xl);
+}
