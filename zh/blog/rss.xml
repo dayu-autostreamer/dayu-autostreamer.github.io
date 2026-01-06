@@ -4,10 +4,24 @@
         <title>Dayu Blog</title>
         <link>https://dayu-autostreamer.github.io/zh/blog</link>
         <description>Dayu Blog</description>
-        <lastBuildDate>Wed, 07 May 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 08 Dec 2025 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh</language>
+        <item>
+            <title><![CDATA[New Accepted Paper: Hier-EI]]></title>
+            <link>https://dayu-autostreamer.github.io/zh/blog/hier-ei</link>
+            <guid>https://dayu-autostreamer.github.io/zh/blog/hier-ei</guid>
+            <pubDate>Mon, 08 Dec 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Our paper "Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence" is Accepted by IEEE INFOCOM 2026!]]></description>
+            <content:encoded><![CDATA[<p>Our paper "Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence" is Accepted by IEEE INFOCOM 2026!</p>
+<p>This paper proposes Hier-EI (Hierahical Embodied Intelligence), an efficient scheduling framework that integrates a two-phase hierarchical design with embodied intelligence,
+which simultaneously considers spatial and temporal imbalance and enhance long-term QoE performance in cloud-edge collaborative video analytics pipelines.</p>
+<p>Refer to homepage: <a href="https://dayu-autostreamer.github.io/hier-ei/" target="_blank" rel="noopener noreferrer">https://dayu-autostreamer.github.io/hier-ei/</a>.</p>
+<p>For more information, please refer to:</p>
+<p><strong>Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence. Accepted to appear in Proceeding of IEEE International Conference on Computer Communications (IEEE INFOCOM) 2026.</strong></p>
+<p><img decoding="async" loading="lazy" alt="hier-ei-paper-img" src="https://dayu-autostreamer.github.io/zh/assets/images/hier-ei-paper-abb2074181fd298303b393a8bf4d069c.png" width="668" height="866" class="img_ev3q"></p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[Dayu v1.1 Released]]></title>
             <link>https://dayu-autostreamer.github.io/zh/blog/version1.1</link>
