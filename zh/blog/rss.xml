@@ -64,7 +64,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
             <content:encoded><![CDATA[<p>Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!</p>
 <p>This paper proposes CRAVE (Collaborative Region-aware Adaptive Video Encoding), which achieves efficient candidate region extraction through lightweight foreground detection and historical inference result analysis.</p>
 <p>For more information, please refer to:</p>
-<p><strong>Bingyun Yang, Jingyi Ning, Wenhui Zhou, Chuyu Wang, Lei Xie, Zhenjie Lin, Liming Wang. Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection. Accepted to Appear In Proceeding of IEEE International Conference on Distributed Computing Systems (ICDCS 2025, poster paper).</strong></p>
+<p><strong>Bingyun Yang, Jingyi Ning, Wenhui Zhou, Chuyu Wang, Lei Xie, Zhenjie Lin, Liming Wang. <a href="https://doi.org/10.1109/ICDCSW63273.2025.00012" target="_blank" rel="noopener noreferrer">Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection</a>. IEEE ICDCSW, pp. 32-37, 2025.</strong></p>
 <p><img decoding="async" loading="lazy" alt="crave-paper-img" src="https://dayu-autostreamer.github.io/zh/assets/images/crave-paper-1d10e694eddd9027bc8f98803d9d0a79.png" width="639" height="823" class="img_ev3q"></p>]]></content:encoded>
         </item>
         <item>
