@@ -1,7 +1,7 @@
 ---
 slug: version1.1
 title: Dayu v1.1 Released
-authors: [whzhou, haowu, adayang, wydai]
+authors: [whzhou, haowu, byyang, wydai]
 ---
 
 **Dayu system Version 1.1 is released!**

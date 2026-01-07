@@ -1,7 +1,7 @@
 ---
 slug: crave
 title: "New Accepted Paper: CRAVE"
-authors: [adayang, lxie]
+authors: [byyang, lxie]
 ---
 
 Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!
