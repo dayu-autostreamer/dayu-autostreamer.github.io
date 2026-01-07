@@ -128,4 +128,187 @@ This step may occur [Question 25：keadm join error on edge nodes](/docs/getting
 journalctl -u edgecore.service -f
 ```
 
+## Set Jetpack label (Optional for Jetson devices)
 
+If the edge device is a Jetson device, you need to set the label for Jetpack version.
+
+### Check apiserver address (edge)
+Use `curl` on edge devices to check apiserver address:
+```bash
+# replace MASTER_IP with the actual master (cloud) IP address
+curl -k --max-time 3 https://MASTER_IP:6443/healthz
+```
+
+If the response is `ok`, the apiserver address is correct. If not, please check the network connection between the edge device and the cloud or the apiserver address.
+
+### Create SA + RBAC (cloud)
+Create a service account and cluster role binding for setting labels.
+```bash
+kubectl -n kube-system create sa jetpack-node-labeler
+
+kubectl apply -f - <<'YAML'
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: jetpack-node-labeler
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get","patch","update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: jetpack-node-labeler
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: jetpack-node-labeler
+subjects:
+- kind: ServiceAccount
+  name: jetpack-node-labeler
+  namespace: kube-system
+YAML
+```
+
+### Generate kubeconfig (cloud)
+
+Get token on the cloud:
+```bash
+SECRET=$(kubectl -n kube-system get sa jetpack-node-labeler -o jsonpath='{.secrets[0].name}')
+TOKEN=$(kubectl -n kube-system get secret "$SECRET" -o jsonpath='{.data.token}' | base64 -d)
+```
+
+Get CA cert on the cloud:
+```bash
+CA_CRT=$(kubectl config view --raw -o jsonpath='{.clusters[0].cluster.certificate-authority-data}')
+```
+
+Generate kubeconfig file on the cloud:
+```bash
+# Replace MASTER_IP with actual master (cloud) IP address
+MASTER="https://MASTER_IP:6443"
+
+cat > jetpack-labeler.kubeconfig <<EOF
+apiVersion: v1
+kind: Config
+clusters:
+- name: edge-cluster
+  cluster:
+    server: ${MASTER}
+    certificate-authority-data: ${CA_CRT}
+users:
+- name: jetpack-node-labeler
+  user:
+    token: ${TOKEN}
+contexts:
+- name: jetpack
+  context:
+    cluster: edge-cluster
+    user: jetpack-node-labeler
+current-context: jetpack
+EOF
+```
+
+### Create secret (cloud)
+
+Create a secret in the `kube-system` namespace to store the kubeconfig file:
+```bash
+kubectl -n kube-system create secret generic jetpack-labeler-kubeconfig \
+  --from-file=config=jetpack-labeler.kubeconfig \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
+
+### Deploy daemonset (cloud)
+
+Deploy the daemonset to set Jetpack labels:
+```bash
+kubectl apply -f - <<'YAML'
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: jetpack-node-labeler
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: jetpack-node-labeler
+  template:
+    metadata:
+      labels:
+        app: jetpack-node-labeler
+    spec:
+      serviceAccountName: jetpack-node-labeler
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      tolerations:
+      - operator: Exists
+      volumes:
+      - name: host-etc
+        hostPath:
+          path: /etc
+          type: Directory
+      - name: kubeconfig
+        secret:
+          secretName: jetpack-labeler-kubeconfig
+      - name: tmp
+        emptyDir: {}
+      containers:
+      - name: labeler
+        image: bitnami/kubectl:latest
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: KUBECONFIG
+          value: /kube/config
+        - name: HOME
+          value: /tmp
+        volumeMounts:
+        - name: host-etc
+          mountPath: /host/etc
+          readOnly: true
+        - name: kubeconfig
+          mountPath: /kube
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+        command: ["/bin/sh","-c"]
+        args:
+        - |
+          set -eu
+
+          if [ ! -f /host/etc/nv_tegra_release ]; then
+            echo "Not a Jetson (no /etc/nv_tegra_release). Skip."
+            sleep 360000
+          fi
+
+          LINE="$(head -n 1 /host/etc/nv_tegra_release || true)"
+          L4T_MAJOR="$(echo "$LINE" | sed -n 's/.*R\([0-9]\+\).*/\1/p' | head -n1)"
+
+          JP="unknown"
+          case "$L4T_MAJOR" in
+            32) JP="4" ;;
+            35) JP="5" ;;
+            36) JP="6" ;;
+          esac
+
+          echo "node=$NODE_NAME L4T_MAJOR=$L4T_MAJOR -> JP=$JP"
+
+          kubectl label node "$NODE_NAME" \
+            jetson.nvidia.com/jetpack.major="$JP" \
+            jetson.nvidia.com/l4t.major="${L4T_MAJOR:-unknown}" \
+            --overwrite
+
+          echo "label ok"
+          sleep 360000
+YAML
+```
+
+Verify that the labels have been set correctly:
+```bash
+kubectl -n kube-system get pod -l app=jetpack-node-labeler -o wide
+kubectl -n kube-system logs -l app=jetpack-node-labeler --tail=100
+kubectl get nodes -L jetson.nvidia.com/jetpack.major,jetson.nvidia.com/l4t.major
+```
