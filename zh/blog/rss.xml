@@ -4,10 +4,56 @@
         <title>Dayu Blog</title>
         <link>https://dayu-autostreamer.github.io/zh/blog</link>
         <description>Dayu Blog</description>
-        <lastBuildDate>Mon, 08 Dec 2025 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 15 Jan 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>zh</language>
+        <item>
+            <title><![CDATA[Dayu v1.2 Released]]></title>
+            <link>https://dayu-autostreamer.github.io/zh/blog/version1.2</link>
+            <guid>https://dayu-autostreamer.github.io/zh/blog/version1.2</guid>
+            <pubDate>Thu, 15 Jan 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Dayu system Version 1.2 is released!]]></description>
+            <content:encoded><![CDATA[<p><strong>Dayu system Version 1.2 is released!</strong></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#features" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading">​</a></h3>
+<ul>
+<li>Add a cyclic redeployment mechanism of service processors for further flexible task processing.</li>
+<li>Add new services to construct a logical topology, including pedestrian-detection, vehicle-detection,
+exposure-identification, category-classification and license-plate-recognition.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#bug-fix" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading">​</a></h3>
+<ul>
+<li>Fix concurrency conflicts for starting up multiple streams in rtsp video and http video (<code>datasource</code>).</li>
+<li>Fix frame index updating error in http video source (<code>datasource</code>).</li>
+<li>Fix port occupation bug of rtsp video datasource after shutting down (<code>datasource</code>).</li>
+<li>Support dynamic variable update in visualization modules (<code>frontend</code>).</li>
+<li>Support cloud-only deployment of processors (<code>backend</code>).</li>
+<li>Fix task forwarding bug in inconsistent deployment and offloading decisions (<code>controller</code>).</li>
+<li>Fix possible database locking in concurrency access of distributor (<code>distributor</code>).</li>
+<li>Add cache TTL of Kubernetes configurations to avoid additional expense in <code>PortInfo</code> and <code>KubeConfig</code>.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#minor-update" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading">​</a></h3>
+<ul>
+<li>Update more flexible visualization modules to switch different user-defined configurations in multi-stream scenarios (<code>frontend</code> / <code>backend</code>).</li>
+<li>Clean up frontend code and beatify frontend pages (<code>frontend</code>).</li>
+<li>Add persistent storage of installation configuration (<code>frontend</code>).</li>
+<li>Add system visualization to monitor system parameters, including resource usage, scheduling cost and so on (<code>frontend</code> / <code>backend</code> / <code>scheduler</code>).</li>
+<li>Improving a fine-grained monitoring architecture including monitoring cpu and gpu flops (<code>monitor</code>).</li>
+<li>Add 'USE_TENSORRT' option in processors to choose whether using tensorrt mode (<code>processor</code>).</li>
+<li>Add model flops calculation in processors to support model flops monitoring (<code>processor</code>).</li>
+<li>Update 'ImagePullPolicy' in template files from 'IfNotPresent' to 'Always' to ensure pulling the latest images.</li>
+<li>Update detailed overhead time statistics in scheduling logs (<code>scheduler</code>).</li>
+<li>Accelerate backend visualization through caching mechanism (<code>backend</code>).</li>
+<li>Add ROI ID to detection/tracking applications to support roi-accelerated classification applications (<code>processor</code>).</li>
+<li>Add ROI Classifier to accelerate roi-level classification applications (<code>processor</code>).</li>
+<li>Optimize local service processor by sharing temporary directory on local devices (<code>controller</code>/<code>processor</code>).</li>
+<li>Add adjustable request scheduling interval in generator to avoid frequent scheduling (<code>generator</code>).</li>
+<li>Add temporary file cleaning mechanism in local controller to avoid disk occupation (<code>controller</code>).</li>
+<li>Add compatible docker image building for jp4/jp5/jp6 for processor in Nvidia Jetson devices (<code>processor</code>/<code>monitor</code>).</li>
+<li>Update scenario data structure and processing (<code>processor</code>).</li>
+</ul>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.2" target="_blank" rel="noopener noreferrer">dayu-v1.2</a>.</p>]]></content:encoded>
+        </item>
         <item>
             <title><![CDATA[New Accepted Paper: Hier-EI]]></title>
             <link>https://dayu-autostreamer.github.io/zh/blog/hier-ei</link>
