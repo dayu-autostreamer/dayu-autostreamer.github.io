@@ -50,7 +50,7 @@ The follwoing message will occur when using `kubectl describe <podname>`  which 
 Failed to create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to set up pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout, failed to clean up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to teardown pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout]
 ```
 
-**Reason:** Such a problem occurs when a k8s cluster is initialized more than once 
+**Reason:** Such a problem occurs when a k8s cluster is initialized more than once
 and the network configuration of k8s was not deleted previously.
 
 **Solution:**
@@ -85,12 +85,12 @@ kill xxxxx
 
 ## Question 5: edgecore file exists
 
-When attempting to create a symbolic link in installing edgecore, the target path already exists and cannot be created. 
+When attempting to create a symbolic link in installing edgecore, the target path already exists and cannot be created.
 ```bash
 execute keadm command failed:  failed to exec 'bash -c sudo ln /etc/kubeedge/edgecore.service /etc/systemd/system/edgecore.service && sudo systemctl daemon-reload && sudo systemctl enable edgecore && sudo systemctl start edgecore', err: ln: failed to create hard link '/etc/systemd/system/edgecore.service': File exists, err: exit status 1
 ```
 
-**Reason:** `edgecore.service` already exists in the `/etc/systemd/system/` directory 
+**Reason:** `edgecore.service` already exists in the `/etc/systemd/system/` directory
 if edgecore is installed more than once.
 
 **Solution:** Just delete it.
@@ -118,10 +118,10 @@ First, based on the **location model**, ensure whether the edgemesh-agent contai
 
 ![Q7-2](/img/FAQs/Q7-2.png)
 
-This situation is common since the master node usually has taints, which will evict other pods, thereby causing the deployment failure of edgemesh-agent. 
+This situation is common since the master node usually has taints, which will evict other pods, thereby causing the deployment failure of edgemesh-agent.
 This issue can be resolved by **removing the node taints**.
 
-If both the visiting node and the visited node's edgemesh-agent have been started normally while this error is still reported, 
+If both the visiting node and the visited node's edgemesh-agent have been started normally while this error is still reported,
 it may be due to unsucessful discovering between the visiting node and the visited node. Please troubleshoot in this way:
 
 1. edgemesh-agent at each node has a peer ID (generated with the hash of node name):
@@ -189,12 +189,7 @@ dpkg -l '*nvidia*'
 
 ![Q9-3](/img/FAQs/Q9-3.png)
 
->
-> [Plug in does not detect Tegra device Jetson Nano · Issue #377 · NVIDIA/k8s-device-plugin (github.com)](https://github.com/NVIDIA/k8s-device-plugin/issues/377)
->
-> Note that looking at the initial logs that you provided you may have been using `v1.7.0` of the NVIDIA Container Toolkit. This is quite an old version and we greatly improved our support for Tegra-based systems with the `v1.10.0` release. It should also be noted that in order to use the GPU Device Plugin on Tegra-based systems (specifically targetting the integrated GPUs) at least `v1.11.0` of the NVIDIA Container Toolkit is required.
->
-> There are no Tegra-specific changes in the `v1.12.0` release, so using the `v1.11.0` release should be sufficient in this case.
+>[Plug in does not detect Tegra device Jetson Nano · Issue #377 · NVIDIA/k8s-device-plugin (github.com)](https://github.com/NVIDIA/k8s-device-plugin/issues/377)Note that looking at the initial logs that you provided you may have been using `v1.7.0` of the NVIDIA Container Toolkit. This is quite an old version and we greatly improved our support for Tegra-based systems with the `v1.10.0` release. It should also be noted that in order to use the GPU Device Plugin on Tegra-based systems (specifically targetting the integrated GPUs) at least `v1.11.0` of the NVIDIA Container Toolkit is required.There are no Tegra-specific changes in the `v1.12.0` release, so using the `v1.11.0` release should be sufficient in this case.
 
 **Solution:** Upgrade the **NVIDIA Container Toolkit** on jetson nodes.
 
@@ -241,7 +236,7 @@ Check the configuration of EdgeMesh:
 
 ![Q12-2](/img/FAQs/Q12-2.png)
 
-It can be found that the error happened in port `10350`, which is responsible for forwarding in kubeedge. 
+It can be found that the error happened in port `10350`, which is responsible for forwarding in kubeedge.
 Therefore, it should be a configuration issue with `cloudcore`.
 
 **Solution:** Please set as [Enable Kubectl logs/exec to debug pods on the edge | KubeEdge](https://kubeedge.io/docs/advanced/debug/).
@@ -250,7 +245,7 @@ Therefore, it should be a configuration issue with `cloudcore`.
 
 **Reason:** It maybe caused by the force termination of `kubectl logs` command.
 
-**Solution:** Restart edgecore/cloudcore: 
+**Solution:** Restart edgecore/cloudcore:
 ```bash
 # on cloud
 systemctl restart cloudcore.service
@@ -297,87 +292,87 @@ The remaining content in `sedna.json` is shown as follows:
 <details>
 
 
-```json
-{
-    "apiVersion": "v1",
-    "kind": "Namespace",
-    "metadata": {
+    ```json
+    {
+        "apiVersion": "v1",
+        "kind": "Namespace",
+        "metadata": {
         "creationTimestamp": "2023-12-14T09:12:13Z",
         "deletionTimestamp": "2023-12-14T09:15:25Z",
         "managedFields": [
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:status": {
-                        "f:phase": {}
-                    }
-                },
-                "manager": "kubectl-create",
-                "operation": "Update",
-                "time": "2023-12-14T09:12:13Z"
-            },
-            {
-                "apiVersion": "v1",
-                "fieldsType": "FieldsV1",
-                "fieldsV1": {
-                    "f:status": {
-                        "f:conditions": {
-                            ".": {},
-                            "k:{\"type\":\"NamespaceContentRemaining\"}": {
-                                ".": {},
-                                "f:lastTransitionTime": {},
-                                "f:message": {},
-                                "f:reason": {},
-                                "f:status": {},
-                                "f:type": {}
-                            },
-                            "k:{\"type\":\"NamespaceDeletionContentFailure\"}": {
-                                ".": {},
-                                "f:lastTransitionTime": {},
-                                "f:message": {},
-                                "f:reason": {},
-                                "f:status": {},
-                                "f:type": {}
-                            },
-                            "k:{\"type\":\"NamespaceDeletionDiscoveryFailure\"}": {
-                                ".": {},
-                                "f:lastTransitionTime": {},
-                                "f:message": {},
-                                "f:reason": {},
-                                "f:status": {},
-                                "f:type": {}
-                            },
-                            "k:{\"type\":\"NamespaceDeletionGroupVersionParsingFailure\"}": {
-                                ".": {},
-                                "f:lastTransitionTime": {},
-                                "f:message": {},
-                                "f:reason": {},
-                                "f:status": {},
-                                "f:type": {}
-                            },
-                            "k:{\"type\":\"NamespaceFinalizersRemaining\"}": {
-                                ".": {},
-                                "f:lastTransitionTime": {},
-                                "f:message": {},
-                                "f:reason": {},
-                                "f:status": {},
-                                "f:type": {}
-                            }
-                        }
-                    }
-                },
-                "manager": "kube-controller-manager",
-                "operation": "Update",
-                "time": "2023-12-14T09:15:30Z"
-            }
+    {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+        "f:status": {
+        "f:phase": {}
+    }
+    },
+        "manager": "kubectl-create",
+        "operation": "Update",
+        "time": "2023-12-14T09:12:13Z"
+    },
+    {
+        "apiVersion": "v1",
+        "fieldsType": "FieldsV1",
+        "fieldsV1": {
+        "f:status": {
+        "f:conditions": {
+        ".": {},
+        "k:{\"type\":\"NamespaceContentRemaining\"}": {
+        ".": {},
+        "f:lastTransitionTime": {},
+        "f:message": {},
+        "f:reason": {},
+        "f:status": {},
+        "f:type": {}
+    },
+        "k:{\"type\":\"NamespaceDeletionContentFailure\"}": {
+        ".": {},
+        "f:lastTransitionTime": {},
+        "f:message": {},
+        "f:reason": {},
+        "f:status": {},
+        "f:type": {}
+    },
+        "k:{\"type\":\"NamespaceDeletionDiscoveryFailure\"}": {
+        ".": {},
+        "f:lastTransitionTime": {},
+        "f:message": {},
+        "f:reason": {},
+        "f:status": {},
+        "f:type": {}
+    },
+        "k:{\"type\":\"NamespaceDeletionGroupVersionParsingFailure\"}": {
+        ".": {},
+        "f:lastTransitionTime": {},
+        "f:message": {},
+        "f:reason": {},
+        "f:status": {},
+        "f:type": {}
+    },
+        "k:{\"type\":\"NamespaceFinalizersRemaining\"}": {
+        ".": {},
+        "f:lastTransitionTime": {},
+        "f:message": {},
+        "f:reason": {},
+        "f:status": {},
+        "f:type": {}
+    }
+    }
+    }
+    },
+        "manager": "kube-controller-manager",
+        "operation": "Update",
+        "time": "2023-12-14T09:15:30Z"
+    }
         ],
         "name": "sedna",
         "resourceVersion": "3351515",
         "uid": "99cb8afb-a4c1-45e6-960d-ff1b4894773d"
     }
-}
-```
+    }
+    ```
 
 </details>
 
@@ -385,86 +380,87 @@ Delete namespace by call the interface:
 
 <details>
 
-<summary>
+    <summary>
 
-```bash
-curl -k -H "Content-Type: application/json" -X PUT --data-binary @sedna.json http://127.0.0.1:8001/api/v1/namespaces/sedna/finalize
-```
+        ```bash
+        curl -k -H "Content-Type: application/json" -X PUT --data-binary @sedna.json
+        http://127.0.0.1:8001/api/v1/namespaces/sedna/finalize
+        ```
 
-</summary>
+    </summary>
 
-```bash
-{
-  "kind": "Namespace",
-  "apiVersion": "v1",
-  "metadata": {
-    "name": "sedna",
-    "uid": "99cb8afb-a4c1-45e6-960d-ff1b4894773d",
-    "resourceVersion": "3351515",
-    "creationTimestamp": "2023-12-14T09:12:13Z",
-    "deletionTimestamp": "2023-12-14T09:15:25Z",
-    "managedFields": [
-      {
+    ```bash
+    {
+        "kind": "Namespace",
+        "apiVersion": "v1",
+        "metadata": {
+        "name": "sedna",
+        "uid": "99cb8afb-a4c1-45e6-960d-ff1b4894773d",
+        "resourceVersion": "3351515",
+        "creationTimestamp": "2023-12-14T09:12:13Z",
+        "deletionTimestamp": "2023-12-14T09:15:25Z",
+        "managedFields": [
+    {
         "manager": "curl",
         "operation": "Update",
         "apiVersion": "v1",
         "time": "2023-12-14T09:42:38Z",
         "fieldsType": "FieldsV1",
         "fieldsV1": {"f:status":{"f:phase":{}}}
-      }
-    ]
-  },
-  "spec": {
+    }
+        ]
+    },
+        "spec": {
 
-  },
-  "status": {
-    "phase": "Terminating",
-    "conditions": [
-      {
+    },
+        "status": {
+        "phase": "Terminating",
+        "conditions": [
+    {
         "type": "NamespaceDeletionDiscoveryFailure",
         "status": "True",
         "lastTransitionTime": "2023-12-14T09:15:30Z",
         "reason": "DiscoveryFailed",
         "message": "Discovery failed for some groups, 1 failing: unable to retrieve the complete list of server APIs: metrics.k8s.io/v1beta1: the server is currently unable to handle the request"
-      },
-      {
+    },
+    {
         "type": "NamespaceDeletionGroupVersionParsingFailure",
         "status": "False",
         "lastTransitionTime": "2023-12-14T09:15:30Z",
         "reason": "ParsedGroupVersions",
         "message": "All legacy kube types successfully parsed"
-      },
-      {
+    },
+    {
         "type": "NamespaceDeletionContentFailure",
         "status": "False",
         "lastTransitionTime": "2023-12-14T09:15:30Z",
         "reason": "ContentDeleted",
         "message": "All content successfully deleted, may be waiting on finalization"
-      },
-      {
+    },
+    {
         "type": "NamespaceContentRemaining",
         "status": "False",
         "lastTransitionTime": "2023-12-14T09:15:30Z",
         "reason": "ContentRemoved",
         "message": "All content successfully removed"
-      },
-      {
+    },
+    {
         "type": "NamespaceFinalizersRemaining",
         "status": "False",
         "lastTransitionTime": "2023-12-14T09:15:30Z",
         "reason": "ContentHasNoFinalizers",
         "message": "All content-preserving finalizers finished"
-      }
-    ]
-  }
-}
-```
+    }
+        ]
+    }
+    }
+    ```
 </details>
 
 
 ## Question 16: Deployment failed after forcibly deleting pod
 
-Deployment creates pods. But after deleting deployment through `kubectl delete deploy <deploy-name>`, pods are stuck in 'terminating' status. 
+Deployment creates pods. But after deleting deployment through `kubectl delete deploy <deploy-name>`, pods are stuck in 'terminating' status.
 
 Then, use `kubectl delete pod edgeworker-deployment-7g5hs-58dffc5cd7-b77wz --force --grace-period=0` to delete pods. And the re-deployed pods are stuck in 'pending' state after assigning to node.
 
@@ -525,7 +521,7 @@ systemctl status kubelet
      CGroup: /system.slice/kubelet.service
 ```
 
-From the outputs you can see that configuration file is at directory `/etc/systemd/system/kubelet.service.d` 
+From the outputs you can see that configuration file is at directory `/etc/systemd/system/kubelet.service.d`
 and configuration file is `10-kubeadm.conf`.
 
 ```bash
@@ -583,7 +579,7 @@ Check the format in file`/etc/kubeedge/config/edgecore.yaml`. Note that tab is n
 
 ## Question 22: Restart edgecore and find error of 'connect refuse'
 
-During the startup of EdgeMesh, modify the `/etc/kubeedge/config/edgecore.yaml` file and restart the service with `systemctl restart edgecore.service`. 
+During the startup of EdgeMesh, modify the `/etc/kubeedge/config/edgecore.yaml` file and restart the service with `systemctl restart edgecore.service`.
 Command `journalctl -u edegecore.service -f` report an error of 'connect refuse' and the cloud denies communication.
 
 **Solution:**
@@ -611,7 +607,7 @@ When deploying KubeEdge, the port in the metrics-service will be automatically o
 
 ## Question 24: 169.254.96. 16:53: i/o timeout
 
-When a new node joins in the cluster, Sedna will be deployed automatically. 
+When a new node joins in the cluster, Sedna will be deployed automatically.
 An error is reported in the log of `sedna-lc`:
 ```
 client tries to connect global manager(address: gm.sedna:9000) failed, error: dial tcp: lookup gm.sedna on 169.254.96.16:53: read udp 172.17.0.3:49991->169.254.96.16:53: i/o timeout
@@ -647,7 +643,7 @@ vim /etc/kubeedge/config/edgecore.yaml
 
 ![Q25](/img/FAQs/Q25.png)
 
-Add the address of master node (cloud) in edgeHub/httpServer, such as `https://114.212.81.11:10002`, 
+Add the address of master node (cloud) in edgeHub/httpServer, such as `https://114.212.81.11:10002`,
 delete the redundant ':' in websocket/server.
 
 Re-run the `keadm join` command after modification.
@@ -660,7 +656,7 @@ Edgecore report error when `journalctl -u edgecore.service -f`:
 initialize module error: failed to build map of initial containers from runtime: no PodsandBox found with Id 'c45ed1592e75e885e119664d777107645a7e7904703c690664691c61a9f79ed3'
 ```
 
-*Solution:*
+**Solution:**
 
 Find the docker ID and delete it:
 ```bash
@@ -795,49 +791,58 @@ journalctl -u cloudcore -xe
 If Cloudcore has the following errors:
 <details>
 
-<summary>
+    <summary>
 
-```bash
-cloudcore.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
-```
+        ```bash
+        cloudcore.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+        ```
 
-</summary>
+    </summary>
 
-```bash
--- A start job for unit cloudcore.service has finished successfully.
--- 
--- The job identifier is 2357999.
-6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125171 3159196 validation.go:154] TLSTunnelPrivateKeyFile does not exist i>
-6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125269 3159196 validation.go:157] TLSTunnelCertFile does not exist in /etc>
-6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125286 3159196 validation.go:160] TLSTunnelCAFile does not exist in /etc/k>
-6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: I0630 00:45:15.125336 3159196 server.go:77] Version: v1.9.2
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: panic: failed to create system namespace
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: goroutine 1 [running]:
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/kubeedge/kubeedge/cloud/cmd/cloudcore/app.NewCloudCoreCommand.func1(0xc00035f8>
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/cloud/cmd/cloudcore/app/server.go:85 +0x81c
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).execute(0xc00035f8c0, 0xc00003c1f0, 0x0, 0x0, 0xc00035f>
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/vendor/github.com/spf13/cobra/command.go:854 +0x2c2
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).ExecuteC(0xc00035f8c0, 0xc000180058, 0x1859280, 0x0)
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/vendor/github.com/spf13/cobra/command.go:958 +0x375
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).Execute(...)
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/vendor/github.com/spf13/cobra/command.go:895
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: main.main()
-6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:         /root/kubeedge/cloud/cmd/cloudcore/cloudcore.go:16 +0x65
-6月 30 00:45:16 cloud.kubeedge systemd[1]: cloudcore.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
--- Subject: Unit process exited
--- Defined-By: systemd
--- Support: http://www.ubuntu.com/support
--- 
--- An ExecStart= process belonging to unit cloudcore.service has exited.
--- 
--- The process' exit code is 'exited' and its exit status is 2.
-6月 30 00:45:16 cloud.kubeedge systemd[1]: cloudcore.service: Failed with result 'exit-code'.
--- Subject: Unit failed
--- Defined-By: systemd
--- Support: http://www.ubuntu.com/support
--- 
--- The unit cloudcore.service has entered the 'failed' state with result 'exit-code'.
-```
+    ```bash
+    -- A start job for unit cloudcore.service has finished successfully.
+    --
+    -- The job identifier is 2357999.
+    6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125171 3159196 validation.go:154]
+    TLSTunnelPrivateKeyFile does not exist i>
+    6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125269 3159196 validation.go:157]
+    TLSTunnelCertFile does not exist in /etc>
+    6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: W0630 00:45:15.125286 3159196 validation.go:160] TLSTunnelCAFile
+    does not exist in /etc/k>
+    6月 30 00:45:15 cloud.kubeedge cloudcore[3159196]: I0630 00:45:15.125336 3159196 server.go:77] Version: v1.9.2
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: panic: failed to create system namespace
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: goroutine 1 [running]:
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]:
+    github.com/kubeedge/kubeedge/cloud/cmd/cloudcore/app.NewCloudCoreCommand.func1(0xc00035f8>
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: /root/kubeedge/cloud/cmd/cloudcore/app/server.go:85 +0x81c
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).execute(0xc00035f8c0,
+    0xc00003c1f0, 0x0, 0x0, 0xc00035f>
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: /root/kubeedge/vendor/github.com/spf13/cobra/command.go:854
+    +0x2c2
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).ExecuteC(0xc00035f8c0,
+    0xc000180058, 0x1859280, 0x0)
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: /root/kubeedge/vendor/github.com/spf13/cobra/command.go:958
+    +0x375
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: github.com/spf13/cobra.(*Command).Execute(...)
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: /root/kubeedge/vendor/github.com/spf13/cobra/command.go:895
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: main.main()
+    6月 30 00:45:16 cloud.kubeedge cloudcore[3159196]: /root/kubeedge/cloud/cmd/cloudcore/cloudcore.go:16 +0x65
+    6月 30 00:45:16 cloud.kubeedge systemd[1]: cloudcore.service: Main process exited, code=exited,
+    status=2/INVALIDARGUMENT
+    -- Subject: Unit process exited
+    -- Defined-By: systemd
+    -- Support: http://www.ubuntu.com/support
+    --
+    -- An ExecStart= process belonging to unit cloudcore.service has exited.
+    --
+    -- The process' exit code is 'exited' and its exit status is 2.
+    6月 30 00:45:16 cloud.kubeedge systemd[1]: cloudcore.service: Failed with result 'exit-code'.
+    -- Subject: Unit failed
+    -- Defined-By: systemd
+    -- Support: http://www.ubuntu.com/support
+    --
+    -- The unit cloudcore.service has entered the 'failed' state with result 'exit-code'.
+    ```
 
 </details>
 
@@ -855,3 +860,44 @@ sudo kill -9 <pid>
 ```
 
 Remember to modify `cloudcore.yaml` as [[Install KubeEdge]](/docs/getting-started/install-lower-layer-system/install-kubeedge#configure-cloudcore) shows after `keadm init`.
+
+## Question 28: Connection refused in dayu containers
+
+In dayu system containers, connection refused error is reported when accessing services, but the pods are normal and logs show no error.
+
+**Reason:**
+
+Check the status of `edgemesh-agent` on edge nodes:
+```bash
+kubectl get pods -n kubeedge -owide
+kubectl logs -n kubeedge edgemesh-agent-xxxxx # xxxxx is the pod name
+```
+
+From the edgemesh-agent logs, we can see that service port conflict happens, then check iptables on edge nodes:
+```bash
+sudo iptables -t nat -nvL
+```
+
+Redundant iptable rules are recorded in `KUBE-NODEPORT-CONTAINER`, `KUBE-NODEPORT-HOST`, `KUBE-PORTALS-CONTAINER` and `KUBE-PORTALS-HOST` (which are residual after stop system).
+
+**Solution:**
+
+Temporarily, flush edgecore database on edge node (it may cause data loss):
+```bash
+# Stop edgecore
+sudo systemctl stop edgecore
+# Backup kubeedge data
+sudo tar -czf /tmp/kubeedge-backup-$(date +%F-%H%M%S).tgz /var/lib/kubeedge
+# Flush kubeedge data
+sudo rm -rf /var/lib/kubeedge
+sudo mkdir -p /var/lib/kubeedge
+sudo chown -R root:root /var/lib/kubeedge
+# Start edgecore
+sudo systemctl start edgecore
+# Check edgecore status
+sudo journalctl -u edgecore -f --no-pager
+```
+
+Another temporary solution is to reinstall kubeedge on edge node as [instruction](/docs/getting-started/install-lower-layer-system/install-kubeedge#join-kubeedge-cluster-edge) shows.
+
+Permanently, this error has been fixed after dayu v1.3 release. Use the latest [dayu script](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh) can avoid this error.

@@ -646,7 +646,7 @@ edgeHub中的httpServer添加云端地址（例如`https://114.212.81.11:10002`�
 initialize module error: failed to build map of initial containers from runtime: no PodsandBox found with Id 'c45ed1592e75e885e119664d777107645a7e7904703c690664691c61a9f79ed3'
 ```
 
-*解决：*
+**解决：**
 
 找到对应的docker ID并删除：
 ```bash
@@ -841,3 +841,45 @@ sudo kill -9 <pid>
 ```
 
 请注意, `keadm init`后需要按照[【安装 KubeEdge】](/docs/getting-started/install-lower-layer-system/install-kubeedge#cloudcore-配置)章节的内容重新修改  `cloudcore.yaml` 文件。
+
+
+## 问题二十八：大禹系统容器中出现 Connection refused
+
+在大禹系统容器中, `connection refused` 错误出现，然而对应的 pod 却正常且日志无网络连接记录。
+
+**原因：**
+
+在边缘节点上检查 `edgemesh-agent` 状态：
+```bash
+kubectl get pods -n kubeedge -owide
+kubectl logs -n kubeedge edgemesh-agent-xxxxx # xxxxx 是pod名
+```
+
+从 edgemesh-agent 的日志中，我们可以看出存在 service port 冲突，然后我们在边缘设备上检查 iptables:
+```bash
+sudo iptables -t nat -nvL
+```
+
+冗余的规则记录在 iptables 中 `KUBE-NODEPORT-CONTAINER`、`KUBE-NODEPORT-HOST`、`KUBE-PORTALS-CONTAINER`、`KUBE-PORTALS-HOST`项中 (来自于关闭大禹系统时的残余记录)。
+
+**解决：**
+
+临时解决方案是清空边缘节点上 edgecore 的数据库（这可能导致数据丢失）：
+```bash
+# 停止 edgecore
+sudo systemctl stop edgecore
+# 备份 kuebedge 数据
+sudo tar -czf /tmp/kubeedge-backup-$(date +%F-%H%M%S).tgz /var/lib/kubeedge
+# 清空 kubeedge 数据库
+sudo rm -rf /var/lib/kubeedge
+sudo mkdir -p /var/lib/kubeedge
+sudo chown -R root:root /var/lib/kubeedge
+# 启动 edgecore
+sudo systemctl start edgecore
+# 检查 edgecore 状态
+sudo journalctl -u edgecore -f --no-pager
+```
+
+另一种临时解决方案是参照[文档](/docs/getting-started/install-lower-layer-system/install-kubeedge#join-kubeedge-cluster-edge)在边缘节点上重新安装 KubeEdge 。
+
+该问题已在大禹`v1.3`版本被永久解决，使用最新的大[禹启动脚本](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh)可以避免此问题。
