@@ -5,13 +5,9 @@ custom_edit_url: null
 
 # 快速开始
 
-[TBD]
+大禹系统[架构](/docs/architecture)包括下层系统和上层系统，按照以下步骤开始：
 
-- Install KubeEdge system on your devices ([instruction](https://box.nju.edu.cn/f/63e12c4ea0794718b16c/)). Our dayu system is based on KubeEdge.
+- 在云边分布式设备上安装底层系统，只需做一次 ([操作指南](/docs/getting-started/install-lower-layer-system))。
 
-- Modify template files in template directory '[template](https://github.com/dayu-autostreamer/dayu/tree/main/template)'
-
-- Deploy files on devices as setting in templates. The demo deploy files are placed [here](https://box.nju.edu.cn/d/0dcaabb5362c4dfc8008/)
-
-- Install/Uninstall Dayu system.
+- 基于底层系统运行上层系统，可按需以轻量级方式启动和停止 ([操作指南](/docs/getting-started/start-upper-layer-system))。
 

@@ -1,0 +1,87 @@
+---
+sidebar_label: Scheduler Template
+slug: /getting-started/start-upper-layer-system/scheduler-template
+custom_edit_url: null
+unlisted: true
+---
+
+# Scheduler Template
+
+[TBD]
+
+```yaml
+position: cloud
+pod-template:
+  image: scheduler
+  imagePullPolicy: Always
+  env:
+    - name: SCH_CONFIG_EXTRACTION_NAME
+      value: simple
+    - name: SCH_SCENARIO_RETRIEVAL_NAME
+      value: simple
+    - name: SCH_STARTUP_POLICY_NAME
+      value: fixed
+    - name: SCH_POLICY_RETRIEVAL_NAME
+      value: simple
+    - name: SCH_SELECTION_POLICY_NAME
+      value: fixed
+    - name: SCH_SELECTION_POLICY_PARAMETERS
+      value: >
+        {
+          'fixed_value': 'edgexn12',
+          'fixed_type':'hostname'
+        }
+    - name: SCH_INITIAL_DEPLOYMENT_POLICY_NAME
+      value: fixed
+    - name: SCH_INITIAL_DEPLOYMENT_POLICY_PARAMETERS
+      value: >
+        {
+          'policy':{
+            'pedestrian-detection':['edge5'],
+            'exposure-identification':['edgexn11','edgexn12'], 
+            'vehicle-detection':['edge5'],
+            'category-identification':['edgexn8','edgexn11'],
+            'license-plate-recognition':['edgexn11','edgexn12']
+          }
+        }
+    - name: SCH_REDEPLOYMENT_POLICY_NAME
+      value: fixed
+    - name: SCH_REDEPLOYMENT_POLICY_PARAMETERS
+      value: >
+        {
+          'policy':{
+            'pedestrian-detection':['edge5'],
+            'exposure-identification':['edgexn11','edgexn12'], 
+            'vehicle-detection':['edge5'],
+            'category-identification':['edgexn8','edgexn11'],
+            'license-plate-recognition':['edgexn11','edgexn12']
+          }
+        }
+    - name: SCH_AGENT_NAME
+      value: fixed
+    - name: SCH_AGENT_PARAMETERS
+      value: >
+        {
+          'configuration':{
+            'resolution': '720p',
+            'fps': 10,
+            'encoding': 'mp4v',
+            'buffer_size': 4
+          },
+          'offloading':{
+            'pedestrian-detection':'edge5',
+            'exposure-identification':'edgexn11', 
+            'vehicle-detection':'edge5',
+            'category-identification':'edgexn8',
+            'license-plate-recognition':'edgexn12'
+          }
+        }
+port-open:
+  pos: cloud
+  port: 9000
+file-mount:
+  - pos: cloud
+    path: 'scheduler/fixed/'
+```
+
+

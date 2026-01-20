@@ -5,13 +5,8 @@ custom_edit_url: null
 
 # Getting Started
 
-[TBD]
+The [architecture](/docs/architecture) of our Dayu system includes lower/upper layers, follow the steps below to get started:
 
-- Install KubeEdge system on your devices ([instruction](https://box.nju.edu.cn/f/63e12c4ea0794718b16c/)). Our dayu system is based on KubeEdge.
+- Install lower layer system on the cloud-edge devices, which only need to be done once ([instruction](/docs/getting-started/install-lower-layer-system)).
 
-- Modify template files in template directory '[template](https://github.com/dayu-autostreamer/dayu/tree/main/template)'
-
-- Deploy files on devices as setting in templates. The demo deploy files are placed [here](https://box.nju.edu.cn/d/0dcaabb5362c4dfc8008/)
-
-- Install/Uninstall Dayu system.
-
+- Run upper layer system based on the lower layer system, which can be started and stopped as needed in a lightweight way ([instruction](/docs/getting-started/start-upper-layer-system)).

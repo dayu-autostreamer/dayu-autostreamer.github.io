@@ -1,0 +1,64 @@
+---
+sidebar_label: Processor Template
+slug: /getting-started/start-upper-layer-system/processor-template
+custom_edit_url: null
+unlisted: true
+---
+
+# Processor Template
+
+[TBA]
+
+```yaml
+position: both
+pod-template:
+  image: car-detection
+  imagePullPolicy: Always
+  env:
+    - name: PROCESSOR_NAME
+      value: "detector_tracker_processor"
+    - name: DETECTOR_PARAMETERS
+      value: >
+        {
+          'trt_weights':'yolov5s.engine', 
+          'trt_plugin_library':'libmyplugins.so',
+          'non_trt_weights':'yolov5s.pt'
+        }
+    - name: SCENARIOS_EXTRACTORS
+      value: >
+        ['obj_num', 'obj_size']
+    - name: PRO_QUEUE_NAME
+      value: "simple"
+    - name: USE_TENSORRT
+      value: "True"
+cloud-pod-template:
+  env:
+    - name: DETECTOR_PARAMETERS
+      value: >
+        {
+          'trt_weights':'yolov5s.engine',
+          'trt_plugin_library':'libmyplugins.so',
+          'non_trt_weights':'yolov5s.pt',
+          'device':0
+        }
+edge-pod-template:
+  env:
+    - name: DETECTOR_PARAMETERS
+      value: >
+        {
+         'trt_weights':'yolov5s.engine',
+         'trt_plugin_library':'libmyplugins.so',
+         'non_trt_weights':'yolov5s.pt',
+         'device':0
+        }
+port-open:
+  pos: both
+  port: 9000
+file-mount:
+  - pos: both
+    path: "processor/car-detection/"
+```
+
+
+
+
