@@ -54,7 +54,7 @@ template/
 | base.yaml                  |    | [详细格式](/docs/getting-started/start-upper-layer-system/base-template)                  | 
 | scheduler_policies.yaml    |    | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
 | services.yaml              |    | [详细格式](/docs/getting-started/start-upper-layer-system/services-template)              | 
-| result-visualizations.yaml |    | [详细格式](/docs/getting-started/start-upper-layer-system/result-visualizatons-template)  | 
+| result-visualizations.yaml |    | [详细格式](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
 | system-visualizations.yaml |    | [详细格式](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
 | scheduler/xx.yaml          |    | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-template)             | 
 | processor/xx.yaml          |    | [详细格式](/docs/getting-started/start-upper-layer-system/processor-template)             | 

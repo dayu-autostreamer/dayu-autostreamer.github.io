@@ -52,7 +52,7 @@ The table below lists the template files and their functions. For more details a
 | base.yaml                  |          | [detail formats](/docs/getting-started/start-upper-layer-system/base-template)                  | 
 | scheduler_policies.yaml    |          | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
 | services.yaml              |          | [detail formats](/docs/getting-started/start-upper-layer-system/services-template)              | 
-| result-visualizations.yaml |          | [detail formats](/docs/getting-started/start-upper-layer-system/result-visualizatons-template)  | 
+| result-visualizations.yaml |          | [detail formats](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
 | system-visualizations.yaml |          | [detail formats](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
 | scheduler/xx.yaml          |          | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-template)             | 
 | processor/xx.yaml          |          | [detail formats](/docs/getting-started/start-upper-layer-system/processor-template)             | 
