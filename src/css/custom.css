@@ -48,3 +48,11 @@ img.avatar__photo--xl {
   width: var(--ifm-avatar-photo-size-xl);
   height: var(--ifm-avatar-photo-size-xl);
 }
+
+.theme-unlisted-banner {
+  display: none !important;
+}
+
+.theme-draft-banner {
+  display: none !important;
+}
