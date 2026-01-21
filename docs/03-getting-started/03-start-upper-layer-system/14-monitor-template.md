@@ -5,9 +5,7 @@ custom_edit_url: null
 unlisted: true
 ---
 
-# Monitor Template
-
-[TBD]
+# Template in monitor/
 
 ```yaml
 position: both

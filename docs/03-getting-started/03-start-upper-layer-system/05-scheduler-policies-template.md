@@ -1,0 +1,107 @@
+---
+sidebar_label: Scheduler Policies Template
+slug: /getting-started/start-upper-layer-system/scheduler-policies-template
+custom_edit_url: null
+unlisted: true
+---
+
+# scheduler_policies.yaml
+
+```yaml
+- id: fixed
+  name: Fixed Policy
+  yaml: fixed-policy.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-base.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: hedger
+  name: Hedger
+  yaml: hedger.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: hei
+  name: Hierarchical Embodied Intelligence (Hier-EI)
+  yaml: hei.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: hei-macro-only
+  name: Hier-EI (Macro Only)
+  yaml: hei-macro-only.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: hei-micro-only
+  name: Hier-EI (Micro Only)
+  yaml: hei-micro-only.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: hei-synchronous
+  name: Hierarchical Embodied Intelligence (Synchronous)
+  yaml: hei-synchronous.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: fc
+  name: Feedback Controlling
+  yaml: fc.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: casva
+  name: CASVA
+  yaml: casva.yaml
+  dependency:
+    generator: generator-casva.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: cevas
+  name: CEVAS
+  yaml: cevas.yaml
+  dependency:
+    generator: generator-cevas.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: chameleon
+  name: Chameleon
+  yaml: chameleon.yaml
+  dependency:
+    generator: generator-chameleon.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: crave
+  name: Adaptive Video Encoding (CRAVE)
+  yaml: crave.yaml
+  dependency:
+    generator: generator-adaptive.yaml
+    controller: controller-base.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+- id: model-switch
+  name: Adaptive Model Switch
+  yaml: model-switch.yaml
+  dependency:
+    generator: generator-for-model-switch.yaml
+    controller: controller-base.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+```

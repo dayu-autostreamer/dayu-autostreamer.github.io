@@ -5,9 +5,7 @@ custom_edit_url: null
 unlisted: true
 ---
 
-# Processor Template
-
-[TBA]
+# Template in processor/
 
 ```yaml
 position: both

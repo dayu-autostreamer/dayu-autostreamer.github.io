@@ -5,9 +5,7 @@ custom_edit_url: null
 unlisted: true
 ---
 
-# Base Template
-
-[TBD]
+# base.yaml
 
 ```yaml
 # Base configuration template for dayu system

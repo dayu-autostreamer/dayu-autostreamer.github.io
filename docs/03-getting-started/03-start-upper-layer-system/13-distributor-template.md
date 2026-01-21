@@ -5,9 +5,8 @@ custom_edit_url: null
 unlisted: true
 ---
 
-# Distributor Template
+# Template in distributor/
 
-[TBD]
 
 ```yaml
 position: cloud

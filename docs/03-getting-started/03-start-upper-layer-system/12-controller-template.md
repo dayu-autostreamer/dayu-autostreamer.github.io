@@ -5,9 +5,7 @@ custom_edit_url: null
 unlisted: true
 ---
 
-# Controller Template
-
-[TBA]
+# Template in controller/
 
 ```yaml
 position: both

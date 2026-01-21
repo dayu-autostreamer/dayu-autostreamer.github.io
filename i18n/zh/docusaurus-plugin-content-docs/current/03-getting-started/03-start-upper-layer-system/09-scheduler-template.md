@@ -5,9 +5,7 @@ custom_edit_url: null
 unlisted: true
 ---
 
-# Scheduler Template
-
-[TBD]
+# Template in scheduler/
 
 ```yaml
 position: cloud

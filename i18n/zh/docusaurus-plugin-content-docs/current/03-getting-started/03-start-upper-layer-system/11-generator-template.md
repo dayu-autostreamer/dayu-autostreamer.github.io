@@ -5,9 +5,8 @@ custom_edit_url: null
 unlisted: true
 ---
 
-# Generator Template
+# Template in generator/
 
-[TBD]
 
 ```yaml
 position: edge
