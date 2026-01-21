@@ -3,6 +3,7 @@ sidebar_label: Scheduler Template
 slug: /getting-started/start-upper-layer-system/scheduler-template
 custom_edit_url: null
 unlisted: true
+displayed_sidebar: null
 ---
 
 # Template in scheduler/

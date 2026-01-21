@@ -3,6 +3,7 @@ sidebar_label: System Visualizations Template
 slug: /getting-started/start-upper-layer-system/system-visualizations-template
 custom_edit_url: null
 unlisted: true
+displayed_sidebar: null
 ---
 
 # system_visualizations.yaml

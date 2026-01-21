@@ -3,6 +3,7 @@ sidebar_label: Scheduler Policies Template
 slug: /getting-started/start-upper-layer-system/scheduler-policies-template
 custom_edit_url: null
 unlisted: true
+displayed_sidebar: null
 ---
 
 # scheduler_policies.yaml

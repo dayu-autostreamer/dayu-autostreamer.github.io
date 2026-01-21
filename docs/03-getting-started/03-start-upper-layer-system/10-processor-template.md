@@ -3,6 +3,7 @@ sidebar_label: Processor Template
 slug: /getting-started/start-upper-layer-system/processor-template
 custom_edit_url: null
 unlisted: true
+displayed_sidebar: null
 ---
 
 # Template in processor/

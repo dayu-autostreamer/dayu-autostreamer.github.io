@@ -3,6 +3,7 @@ sidebar_label: Controller Template
 slug: /getting-started/start-upper-layer-system/controller-template
 custom_edit_url: null
 unlisted: true
+displayed_sidebar: null
 ---
 
 # Template in controller/

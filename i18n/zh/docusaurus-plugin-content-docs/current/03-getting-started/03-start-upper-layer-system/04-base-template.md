@@ -3,6 +3,7 @@ sidebar_label: Base Template
 slug: /getting-started/start-upper-layer-system/base-template
 custom_edit_url: null
 unlisted: true
+displayed_sidebar: null
 ---
 
 # base.yaml

@@ -3,6 +3,7 @@ sidebar_label: Services Template
 slug: /getting-started/start-upper-layer-system/services-template
 custom_edit_url: null
 unlisted: true
+displayed_sidebar: null
 ---
 
 # services.yaml
