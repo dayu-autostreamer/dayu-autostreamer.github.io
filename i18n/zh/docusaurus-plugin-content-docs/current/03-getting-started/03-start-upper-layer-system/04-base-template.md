@@ -8,41 +8,61 @@ displayed_sidebar: null
 
 # base.yaml
 
+`base.yaml` in template directory defines the basic information of dayu system, browse all the configurations and pay
+attention to items with `*` to match your own deployment environment.
+
 ```yaml
 # Base configuration template for dayu system
 
-# Namespace to distinguish different dayu deployments, please modify it when deploying multiple dayu systems in the same kubernetes cluster
+# Namespace to distinguish different dayu deployments
+# *modify when deploying multiple systems in the same cluster
 namespace: dayu
 # levels for container logging in dayu: DEBUG, INFO, WARNING, ERROR
 log-level: DEBUG
-# specify the downloaded log file name, if not set, log file name will be generated with timestamps, e.g., RESULT_LOG_DAYU_NAMESPACE_dayu_TIME_2025_11_04_01_46_26.json
+# specify the downloaded log file name
+# if not set, log file name will be generated with timestamps
+# e.g., RESULT_LOG_DAYU_NAMESPACE_dayu_TIME_2025_11_04_01_46_26.json
 log-file-name:
 # pod permission configuration for dayu containers
 pod-permission:
   service-account: worker-admin
   cluster-role-binding: worker-admin-binding
-# crd meta information of dayu containers (as specified in sedna/JointMultiEdgeService)
+# crd meta information of dayu containers
 crd-meta:
   api-version: sedna.io/v1alpha1
   kind: JointMultiEdgeService
-# cache ttl for kubernetes API objects in dayu containers, support never/<duration>. never means always use cached objects without refreshing except Non-hitting; <duration> is a cache refreshing ttl seconds, e.g., 5.0.
+# cache ttl for kubernetes API objects in dayu containers
+# support never/<duration>. 
+#never means always use cached objects without refreshing except Non-hitting; 
+# <duration> is a cache refreshing ttl seconds, e.g., 5.0.
 kube-cache-ttl: 5.0
-# default image meta information for dayu containers, <registry>/<repository>/<image_name>:<tag>
+# default image meta information for dayu containers
+# <registry>/<repository>/<image_name>:<tag>
+# *modify to match your private registry or customized images
 default-image-meta:
   registry: repo:5000
   repository: dayuhub
   tag: v1.3
 # default file mount prefix for dayu containers
+# *modify to match your cluster file system (same for cloud/edge)
 default-file-mount-prefix: "/data/dayu-files"
 # datasource configuration
 datasource:
-  # true/false, use a simulation datasource container or use a real datasource
+  # use a simulation datasource container or use a real datasource
+  # *modify as true/false
   use-simulation: true
-  # specify the edge node to run simulated datasource container, only valid when use-simulation is true
+  # specify the edge node to run simulated datasource
+  # only valid when use-simulation is true
+  # *modify to match your edge node name
   node: edgex1
-  # default data root path in datasource container, only valid when use-simulation is true
+  # default data root path in datasource container
+  # only valid when use-simulation is true
+  # *modify to match your data storage path in datasource node
   data-root: "/data/datasource/"
-  # cycle/non-cycle, play mode of the simulation datasource, only valid when use-simulation is true. cycle: loop playing; non-cycle: stop when the data is finished
+  # play mode of the simulation datasource
+  # only valid when use-simulation is true. 
+  # cycle: loop playing; non-cycle: stop when the data is finished
+  # *modify as cycle/non-cycle as needed
   play-mode: cycle
 # import scheduler policy configurations
 scheduler-policies:
@@ -58,4 +78,6 @@ system-visualizations:
   !include system-visualizations.yaml
 ```
 
+The file paths `default-file-mount-prefix` and `data-root` is related to files deployed on your cluster nodes. 
+The specific files needed by dayu system are shown in "[deploy mounted files](/docs/getting-started/start-upper-layer-system/deploy-mounted-files)".
 

@@ -49,19 +49,18 @@ template/
 
 下表列出了模板文件及其功能，有关每个文件格式的更多详细信息，请参阅链接的文档：
 
-| 文件                         | 功能 | 详情                                                                                    | 
-|----------------------------|----|---------------------------------------------------------------------------------------|
-| base.yaml                  |    | [详细格式](/docs/getting-started/start-upper-layer-system/base-template)                  | 
-| scheduler_policies.yaml    |    | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
-| services.yaml              |    | [详细格式](/docs/getting-started/start-upper-layer-system/services-template)              | 
-| result-visualizations.yaml |    | [详细格式](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
-| system-visualizations.yaml |    | [详细格式](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
-| scheduler/xx.yaml          |    | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-template)             | 
-| processor/xx.yaml          |    | [详细格式](/docs/getting-started/start-upper-layer-system/processor-template)             | 
-| generator/xx.yaml          |    | [详细格式](/docs/getting-started/start-upper-layer-system/generator-template)             | 
-| controller/xx.yaml         |    | [详细格式](/docs/getting-started/start-upper-layer-system/controller-template)            | 
-| distributor/xx.yaml        |    | [详细格式](/docs/getting-started/start-upper-layer-system/distributor-template)           |
-| monitor/xx.yaml            |    | [详细格式](/docs/getting-started/start-upper-layer-system/monitor-template)               | 
-
-
+| 文件                         | 功能                                  | 详情                                                                                    | 
+|----------------------------|-------------------------------------|---------------------------------------------------------------------------------------|
+| base.yaml                  | 包含大禹系统的基本信息                         | [详细格式](/docs/getting-started/start-upper-layer-system/base-template)                  | 
+| scheduler_policies.yaml    | 包含可切换的调度策略列表，该列表在`scheduler/`中进一步定义 | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
+| services.yaml              | 包含可用服务列表，该列表在`processor/`中进一步定义     | [详细格式](/docs/getting-started/start-upper-layer-system/services-template)              | 
+| result-visualizations.yaml | 包含任务结果的可视化模块列表                      | [详细格式](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
+| system-visualizations.yaml | 包含系统监控的可视化模块列表                      | [详细格式](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
+| scheduler/xx.yaml          | 在不同的yaml模板中定义不同的调度策略，运行后在前端UI中可切换   | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-template)             | 
+| processor/xx.yaml          | 在不同的yaml模板中定义不同的服务，运行后可以在前端UI中编排成应用 | [详细格式](/docs/getting-started/start-upper-layer-system/processor-template)             | 
+| generator/xx.yaml          | 在yaml模板中定义 generator 组件             | [详细格式](/docs/getting-started/start-upper-layer-system/generator-template)             | 
+| controller/xx.yaml         | 在yaml模板中定义 controller 组件            | [详细格式](/docs/getting-started/start-upper-layer-system/controller-template)            | 
+| distributor/xx.yaml        | 在yaml模板中定义 distributor 组件           | [详细格式](/docs/getting-started/start-upper-layer-system/distributor-template)           |
+| monitor/xx.yaml            | 在yaml模板中定义 monitor 组件               | [详细格式](/docs/getting-started/start-upper-layer-system/monitor-template)               | 
+ 
 

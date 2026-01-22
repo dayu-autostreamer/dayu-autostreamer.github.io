@@ -8,23 +8,25 @@ displayed_sidebar: null
 
 # scheduler_policies.yaml
 
+`scheduler_policies.yaml` defines the available scheduler policies in the system. 
+Each policy includes its unique identifier, human-readable name, the YAML file that defines the policy, 
+and its dependencies on other components such as generator, controller, distributor, and monitor.
+
+These pre-defined Scheduling policies can be switched in the `Application Installation` part of the frontend UI after running system.
+
 ```yaml
-- id: fixed
-  name: Fixed Policy
-  yaml: fixed-policy.yaml
-  dependency:
-    generator: generator-base.yaml
-    controller: controller-base.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: hedger
-  name: Hedger
-  yaml: hedger.yaml
-  dependency:
-    generator: generator-base.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
+# A list of scheduler policies available in the system.
+
+- id: fixed  # Unique identifier for the policy.
+  name: Fixed Policy  # Human-readable name of the policy.
+  yaml: fixed-policy.yaml  # YAML defining the policy, included in 'scheduler/' directory
+  dependency:  
+    # dependent components required by this policy
+    generator: generator-base.yaml  # YAML in 'generator/' directory
+    controller: controller-base.yaml  # YAML in 'controller/' directory
+    distributor: distributor-base.yaml  # YAML in 'distributor/' directory
+    monitor: monitor-base.yaml  # YAML in 'monitor/' directory
+    
 - id: hei
   name: Hierarchical Embodied Intelligence (Hier-EI)
   yaml: hei.yaml
@@ -33,76 +35,6 @@ displayed_sidebar: null
     controller: controller-for-evaluation.yaml
     distributor: distributor-base.yaml
     monitor: monitor-base.yaml
-- id: hei-macro-only
-  name: Hier-EI (Macro Only)
-  yaml: hei-macro-only.yaml
-  dependency:
-    generator: generator-base.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: hei-micro-only
-  name: Hier-EI (Micro Only)
-  yaml: hei-micro-only.yaml
-  dependency:
-    generator: generator-base.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: hei-synchronous
-  name: Hierarchical Embodied Intelligence (Synchronous)
-  yaml: hei-synchronous.yaml
-  dependency:
-    generator: generator-base.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: fc
-  name: Feedback Controlling
-  yaml: fc.yaml
-  dependency:
-    generator: generator-base.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: casva
-  name: CASVA
-  yaml: casva.yaml
-  dependency:
-    generator: generator-casva.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: cevas
-  name: CEVAS
-  yaml: cevas.yaml
-  dependency:
-    generator: generator-cevas.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: chameleon
-  name: Chameleon
-  yaml: chameleon.yaml
-  dependency:
-    generator: generator-chameleon.yaml
-    controller: controller-for-evaluation.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: crave
-  name: Adaptive Video Encoding (CRAVE)
-  yaml: crave.yaml
-  dependency:
-    generator: generator-adaptive.yaml
-    controller: controller-base.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
-- id: model-switch
-  name: Adaptive Model Switch
-  yaml: model-switch.yaml
-  dependency:
-    generator: generator-for-model-switch.yaml
-    controller: controller-base.yaml
-    distributor: distributor-base.yaml
-    monitor: monitor-base.yaml
+    
+# ......
 ```

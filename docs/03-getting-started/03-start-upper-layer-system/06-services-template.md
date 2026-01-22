@@ -8,78 +8,23 @@ displayed_sidebar: null
 
 # services.yaml
 
+`services.yaml` defines the available services in the system.
+Each service includes its unique ID, name, description, input and output data types, and a reference to its specific
+configuration file.
+
+These pre-defined services can be orchestrated in the `DAG Orchestration` part of frontend UI to build complex applications after running system.
+
 ```yaml
-- id: car-detection
-  service: car-detection
-  name: car detection
-  description: car detection (detection + tracking)
-  input: frame
-  output: bbox
-  yaml: car-detection.yaml
+# A list of services available in the system. 
+# Each services will be decorated in a processor container in the upper layer system.
 
-- id: car-detection-pure
-  service: car-detection
-  name: car detection (only detection)
-  description: car detection pure (only detection)
-  input: frame
-  output: bbox
-  yaml: car-detection-pure.yaml
-
-- id: face-detection
-  service: face-detection
-  name: face detection
-  description: face detection (detection + tracking)
-  input: frame
-  output: bbox
-  yaml: face-detection.yaml
-
-- id: face-detection-pure
-  service: face-detection
-  name: face detection (only detection)
-  description: face detection pure (only detection)
-  input: frame
-  output: bbox
-  yaml: face-detection-pure.yaml
-
-- id: gender-classification
-  service: gender-classification
-  name: gender classification
-  description: gender classification
-  input: bbox
-  output: text
-  yaml: gender-classification.yaml
-
-- id: gender-classification-roi
-  service: gender-classification
-  name: gender classification (roi-accelerated)
-  description: gender classification (roi-accelerated)
-  input: bbox
-  output: text
-  yaml: gender-classification-roi.yaml
-
-- id: age-classification
-  service: age-classification
-  name: age classification
-  description: age classification
-  input: bbox
-  output: text
-  yaml: age-classification.yaml
-
-- id: age-classification-roi
-  service: age-classification
-  name: age classification (roi-accelerated)
-  description: age classification (roi-accelerated)
-  input: bbox
-  output: text
-  yaml: age-classification-roi.yaml
-
-- id: pedestrian-detection
-  service: pedestrian-detection
-  name: pedestrian detection
-  description: pedestrian detection (detection + tracking)
-  input: frame
-  output: bbox
-  yaml: pedestrian-detection.yaml
+- id: car-detection  # Unique identifier for the service.
+  service: car-detection  # Real when calling the service (refer to in )
+  name: car detection  # Human-readable name of the service.
+  description: car detection (detection + tracking)  # Description of the service.
+  input: frame  # Input data type for the service.
+  output: bbox  # Output data type for the service.
+  yaml: car-detection.yaml  # YAML defining the service, included in 'processor/' directory
 
 - id: license-plate-recognition
   service: license-plate-recognition
@@ -89,83 +34,8 @@ displayed_sidebar: null
   output: text
   yaml: license-plate-recognition.yaml
 
-- id: license-plate-recognition-roi
-  service: license-plate-recognition
-  name: license plate recognition (roi-accelerated)
-  description: license plate recognition (roi-accelerated)
-  input: bbox
-  output: text
-  yaml: license-plate-recognition-roi.yaml
-
-- id: vehicle-detection
-  service: vehicle-detection
-  name: vehicle detection
-  description: vehicle detection (detection + tracking)
-  input: frame
-  output: bbox
-  yaml: vehicle-detection.yaml
-
-- id: exposure-identification
-  service: exposure-identification
-  name: exposure identification
-  description: exposure identification
-  input: bbox
-  output: text
-  yaml: exposure-identification.yaml
-
-- id: exposure-identification-roi
-  service: exposure-identification
-  name: exposure identification (roi-accelerated)
-  description: exposure identification (roi-accelerated)
-  input: bbox
-  output: text
-  yaml: exposure-identification-roi.yaml
-
-- id: category-identification
-  service: category-identification
-  name: category identification
-  description: category identification
-  input: bbox
-  output: text
-  yaml: category-identification.yaml
-
-- id: category-identification-roi
-  service: category-identification
-  name: category identification (roi-accelerated)
-  description: category identification (roi-accelerated)
-  input: bbox
-  output: text
-  yaml: category-identification-roi.yaml
-
-- id: model-switch-detection
-  service: model-switch-detection
-  name: model switch detection
-  description: model switch detection
-  input: frame
-  output: bbox
-  yaml: model-switch-detection.yaml
-
-# unimplemented
-#- id: driveable-area-segmentation
-#  service: driveable-area-segmentation
-#  name: driveable area segmentation
-#  description: driveable area segmentation
-#  input: frame
-#  output: mask
-
-# unimplemented
-#- id: road-danger-identification
-#  service: road-danger-identification
-#  name: road danger identification
-#  description: road danger identification
-#  input: mask
-#  output: text
-
-# unimplemented
-#- id: lane-detection
-#  service: lane-detection
-#  name: lane detection
-#  description: lane detection
-#  input: frame
-#  output: coordinate
+# ......
 ```
+
+The input/output data types defined in services are required to be consistent when orchestrating different services into
+dag-structured applications (the output of one service is the input of the next service).
