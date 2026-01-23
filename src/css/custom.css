@@ -58,21 +58,28 @@ img.avatar__photo--xl {
 }
 
 .backBtnWrap {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
 }
 
+
 .backBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.75rem 1.05rem;
+  justify-content: center;
+  gap: 0.6rem;
+
+  height: 56px;
+  padding: 0 28px;
   border-radius: 999px;
 
-  background: var(--ifm-color-primary);
-  color: var(--ifm-font-color-base-inverse);
+  background: #155a89;
+  color: #fff;
   font-weight: 600;
+  font-size: 18px;
+
+  line-height: 1;
   text-decoration: none;
 
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -83,28 +90,20 @@ img.avatar__photo--xl {
   transform: translateY(-2px);
   box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
   opacity: 0.95;
+  color: #fff;
   text-decoration: none;
-  color: var(--ifm-font-color-base-inverse);
-}
-
-.backBtn:active {
-  transform: translateY(0px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
-}
-
-.backBtn:focus-visible {
-  outline: 3px solid rgba(80, 160, 255, 0.45);
-  outline-offset: 3px;
 }
 
 .backBtnIcon {
-  width: 1.35rem;
-  height: 1.35rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   background: rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  padding: 0.15rem 0.35rem;
+  font-size: 18px;
+  line-height: 1;
 }
+
