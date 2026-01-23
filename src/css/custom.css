@@ -56,3 +56,55 @@ img.avatar__photo--xl {
 .theme-draft-banner {
   display: none !important;
 }
+
+.backBtnWrap {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.05rem;
+  border-radius: 999px;
+
+  background: var(--ifm-color-primary);
+  color: var(--ifm-font-color-base-inverse);
+  font-weight: 600;
+  text-decoration: none;
+
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.backBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
+  opacity: 0.95;
+  text-decoration: none;
+  color: var(--ifm-font-color-base-inverse);
+}
+
+.backBtn:active {
+  transform: translateY(0px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.backBtn:focus-visible {
+  outline: 3px solid rgba(80, 160, 255, 0.45);
+  outline-offset: 3px;
+}
+
+.backBtnIcon {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  padding: 0.15rem 0.35rem;
+}
