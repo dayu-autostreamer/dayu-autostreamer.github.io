@@ -4,6 +4,7 @@ slug: /getting-started/start-upper-layer-system/controller-template
 custom_edit_url: null
 unlisted: true
 displayed_sidebar: null
+hide_table_of_contents: true
 ---
 
 # Template in controller/

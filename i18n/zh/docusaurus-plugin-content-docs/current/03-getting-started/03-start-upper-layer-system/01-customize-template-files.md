@@ -6,17 +6,17 @@ custom_edit_url: null
 
 # 定制模版文件
 
-大禹系统基于 `template` 目录及其中的文件运行，在运行系统之前，您应根据需求自定义模板文件。
+大禹系统基于 `template/` 目录及其中的文件运行，在运行系统之前，您应根据需求自定义模板文件。
 
 通过克隆dayu仓库来获取模板文件：
 
 ```bash
 git clone https://github.com/dayu-autostreamer/dayu.git
 
-cd dayu/templates
+cd dayu/template
 ```
 
-`template` 目录结构如下：
+`template/` 目录结构如下：
 
 ```text
 template/

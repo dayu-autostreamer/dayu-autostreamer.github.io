@@ -4,6 +4,7 @@ slug: /getting-started/start-upper-layer-system/base-template
 custom_edit_url: null
 unlisted: true
 displayed_sidebar: null
+hide_table_of_contents: true
 ---
 
 # base.yaml
@@ -79,5 +80,5 @@ system-visualizations:
 ```
 
 The file paths `default-file-mount-prefix` and `data-root` is related to files deployed on your cluster nodes. 
-The specific files needed by dayu system are shown in "[deploy mounted files](/docs/getting-started/start-upper-layer-system/deploy-mounted-files)".
+The specific files needed by dayu system are shown in [deploy mounted files](/docs/getting-started/start-upper-layer-system/deploy-mounted-files).
 

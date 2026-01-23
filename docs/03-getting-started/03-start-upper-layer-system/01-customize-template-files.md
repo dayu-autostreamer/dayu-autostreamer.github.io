@@ -6,7 +6,7 @@ custom_edit_url: null
 
 # Customize Template Files
 
-Dayu system runs based on `template` directory and the files in it. Before run the system, you should customize the
+Dayu system runs based on `template/` directory and the files in it. Before run the system, you should customize the
 template files according to your requirements.
 
 Get dayu template files by cloning the dayu repository on the master node (cloud server):
@@ -14,10 +14,10 @@ Get dayu template files by cloning the dayu repository on the master node (cloud
 ```bash
 git clone https://github.com/dayu-autostreamer/dayu.git
 
-cd dayu/templates
+cd dayu/template
 ```
 
-`template` directory structure is as follows:
+`template/` directory structure is as follows:
 
 ```text
 template/

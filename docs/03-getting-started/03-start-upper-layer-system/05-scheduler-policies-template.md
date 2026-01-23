@@ -4,6 +4,7 @@ slug: /getting-started/start-upper-layer-system/scheduler-policies-template
 custom_edit_url: null
 unlisted: true
 displayed_sidebar: null
+hide_table_of_contents: true
 ---
 
 # scheduler_policies.yaml
@@ -12,7 +13,7 @@ displayed_sidebar: null
 Each policy includes its unique identifier, human-readable name, the YAML file that defines the policy, 
 and its dependencies on other components such as generator, controller, distributor, and monitor.
 
-These pre-defined Scheduling policies can be switched in the `Application Installation` part of the frontend UI after running system.
+These pre-defined Scheduling policies can be switched in the `Application Installation` page of the frontend UI after running system.
 
 ```yaml
 # A list of scheduler policies available in the system.

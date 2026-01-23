@@ -4,6 +4,7 @@ slug: /getting-started/start-upper-layer-system/services-template
 custom_edit_url: null
 unlisted: true
 displayed_sidebar: null
+hide_table_of_contents: true
 ---
 
 # services.yaml
@@ -12,14 +13,14 @@ displayed_sidebar: null
 Each service includes its unique ID, name, description, input and output data types, and a reference to its specific
 configuration file.
 
-These pre-defined services can be orchestrated in the `DAG Orchestration` part of frontend UI to build complex applications after running system.
+These pre-defined services can be orchestrated in the `DAG Orchestration` page of frontend UI to build complex applications after running system.
 
 ```yaml
 # A list of services available in the system. 
 # Each services will be decorated in a processor container in the upper layer system.
 
 - id: car-detection  # Unique identifier for the service.
-  service: car-detection  # Real when calling the service (refer to in )
+  service: car-detection  # Real invoking service related to images in "https://hub.docker.com/u/dayuhub" or code in "dependency/core/applications"
   name: car detection  # Human-readable name of the service.
   description: car detection (detection + tracking)  # Description of the service.
   input: frame  # Input data type for the service.

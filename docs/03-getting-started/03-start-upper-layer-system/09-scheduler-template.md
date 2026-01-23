@@ -4,6 +4,7 @@ slug: /getting-started/start-upper-layer-system/scheduler-template
 custom_edit_url: null
 unlisted: true
 displayed_sidebar: null
+hide_table_of_contents: true
 ---
 
 # Template in scheduler/
