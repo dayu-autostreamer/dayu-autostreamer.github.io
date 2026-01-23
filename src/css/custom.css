@@ -58,52 +58,60 @@ img.avatar__photo--xl {
 }
 
 .backBtnWrap {
-  margin-top: 2rem;
+  margin-top: 2.2rem;
   display: flex;
   justify-content: center;
 }
-
 
 .backBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
 
-  height: 56px;
-  padding: 0 28px;
+  padding: 12px 26px;
   border-radius: 999px;
 
   background: #155a89;
   color: #fff;
-  font-weight: 600;
+  font-weight: 650;
   font-size: 18px;
-
   line-height: 1;
-  text-decoration: none;
+  white-space: nowrap;
 
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  text-decoration: none;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.backBtnText {
+  position: relative;
+  top: 1px;
 }
 
 .backBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.16);
-  opacity: 0.95;
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.18);
+  opacity: 0.96;
   color: #fff;
   text-decoration: none;
 }
 
 .backBtnIcon {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.16);
   font-size: 18px;
   line-height: 1;
+
+  position: relative;
+  top: 1px;
 }
+
 
