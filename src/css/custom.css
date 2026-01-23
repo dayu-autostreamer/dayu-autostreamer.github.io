@@ -69,7 +69,8 @@ img.avatar__photo--xl {
   justify-content: center;
   gap: 0.65rem;
 
-  padding: 12px 26px;
+  padding: 10px 26px;
+
   border-radius: 999px;
 
   background: #155a89;
@@ -86,7 +87,7 @@ img.avatar__photo--xl {
 
 .backBtnText {
   position: relative;
-  top: 1px;
+  top: 0;
 }
 
 .backBtn:hover {
@@ -111,7 +112,5 @@ img.avatar__photo--xl {
   line-height: 1;
 
   position: relative;
-  top: 1px;
+  top: 0;
 }
-
-
