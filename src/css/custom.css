@@ -69,10 +69,7 @@ img.avatar__photo--xl {
     justify-content: center;
     gap: 0.65rem;
 
-    padding-top: 12px;
-    padding-right: 26px;
-    padding-bottom: 2px;
-    padding-left: 26px;
+    padding: 12px 26px;
 
     border-radius: 999px;
 
@@ -86,6 +83,12 @@ img.avatar__photo--xl {
     text-decoration: none;
     box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
     transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.backBtnInner{
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
 }
 
 .backBtnText {
