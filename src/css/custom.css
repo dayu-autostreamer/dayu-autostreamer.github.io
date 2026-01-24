@@ -6,111 +6,114 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e5585;
-  --ifm-color-primary-dark: #294c78;
-  --ifm-color-primary-darker: #274777;
-  --ifm-color-primary-darkest: #20355d;
-  --ifm-color-primary-light: #335e92;
-  --ifm-color-primary-lighter: #356399;
-  --ifm-color-primary-lightest: #3c75ad;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+    --ifm-color-primary: #2e5585;
+    --ifm-color-primary-dark: #294c78;
+    --ifm-color-primary-darker: #274777;
+    --ifm-color-primary-darkest: #20355d;
+    --ifm-color-primary-light: #335e92;
+    --ifm-color-primary-lighter: #356399;
+    --ifm-color-primary-lightest: #3c75ad;
+    --ifm-code-font-size: 95%;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25a0c2;
-  --ifm-color-primary-dark: #218faf;
-  --ifm-color-primary-darker: #1f88a5;
-  --ifm-color-primary-darkest: #1a7088;
-  --ifm-color-primary-light: #29b0d5;
-  --ifm-color-primary-lighter: #32b4d8;
-  --ifm-color-primary-lightest: #4fbfdd;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    --ifm-color-primary: #25a0c2;
+    --ifm-color-primary-dark: #218faf;
+    --ifm-color-primary-darker: #1f88a5;
+    --ifm-color-primary-darkest: #1a7088;
+    --ifm-color-primary-light: #29b0d5;
+    --ifm-color-primary-lighter: #32b4d8;
+    --ifm-color-primary-lightest: #4fbfdd;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
 /* --- Fix: blog author avatar image squashed --- */
 img.avatar__photo {
-  width: var(--ifm-avatar-photo-size);
-  height: var(--ifm-avatar-photo-size);
-  aspect-ratio: 1 / 1;
-  object-fit: cover; /* 不变形，必要时裁切 */
+    width: var(--ifm-avatar-photo-size);
+    height: var(--ifm-avatar-photo-size);
+    aspect-ratio: 1 / 1;
+    object-fit: cover; /* 不变形，必要时裁切 */
 }
 
 /* 兼容不同尺寸的 avatar（lg/xl 等） */
 img.avatar__photo--lg {
-  width: var(--ifm-avatar-photo-size-lg);
-  height: var(--ifm-avatar-photo-size-lg);
+    width: var(--ifm-avatar-photo-size-lg);
+    height: var(--ifm-avatar-photo-size-lg);
 }
 
 img.avatar__photo--xl {
-  width: var(--ifm-avatar-photo-size-xl);
-  height: var(--ifm-avatar-photo-size-xl);
+    width: var(--ifm-avatar-photo-size-xl);
+    height: var(--ifm-avatar-photo-size-xl);
 }
 
 .theme-unlisted-banner {
-  display: none !important;
+    display: none !important;
 }
 
 .theme-draft-banner {
-  display: none !important;
+    display: none !important;
 }
 
 .backBtnWrap {
-  margin-top: 2.2rem;
-  display: flex;
-  justify-content: center;
+    margin-top: 2.2rem;
+    display: flex;
+    justify-content: center;
 }
 
 .backBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
 
-  padding: 12px 26px;
+    padding-top: 12px;
+    padding-right: 26px;
+    padding-bottom: 2px;
+    padding-left: 26px;
 
-  border-radius: 999px;
+    border-radius: 999px;
 
-  background: #155a89;
-  color: #fff;
-  font-weight: 650;
-  font-size: 18px;
-  line-height: 1;
-  white-space: nowrap;
+    background: #155a89;
+    color: #fff;
+    font-weight: 650;
+    font-size: 18px;
+    line-height: 1;
+    white-space: nowrap;
 
-  text-decoration: none;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    text-decoration: none;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.14);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
 .backBtnText {
-  position: relative;
-  top: 0;
+    position: relative;
+    top: 0;
 }
 
 .backBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.18);
-  opacity: 0.96;
-  color: #fff;
-  text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.18);
+    opacity: 0.96;
+    color: #fff;
+    text-decoration: none;
 }
 
 .backBtnIcon {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-  background: rgba(255, 255, 255, 0.16);
-  font-size: 18px;
-  line-height: 1;
+    background: rgba(255, 255, 255, 0.16);
+    font-size: 18px;
+    line-height: 1;
 
-  position: relative;
-  top: 0;
+    position: relative;
+    top: 0;
 }
