@@ -4,7 +4,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import ThemedImage from '@theme/ThemedImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import Translate, {translate} from '@docusaurus/Translate';
+import Translate from '@docusaurus/Translate';
 
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
@@ -12,23 +12,25 @@ import HomepageFeatures from '../components/HomepageFeatures';
 
 function HomepageHeader() {
     const {siteConfig} = useDocusaurusContext();
+
     return (
-        <header className={clsx('hero hero--primary', styles.heroBackground)}>
-            <div className="container">
+        <header className={clsx('hero', styles.heroBackground)}>
+            <div className={clsx('container', styles.heroInner)}>
                 <ThemedImage
                     className={styles.heroLogo}
-                    alt="Docusaurus themed image"
+                    alt="Dayu logo"
                     sources={{
                         light: useBaseUrl('/img/dayu-logo-horizontal.svg'),
                         dark: useBaseUrl('/img/dayu-logo-horizontal-white.svg'),
-                    }}>
-                </ThemedImage>
+                    }}
+                />
+
                 <p className={clsx('hero__subtitle', styles.heroSubtitle)}>
                     <Translate>
-                        {/*{siteConfig.tagline}*/}
                         Provide infrastructure for cloud-edge collaborative stream data analysis.
                     </Translate>
                 </p>
+
                 <div className={styles.buttons}>
                     <div className="margin-horiz--sm">
                         <Link
@@ -37,6 +39,7 @@ function HomepageHeader() {
                             <Translate>Github</Translate>
                         </Link>
                     </div>
+
                     <div className="margin-horiz--sm">
                         <Link
                             className="button button--secondary button--lg"
@@ -44,21 +47,29 @@ function HomepageHeader() {
                             <Translate>Download</Translate>
                         </Link>
                     </div>
+
                     <div className="margin-horiz--sm">
-                        <Link
-                            className="button button--secondary button--lg"
-                            to="/docs/getting-started">
+                        <Link className="button button--secondary button--lg" to="/docs/getting-started">
                             <Translate>Get Started</Translate>
                         </Link>
                     </div>
                 </div>
             </div>
+
+            <ThemedImage
+                className={styles.heroWave}
+                alt=""
+                aria-hidden="true"
+                sources={{
+                    light: useBaseUrl('/img/bg-wave-light.svg'),
+                    dark: useBaseUrl('/img/bg-wave-dark.svg'),
+                }}
+            />
         </header>
     );
 }
 
 export default function Home() {
-    const {siteConfig} = useDocusaurusContext();
     return (
         <Layout
             title={`Infrastructure for Cloud-Edge Collaborative Stream Data Analysis`}
