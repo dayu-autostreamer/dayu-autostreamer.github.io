@@ -2,6 +2,7 @@
 slug: hier-ei
 title: "New Accepted Paper: Hier-EI"
 authors: [whzhou, lxie]
+tags: [paper]
 ---
 
 Our paper "Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence" is Accepted by IEEE INFOCOM 2026!

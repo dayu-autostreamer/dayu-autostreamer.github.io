@@ -2,6 +2,7 @@
 slug: version1.2
 title: Dayu v1.2 Released
 authors: [whzhou, hysu]
+tags: [release]
 ---
 
 **Dayu system Version 1.2 is released!**
