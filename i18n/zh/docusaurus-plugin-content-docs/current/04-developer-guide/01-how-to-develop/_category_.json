@@ -1,9 +1,6 @@
 {
   "label": "How to Develop",
-  "link": {
-    "type": "doc",
-    "id": "developer-guide/how-to-develop/index"
-  },
+  "link": null,
   "collapsible": true,
   "collapsed": true
 }
