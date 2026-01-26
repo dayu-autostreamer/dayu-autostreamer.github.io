@@ -1,5 +1,5 @@
 ---
-slug: /developer-guide/demos
+slug: /introduction/demos
 custom_edit_url: null
 ---
 
