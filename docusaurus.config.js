@@ -54,6 +54,8 @@ const config = {
             ({
                 docs: {
                     sidebarPath: './sidebars.js',
+                    showLastUpdateTime: true,
+                    showLastUpdateAuthor: true,
                 },
                 blog: {
                     showReadingTime: false,
