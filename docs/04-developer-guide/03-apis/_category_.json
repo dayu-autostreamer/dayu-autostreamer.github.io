@@ -1,8 +1,8 @@
 {
-  "label": "接口",
+  "label": "APIs",
   "link": {
     "type": "doc",
-    "id": "developer-guide/api/index"
+    "id": "developer-guide/apis/index"
   },
   "collapsible": true,
   "collapsed": true
