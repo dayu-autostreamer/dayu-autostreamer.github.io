@@ -120,3 +120,7 @@ img.avatar__photo--xl {
     position: relative;
     top: 0;
 }
+
+.pagination-nav {
+  display: none !important;
+}
