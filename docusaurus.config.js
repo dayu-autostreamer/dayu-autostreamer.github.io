@@ -12,7 +12,7 @@ import statcounterPlugin from './plugins/statcounter';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'Dayu',
-    tagline: /** @type {import('@docusaurus/Translate').translate} */ ('Provide infrastructure for cloud-edge collaborative stream data analysis.'),
+    tagline: /** @type {import('@docusaurus/Translate').translate} */ ('Provide infrastructure for cloud-edge collaborative stream data analytics.'),
     favicon: 'img/favicon.ico',
 
     // Set the production url of your site here

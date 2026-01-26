@@ -27,7 +27,7 @@ function HomepageHeader() {
 
                 <p className={clsx('hero__subtitle', styles.heroSubtitle)}>
                     <Translate>
-                        Provide infrastructure for cloud-edge collaborative stream data analysis.
+                        Provide infrastructure for cloud-edge collaborative stream data analytics.
                     </Translate>
                 </p>
 
@@ -72,8 +72,8 @@ function HomepageHeader() {
 export default function Home() {
     return (
         <Layout
-            title={`Infrastructure for Cloud-Edge Collaborative Stream Data Analysis`}
-            description="Infrastructure for Cloud-Edge Collaborative Stream Data Analysis">
+            title={`Infrastructure for Cloud-Edge Collaborative Stream Data Analytics`}
+            description="Infrastructure for Cloud-Edge Collaborative Stream Data Analytics">
             <HomepageHeader/>
             <main>
                 <HomepageFeatures/>

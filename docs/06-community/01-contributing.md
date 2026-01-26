@@ -33,7 +33,7 @@ Here is how you get started.
 
 #### Find a good first topic
 
-Dayu system focused on cloud-edge collaborative stream data analysis, and is flexible to develop based on hook functions.
+Dayu system focused on cloud-edge collaborative stream data analytics, and is flexible to develop based on hook functions.
 
 You can either expand the core functions of the whole system or expand the applicable research topics. 
 

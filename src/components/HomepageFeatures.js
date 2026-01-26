@@ -5,11 +5,11 @@ import Translate, {translate} from '@docusaurus/Translate';
 
 const FeatureList = [
     {
-        title: <Translate>Stream Data Analysis</Translate>,
+        title: <Translate>Stream Data Analytics</Translate>,
         Svg: require('../../static/img/dayu-stream.svg').default,
         description: (
             <Translate>
-                Dayu focuses on ai-driven stream data analysis,
+                Dayu focuses on ai-driven stream data analytics,
                 natively supporting parallel multi-stream processing/monitoring/scheduling with heterogeneous user-defined applications.
             </Translate>
         ),

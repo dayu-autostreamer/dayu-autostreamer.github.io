@@ -179,7 +179,7 @@
     "message": "Tags",
     "description": "The title of the tag list page"
   },
-  "Dayu focuses on ai-driven stream data analysis, natively supporting parallel multi-stream processing/monitoring/scheduling with heterogeneous user-defined applications.": {
+  "Dayu focuses on ai-driven stream data analytics, natively supporting parallel multi-stream processing/monitoring/scheduling with heterogeneous user-defined applications.": {
     "message": "大禹系统专注于人工智能驱动的流数据分析，原生支持面向异构用户自定义应用的并行多流处理/监控/调度。"
   },
   "Based on a container orchestration framework KubeEdge, dayu is applicable to distributed cloud-edge collaborative scenarios and can be scale to heterogeneous devices.": {
@@ -197,7 +197,7 @@
   "Get Started": {
     "message": "快速开始"
   },
-  "Stream Data Analysis": {
+  "Stream Data Analytics": {
     "message": "专注于流数据分析"
   },
   "Distributed Cloud-Edge Collaboration": {
@@ -206,7 +206,7 @@
   "Adaptive System Scheduling": {
     "message": "面向自适应系统调度研究"
   },
-  "Provide infrastructure for cloud-edge collaborative stream data analysis.": {
+  "Provide infrastructure for cloud-edge collaborative stream data Analytics.": {
     "message": "大禹，提供云边协同流数据分析的基础设施"
   },
   "theme.ErrorPageContent.title": {
