@@ -60,6 +60,7 @@ exposure-identification, category-classification and license-plate-recognition.<
             <name>Haoyang Su</name>
             <uri>https://github.com/ShyEdge</uri>
         </author>
+        <category label="release" term="release"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[New Accepted Paper: Hier-EI]]></title>
@@ -82,6 +83,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
             <name>Lei Xie</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>
         </author>
+        <category label="paper" term="paper"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Dayu v1.1 Released]]></title>
@@ -131,6 +133,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
             <name>Wenyi Dai</name>
             <uri>https://github.com/kangarin</uri>
         </author>
+        <category label="release" term="release"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[New Accepted Paper: CRAVE]]></title>
@@ -151,6 +154,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
             <name>Lei Xie</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>
         </author>
+        <category label="paper" term="paper"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Dayu v1.0 Released]]></title>
@@ -176,6 +180,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
             <name>Bingyun Yang</name>
             <uri>https://github.com/AdaYangOlzz</uri>
         </author>
+        <category label="release" term="release"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Welcome to Dayu]]></title>
@@ -197,5 +202,6 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
         </author>
+        <category label="welcome" term="welcome"/>
     </entry>
 </feed>

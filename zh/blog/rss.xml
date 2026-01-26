@@ -53,6 +53,7 @@ exposure-identification, category-classification and license-plate-recognition.<
 <li>Update scenario data structure and processing (<code>processor</code>).</li>
 </ul>
 <p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.2" target="_blank" rel="noopener noreferrer">dayu-v1.2</a>.</p>]]></content:encoded>
+            <category>release</category>
         </item>
         <item>
             <title><![CDATA[New Accepted Paper: Hier-EI]]></title>
@@ -67,6 +68,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <p>For more information, please refer to:</p>
 <p><strong>Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence. Accepted to appear in Proceeding of IEEE International Conference on Computer Communications (IEEE INFOCOM) 2026.</strong></p>
 <p><img decoding="async" loading="lazy" alt="hier-ei-paper-img" src="https://dayu-autostreamer.github.io/zh/assets/images/hier-ei-paper-abb2074181fd298303b393a8bf4d069c.png" width="668" height="866" class="img_ev3q"></p>]]></content:encoded>
+            <category>paper</category>
         </item>
         <item>
             <title><![CDATA[Dayu v1.1 Released]]></title>
@@ -100,6 +102,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <li>Add application of age classification. (Current available applications: car-detection, face-detection, gender-classification, age-classification)</li>
 </ul>
 <p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.1" target="_blank" rel="noopener noreferrer">dayu-v1.1</a>.</p>]]></content:encoded>
+            <category>release</category>
         </item>
         <item>
             <title><![CDATA[New Accepted Paper: CRAVE]]></title>
@@ -112,6 +115,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <p>For more information, please refer to:</p>
 <p><strong>Bingyun Yang, Jingyi Ning, Wenhui Zhou, Chuyu Wang, Lei Xie, Zhenjie Lin, Liming Wang. <a href="https://doi.org/10.1109/ICDCSW63273.2025.00012" target="_blank" rel="noopener noreferrer">Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection</a>. IEEE ICDCSW, pp. 32-37, 2025.</strong></p>
 <p><img decoding="async" loading="lazy" alt="crave-paper-img" src="https://dayu-autostreamer.github.io/zh/assets/images/crave-paper-1d10e694eddd9027bc8f98803d9d0a79.png" width="639" height="823" class="img_ev3q"></p>]]></content:encoded>
+            <category>paper</category>
         </item>
         <item>
             <title><![CDATA[Dayu v1.0 Released]]></title>
@@ -129,6 +133,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <li>Include our latest work on video configuration and task offloading: hierarchical-EI, a two-phase hierarchical scheduling framework based on Embodied Intelligence. It helps adjust system configuration with low cost and high scenario adaption.  <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.0/template/scheduler/hei.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
 </ul>
 <p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.0" target="_blank" rel="noopener noreferrer">dayu-v1.0</a>.</p>]]></content:encoded>
+            <category>release</category>
         </item>
         <item>
             <title><![CDATA[Welcome to Dayu]]></title>
@@ -142,6 +147,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <img src="https://dayu-autostreamer.github.io/zh/img/dayu-logo-horizontal.svg" alt="dayu image" class="themedComponent_mlkZ themedComponent--light_NVdE" style="width:50%;height:auto"><img src="https://dayu-autostreamer.github.io/zh/img/dayu-logo-horizontal-white.svg" alt="dayu image" class="themedComponent_mlkZ themedComponent--dark_xIcU" style="width:50%;height:auto">
 <p>For more information of dayu, please refer to <a href="https://dayu-autostreamer.github.io/zh/docs/introduction/why-dayu">Introduction</a>.</p>
 <p>For a quick start, please refer to <a href="https://dayu-autostreamer.github.io/zh/docs/getting-started">Getting Started</a>.</p>]]></content:encoded>
+            <category>welcome</category>
         </item>
     </channel>
 </rss>
