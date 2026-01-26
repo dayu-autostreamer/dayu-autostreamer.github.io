@@ -79,12 +79,13 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
             // Replace with your project's social card
-            image: 'img/dayu_logo_all.png',
+            image: 'img/dayu-logo-horizontal.svg',
             navbar: {
                 title: '',
                 logo: {
                     alt: 'Dayu Site Logo',
-                    src: 'img/dayu.png',
+                    src: 'img/dayu-logo-text.svg',
+                    srcDark: 'img/dayu-logo-text.svg',
                 },
                 items: [
                     {

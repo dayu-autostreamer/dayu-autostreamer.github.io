@@ -18,8 +18,8 @@ function HomepageHeader() {
                     className={styles.heroLogo}
                     alt="Docusaurus themed image"
                     sources={{
-                        light: require('@site/static/img/dayu-trans.png').default,
-                        dark: require('@site/static/img/dayu-trans.png').default,
+                        light: require('@site/static/img/dayu-logo-horizontal.svg').default,
+                        dark: require('@site/static/img/dayu-logo-horizontal-white.svg').default,
                     }}>
                 </ThemedImage>
                 <p className={clsx('hero__subtitle', styles.heroSubtitle)}>

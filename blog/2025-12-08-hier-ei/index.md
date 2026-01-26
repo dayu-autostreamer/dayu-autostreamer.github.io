@@ -17,4 +17,4 @@ For more information, please refer to:
 
 **Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence. Accepted to appear in Proceeding of IEEE International Conference on Computer Communications (IEEE INFOCOM) 2026.**
 
-![hier-ei-paper-img](./hier-ei-paper.png)
+![hier-ei-paper-img](/img/blog/hier-ei-paper.png)
