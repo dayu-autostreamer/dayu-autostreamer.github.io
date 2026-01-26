@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import ThemedImage from '@theme/ThemedImage';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import Translate, {translate} from '@docusaurus/Translate';
 
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -18,8 +19,8 @@ function HomepageHeader() {
                     className={styles.heroLogo}
                     alt="Docusaurus themed image"
                     sources={{
-                        light: require('@site/static/img/dayu-logo-horizontal.svg').default,
-                        dark: require('@site/static/img/dayu-logo-horizontal-white.svg').default,
+                        light: useBaseUrl('/img/dayu-logo-horizontal.svg'),
+                        dark: useBaseUrl('/img/dayu-logo-horizontal-white.svg'),
                     }}>
                 </ThemedImage>
                 <p className={clsx('hero__subtitle', styles.heroSubtitle)}>
