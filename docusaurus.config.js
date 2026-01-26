@@ -85,7 +85,7 @@ const config = {
                 logo: {
                     alt: 'Dayu Site Logo',
                     src: 'img/dayu-logo-text.svg',
-                    srcDark: 'img/dayu-logo-text.svg',
+                    srcDark: 'img/dayu-logo-text-white.svg',
                 },
                 items: [
                     {
