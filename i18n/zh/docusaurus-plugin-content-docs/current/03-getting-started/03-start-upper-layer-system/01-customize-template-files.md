@@ -56,11 +56,11 @@ template/
 | services.yaml              | 包含可用服务列表，该列表在`processor/`中进一步定义     | [详细格式](/docs/getting-started/start-upper-layer-system/services-template)              | 
 | result-visualizations.yaml | 包含任务结果的可视化模块列表                      | [详细格式](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
 | system-visualizations.yaml | 包含系统监控的可视化模块列表                      | [详细格式](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
-| scheduler/xx.yaml          | 在不同的yaml模板中定义不同的调度策略，运行后在前端UI中可切换   | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-template)             | 
-| processor/xx.yaml          | 在不同的yaml模板中定义不同的服务，运行后可以在前端UI中编排成应用 | [详细格式](/docs/getting-started/start-upper-layer-system/processor-template)             | 
-| generator/xx.yaml          | 在yaml模板中定义 generator 组件             | [详细格式](/docs/getting-started/start-upper-layer-system/generator-template)             | 
-| controller/xx.yaml         | 在yaml模板中定义 controller 组件            | [详细格式](/docs/getting-started/start-upper-layer-system/controller-template)            | 
-| distributor/xx.yaml        | 在yaml模板中定义 distributor 组件           | [详细格式](/docs/getting-started/start-upper-layer-system/distributor-template)           |
-| monitor/xx.yaml            | 在yaml模板中定义 monitor 组件               | [详细格式](/docs/getting-started/start-upper-layer-system/monitor-template)               | 
+| scheduler/*.yaml           | 在不同的yaml模板中定义不同的调度策略，运行后在前端UI中可切换   | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-template)             | 
+| processor/*.yaml           | 在不同的yaml模板中定义不同的服务，运行后可以在前端UI中编排成应用 | [详细格式](/docs/getting-started/start-upper-layer-system/processor-template)             | 
+| generator/*.yaml           | 在yaml模板中定义 generator 组件             | [详细格式](/docs/getting-started/start-upper-layer-system/generator-template)             | 
+| controller/*.yaml          | 在yaml模板中定义 controller 组件            | [详细格式](/docs/getting-started/start-upper-layer-system/controller-template)            | 
+| distributor/*.yaml         | 在yaml模板中定义 distributor 组件           | [详细格式](/docs/getting-started/start-upper-layer-system/distributor-template)           |
+| monitor/*.yaml             | 在yaml模板中定义 monitor 组件               | [详细格式](/docs/getting-started/start-upper-layer-system/monitor-template)               | 
  
 
