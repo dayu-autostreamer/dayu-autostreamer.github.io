@@ -30,24 +30,28 @@
     --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
-/* --- Fix: blog author avatar image squashed --- */
 img.avatar__photo {
-    width: var(--ifm-avatar-photo-size);
-    height: var(--ifm-avatar-photo-size);
-    aspect-ratio: 1 / 1;
-    object-fit: cover; /* 不变形，必要时裁切 */
+  width: var(--ifm-avatar-photo-size);
+  height: var(--ifm-avatar-photo-size);
+  aspect-ratio: 1 / 1;
+
+  object-fit: contain;
+  object-position: center;
+
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-200);
 }
 
-/* 兼容不同尺寸的 avatar（lg/xl 等） */
 img.avatar__photo--lg {
-    width: var(--ifm-avatar-photo-size-lg);
-    height: var(--ifm-avatar-photo-size-lg);
+  width: var(--ifm-avatar-photo-size-lg);
+  height: var(--ifm-avatar-photo-size-lg);
 }
 
 img.avatar__photo--xl {
-    width: var(--ifm-avatar-photo-size-xl);
-    height: var(--ifm-avatar-photo-size-xl);
+  width: var(--ifm-avatar-photo-size-xl);
+  height: var(--ifm-avatar-photo-size-xl);
 }
+
 
 .theme-unlisted-banner {
     display: none !important;
