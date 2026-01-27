@@ -1,7 +1,6 @@
 ---
 sidebar_label: Prepare for Building
 slug: /developer-guide/how-to-build/build-preparation
-custom_edit_url: null
 ---
 
 # Prepare for Building

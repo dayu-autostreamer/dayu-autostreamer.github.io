@@ -56,6 +56,9 @@ const config = {
                     sidebarPath: './sidebars.js',
                     showLastUpdateTime: true,
                     showLastUpdateAuthor: true,
+                    // Please change this to your repo.
+                    // Remove this to remove the "edit this page" links.
+                    editUrl: 'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/tree/main',
                 },
                 blog: {
                     showReadingTime: false,

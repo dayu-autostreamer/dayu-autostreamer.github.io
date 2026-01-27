@@ -1,7 +1,6 @@
 ---
 sidebar_label: 贡献代码
 slug: /community/contributing
-custom_edit_url: null
 ---
 
 # 贡献代码

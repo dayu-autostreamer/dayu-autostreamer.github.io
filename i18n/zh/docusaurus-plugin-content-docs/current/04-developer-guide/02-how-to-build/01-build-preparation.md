@@ -1,7 +1,6 @@
 ---
 sidebar_label: 构建准备工作
 slug: /developer-guide/how-to-build/build-preparation
-custom_edit_url: null
 ---
 
 # 构建准备工作

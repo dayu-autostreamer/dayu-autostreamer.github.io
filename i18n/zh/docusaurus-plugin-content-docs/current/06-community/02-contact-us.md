@@ -1,7 +1,6 @@
 ---
 sidebar_label: 联系我们
 slug: /community/contact-us
-custom_edit_url: null
 ---
 
 # 联系我们

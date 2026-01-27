@@ -1,6 +1,5 @@
 ---
 slug: /architecture
-custom_edit_url: null
 ---
 
 # 系统整体架构

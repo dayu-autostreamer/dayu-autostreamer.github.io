@@ -1,7 +1,6 @@
 ---
 sidebar_label: Build Components
 slug: /developer-guide/how-to-build/build-components
-custom_edit_url: null
 ---
 
 # Build Components

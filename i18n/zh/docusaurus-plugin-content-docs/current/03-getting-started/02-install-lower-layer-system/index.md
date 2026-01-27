@@ -1,6 +1,5 @@
 ---
 slug: /getting-started/install-lower-layer-system
-custom_edit_url: null
 ---
 
 # 安装大禹下层系统

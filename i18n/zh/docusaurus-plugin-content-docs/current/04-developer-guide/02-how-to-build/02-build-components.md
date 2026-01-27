@@ -1,7 +1,6 @@
 ---
 sidebar_label: 构建系统组件
 slug: /developer-guide/how-to-build/build-components
-custom_edit_url: null
 ---
 
 # 构建系统组件

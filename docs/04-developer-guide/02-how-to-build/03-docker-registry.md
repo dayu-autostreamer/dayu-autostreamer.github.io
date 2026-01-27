@@ -1,7 +1,6 @@
 ---
 sidebar_label: Docker Registry Configuration
 slug: /developer-guide/how-to-build/docker-registry
-custom_edit_url: null
 unlisted: true
 displayed_sidebar: null
 ---

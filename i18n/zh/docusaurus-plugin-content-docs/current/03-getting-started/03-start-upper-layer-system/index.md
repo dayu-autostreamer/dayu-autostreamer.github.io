@@ -1,6 +1,5 @@
 ---
 slug: /getting-started/start-upper-layer-system
-custom_edit_url: null
 ---
 
 # 启动大禹上层系统

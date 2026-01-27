@@ -1,7 +1,6 @@
 ---
 sidebar_label: Contributing
 slug: /community/contributing
-custom_edit_url: null
 ---
 
 # Contributing

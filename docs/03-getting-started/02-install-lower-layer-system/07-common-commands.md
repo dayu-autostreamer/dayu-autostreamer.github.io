@@ -1,7 +1,6 @@
 ---
 sidebar_label: Common Commands
 slug: /getting-started/install-lower-layer-system/common-commands
-custom_edit_url: null
 ---
 
 # Common Commands

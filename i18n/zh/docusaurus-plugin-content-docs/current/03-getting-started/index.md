@@ -1,6 +1,5 @@
 ---
 slug: /getting-started
-custom_edit_url: null
 ---
 
 # 快速开始
