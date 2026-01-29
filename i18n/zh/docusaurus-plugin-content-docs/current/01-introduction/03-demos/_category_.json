@@ -1,9 +1,6 @@
 {
   "label": "样例演示",
-   "link": {
-    "type": "doc",
-    "id": "introduction/demos/index"
-  },
+   "link": null,
   "collapsible": true,
   "collapsed": true
 }
