@@ -59,11 +59,11 @@ const config = {
                     // Please change this to your repo.
                     // Remove this to remove the "edit this page" links.
                     editUrl: ({docPath, locale}) => {
-                        const baseRepoUrl = 'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/tree/main/';
+                        const baseRepoUrl = 'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/tree/main';
                         if (locale === 'zh') {
-                            return `${baseRepoUrl}docs/zh/${docPath}`;
+                            return `${baseRepoUrl}/i18n/zh/docusaurus-plugin-content-docs/current/${docPath}`;
                         }
-                        return `${baseRepoUrl}docs/${docPath}`;
+                        return `${baseRepoUrl}/docs/${docPath}`;
                     },
                 },
                 blog: {
