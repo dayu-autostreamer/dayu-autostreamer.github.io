@@ -4,7 +4,7 @@ slug: /developer-guide/how-to-build/docker-registry
 unlisted: true
 ---
 
-# Docker镜像源配置
+# Docker 镜像源配置
 
 由于[docker镜像仓库](https://hub.docker.com/repositories/)的连接问题，可以使用registry mirror和内网私有仓库两种方式处理这个问题。
 

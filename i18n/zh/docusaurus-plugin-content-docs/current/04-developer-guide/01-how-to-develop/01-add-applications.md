@@ -1,7 +1,7 @@
 ---
-sidebar_label: Add Applications
+sidebar_label: 添加应用
 slug: /developer-guide/how-to-develop/add-applications
 ---
 
-# Add Applications
+# 添加应用
 

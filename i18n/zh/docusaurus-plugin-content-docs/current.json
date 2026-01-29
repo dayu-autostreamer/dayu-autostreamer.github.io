@@ -27,6 +27,10 @@
     "message": "启动上层系统",
     "description": "The label for category Start Upper Layer System in sidebar tutorialSidebar"
   },
+    "sidebar.tutorialSidebar.category.How to Develop": {
+        "message": "如何开发",
+        "description": "The label for category How to Develop in sidebar tutorialSidebar"
+    },
   "sidebar.tutorialSidebar.category.How to Build": {
     "message": "如何构建",
     "description": "The label for category How to Build in sidebar tutorialSidebar"
@@ -34,5 +38,9 @@
   "sidebar.tutorialSidebar.category.Introduction": {
     "message": "介绍",
     "description": "The label for category Introduction in sidebar tutorialSidebar"
-  }
+  },
+    "sidebar.tutorialSidebar.category.Case Study": {
+        "message": "案例研究",
+        "description": "The label for category Case Study in sidebar tutorialSidebar"
+    }
 }

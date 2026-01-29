@@ -1,7 +1,7 @@
 ---
-sidebar_label: Customize Scheduling
+sidebar_label: 定制调度策略
 slug: /developer-guide/how-to-develop/customize-scheduling
 ---
 
-# Customize Scheduling
+# 定制调度策略
 

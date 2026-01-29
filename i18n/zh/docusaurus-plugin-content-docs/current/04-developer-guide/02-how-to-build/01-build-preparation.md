@@ -5,57 +5,56 @@ slug: /developer-guide/how-to-build/build-preparation
 
 # 构建准备工作
 
-[TBD]
 
-## Introduction
-Dayu is deployed on a cloud-edge collaborative environment with heterogeneous devices, which requires components in dayu has multi-architecture (like `amd64`/`arm64`). 
+## 简介
+大禹系统部署在云边协同环境中，并支持异构设备，因此大禹的组件需要支持多架构（如`amd64`/`arm64`）。
 
-An easy way to build multi-architecture docker images is cross-building. 
-`buildx` is an official Docker build tool provided by Docker, which helps users quickly and efficiently build Docker images and supports building on multiple platforms. With `buildx`, users can build images for multiple architectures in a single command without manually operating multiple build commands. 
+构建多架构 Docker 镜像的简单方法是交叉构建。
+`buildx` 是 Docker 提供的官方 Docker 构建工具，它帮助用户快速高效地构建 Docker 镜像，并支持在多个平台上构建。
+用户可以使用 `buildx`在单个命令中构建多个架构的镜像，无需手动操作多个构建命令。
 
-## Enable Docker Experimental Mode
-Edit `/etc/docker/daemon.json` and add the following line:
+## 启用 Docker 实验模式
+编辑 `/etc/docker/daemon.json` 并添加以下行：
 ```
 {
   "experimental": true
 }
 ```
 
-Restart docker to enable the change.
+重启docker以启用更改：
 ```bash
 systemctl daemon-reload
 systemctl restart docker
 ```
 
 
-## Install Docker Buildx
+## 安装 Docker buildx
 
-Choose an appropriate buildx version at https://github.com/docker/buildx/releases based on your docker version.
-
-Download docker buildx package (we take version buildx-v0.10.4.darwin-amd64 as an example).
+根据您的Docker版本，在https://github.com/docker/buildx/releases选择合适的buildx版本,
+下载Docker buildx软件包（以下以版本buildx-v0.10.4.darwin-amd64为例）:
 ```bash
 wget https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.darwin-amd64
 ```
 
-Rename and move buildx package.
+重命名并移动buildx包:
 ```bash
 mv buildx-v0.10.4.darwin-amd64 docker-buildx
 mv docker-buildx $HOME/.docker/cli-plugins
 ```
 
-Add execution permission.
+添加执行权限:
 ```bash
 chmod +x ~/.docker/cli-plugins/docker-buildx
 ```
 
-## Test Buildx
+## 测试 docker buildx
 
-Use the following command to test whether buildx installed successfully.
+使用以下命令测试buildx是否安装成功:
 ```bash
 docker buildx version
 ```
 
-If buildx is not installed successfully, use the following command to see the possible error.
+如果 buildx 未成功安装，请使用以下命令查看可能的存在错误:
 ```bash
 docker info
 ```

@@ -25,6 +25,7 @@ vim hack/resource/driver_opts.toml
 # default REG is docker.io
 # default REPO is dayuhub
 # default TAG is the latest tag in https://github.com/dayu-autostreamer/dayu/releases/
+# if you don't want to use default values, please export corresponding variables below
 export REG=xxx
 export REPO=xxx
 export TAG=xxx

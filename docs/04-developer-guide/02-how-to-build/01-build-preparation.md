@@ -26,7 +26,7 @@ systemctl restart docker
 ```
 
 
-## Install Docker Buildx
+## Install docker buildx
 
 Choose an appropriate buildx version at https://github.com/docker/buildx/releases based on your docker version.
 
@@ -46,7 +46,7 @@ Add execution permission.
 chmod +x ~/.docker/cli-plugins/docker-buildx
 ```
 
-## Test Buildx
+## Test docker buildx
 
 Use the following command to test whether buildx installed successfully.
 ```bash
