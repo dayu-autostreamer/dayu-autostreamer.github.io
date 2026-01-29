@@ -2,7 +2,6 @@
 sidebar_label: Docker镜像源配置
 slug: /developer-guide/how-to-build/docker-registry
 unlisted: true
-displayed_sidebar: null
 ---
 
 # Docker镜像源配置
