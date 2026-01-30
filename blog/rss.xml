@@ -145,7 +145,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <p>We provide infrastructure for cloud-edge collaborative stream data analytics and focus on scheduling tasks like configuration optimization, model evolution, task offloading, and so on.</p>
 <!-- -->
 <img src="https://dayu-autostreamer.github.io/img/dayu-logo-horizontal.svg" alt="dayu image" class="themedComponent_mlkZ themedComponent--light_NVdE" style="width:50%;height:auto"><img src="https://dayu-autostreamer.github.io/img/dayu-logo-horizontal-white.svg" alt="dayu image" class="themedComponent_mlkZ themedComponent--dark_xIcU" style="width:50%;height:auto">
-<p>For more information of dayu, please refer to <a href="https://dayu-autostreamer.github.io/docs/introduction/why-dayu">Introduction</a>.</p>
+<p>For more information of dayu, please refer to <a href="https://dayu-autostreamer.github.io/docs">Introduction</a>.</p>
 <p>For a quick start, please refer to <a href="https://dayu-autostreamer.github.io/docs/getting-started">Getting Started</a>.</p>]]></content:encoded>
             <category>welcome</category>
         </item>
