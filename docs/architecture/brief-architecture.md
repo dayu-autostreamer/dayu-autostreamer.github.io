@@ -1,7 +1,7 @@
 ---
 sidebar_label: Brief Architecture
 sidebar_position: 1
-slug: /architecture/breif-architecture
+slug: /architecture/brief-architecture
 ---
 
 # Brief Architecture
