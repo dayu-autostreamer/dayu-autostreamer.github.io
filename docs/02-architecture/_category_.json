@@ -5,5 +5,6 @@
     "id": "architecture/index"
   },
   "collapsible": true,
-  "collapsed": true
+  "collapsed": true,
+  "hideable": true
 }
