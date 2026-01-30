@@ -1,7 +1,6 @@
 ---
 sidebar_label: Why Dayu
-title: Why Dayu
-description: dayu
+sidebar_position: 1
 slug: /introduction/why-dayu
 ---
 

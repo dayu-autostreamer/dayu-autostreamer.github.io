@@ -4,5 +4,6 @@
     "type": "doc",
     "id": "architecture/index"
   },
-
+  "collapsible": true,
+  "collapsed": false
 }
