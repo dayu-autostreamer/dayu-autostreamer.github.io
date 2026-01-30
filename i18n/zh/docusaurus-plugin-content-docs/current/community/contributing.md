@@ -1,5 +1,6 @@
 ---
 sidebar_label: 贡献代码
+sidebar_position: 1
 slug: /community/contributing
 ---
 

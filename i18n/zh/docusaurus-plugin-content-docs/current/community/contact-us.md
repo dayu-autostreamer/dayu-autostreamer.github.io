@@ -1,5 +1,6 @@
 ---
 sidebar_label: 联系我们
+sidebar_position: 2
 slug: /community/contact-us
 ---
 

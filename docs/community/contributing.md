@@ -1,5 +1,6 @@
 ---
 sidebar_label: Contributing
+sidebar_position: 1
 slug: /community/contributing
 ---
 
