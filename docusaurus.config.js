@@ -100,8 +100,7 @@ const config = {
                 },
                 items: [
                     {
-                        type: 'doc',
-                        docId: 'introduction/why-dayu',
+                        type: 'docSidebar',
                         position: 'left',
                         label: 'Documentation',
                     },
@@ -134,12 +133,8 @@ const config = {
                             title: 'Docs',
                             items: [
                                 {
-                                    label: 'Introduction',
-                                    to: '/docs/introduction/why-dayu',
-                                },
-                                {
                                     label: 'Tutorial',
-                                    to: '/docs/getting-started',
+                                    to: '/docs',
                                 },
                                 {
                                     label: 'Development',

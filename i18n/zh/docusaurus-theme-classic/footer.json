@@ -13,7 +13,7 @@
   },
   "link.item.label.Tutorial": {
     "message": "教程",
-    "description": "The label of footer link with label=Tutorial linking to /docs/getting-started"
+    "description": "The label of footer link with label=Tutorial linking to /docs/"
   },
   "link.item.label.Github Issue": {
     "message": "Github Issue",
@@ -29,7 +29,7 @@
   },
   "link.item.label.Introduction": {
     "message": "介绍",
-    "description": "The label of footer link with label=Introduction linking to /docs/introduction/why-dayu"
+    "description": "The label of footer link with label=Introduction linking to /docs/"
   },
   "link.item.label.Development": {
     "message": "开发",
