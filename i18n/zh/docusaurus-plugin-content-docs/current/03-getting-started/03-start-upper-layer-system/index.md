@@ -8,7 +8,7 @@ slug: /getting-started/start-upper-layer-system
 
 大禹上层系统是基于下层系统构建的，是整个系统的核心功能部分，可以轻量级地根据需要轻松启动和停止。
 
-关于上层系统的具体功能和结构，请参阅[架构](/docs/architecture)。
+关于上层系统的具体功能和结构，请参阅[架构](/docs/architecture/brief-architecture)。
 
 ## 启动流程
 

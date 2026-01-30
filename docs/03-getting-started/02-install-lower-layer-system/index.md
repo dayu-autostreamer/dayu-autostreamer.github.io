@@ -9,7 +9,7 @@ slug: /getting-started/install-lower-layer-system
 The lower-layer system of dayu is the foundation of the entire system, mainly composed of KubeEdge and some plugins. 
 It needs to be pre-installed on edge-distributed nodes. 
 
-For the specific functions and structure of the lower-layer system, please refer to [architecture](/docs/architecture).
+For the specific functions and structure of the lower-layer system, please refer to [architecture](/docs/architecture/brief-architecture).
 
 ## Installation Process
 

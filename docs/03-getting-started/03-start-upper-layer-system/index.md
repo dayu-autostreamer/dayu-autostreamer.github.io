@@ -8,7 +8,7 @@ slug: /getting-started/start-upper-layer-system
 
 The upper-layer system of dayu, constructed based on the lower-layer system, is the core functional part of the entire system, which can be easily started and stopped as needed in a lightweight manner.
 
-For the specific functions and structure of the upper-layer system, please refer to [architecture](/docs/architecture).
+For the specific functions and structure of the upper-layer system, please refer to [architecture](/docs/architecture/brief-architecture).
 
 ## Start Process
 

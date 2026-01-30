@@ -4,7 +4,7 @@ slug: /getting-started
 
 # 快速开始
 
-大禹系统[架构](/docs/architecture)包括下层系统和上层系统，按照以下步骤开始：
+大禹系统[架构](/docs/architecture/brief-architecture)包括下层系统和上层系统，按照以下步骤开始：
 
 - 在云边分布式设备上安装下层系统，只需做一次 ([操作指南](/docs/getting-started/install-lower-layer-system))。
 

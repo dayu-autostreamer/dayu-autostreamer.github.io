@@ -6,7 +6,7 @@ slug: /getting-started/install-lower-layer-system
 
 ## 简介
 
-大禹的下层系统是整个系统的基础，主要由KubeEdge及部分插件构成，需要提前安装在云边分布式节点上，下层系统具体的作用与结构请参照[大禹系统结构](/docs/architecture)。
+大禹的下层系统是整个系统的基础，主要由KubeEdge及部分插件构成，需要提前安装在云边分布式节点上，下层系统具体的作用与结构请参照[大禹系统结构](/docs/architecture/brief-architecture)。
 
 ## 安装流程
 

@@ -4,7 +4,7 @@ slug: /getting-started
 
 # Getting Started
 
-The [architecture](/docs/architecture) of our Dayu system includes lower/upper layers, follow the steps below to get started:
+The [architecture](/docs/architecture/brief-architecture) of our Dayu system includes lower/upper layers, follow the steps below to get started:
 
 - Install lower layer system on the cloud-edge devices, which only need to be done once ([instruction](/docs/getting-started/install-lower-layer-system)).
 
