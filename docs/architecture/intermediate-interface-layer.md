@@ -1,5 +1,6 @@
 ---
 sidebar_label: Intermediate Interface Layer
+sidebar_position: 3
 slug: /architecture/intermediate-interface-layer
 ---
 

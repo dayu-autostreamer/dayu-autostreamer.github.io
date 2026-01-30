@@ -1,7 +1,6 @@
 ---
 sidebar_label: 为什么选择大禹系统
-title: 为什么选择大禹系统
-description: dayu
+sidebar_position: 1
 slug: /introduction/why-dayu
 ---
 

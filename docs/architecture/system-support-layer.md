@@ -1,5 +1,6 @@
 ---
 sidebar_label: System Support Layer
+sidebar_position: 4
 slug: /architecture/system-support-layer
 ---
 

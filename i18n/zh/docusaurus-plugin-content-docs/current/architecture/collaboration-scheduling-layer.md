@@ -1,5 +1,6 @@
 ---
 sidebar_label: 协同调度层
+sidebar_position: 5
 slug: /architecture/collaboration-scheduling-layer
 ---
 

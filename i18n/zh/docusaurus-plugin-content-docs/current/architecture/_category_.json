@@ -1,9 +1,6 @@
 {
   "label": "Architecture",
-  "link": {
-    "type": "doc",
-    "id": "architecture/index"
-  },
+  "position": 2,
   "collapsible": true,
   "collapsed": false
 }

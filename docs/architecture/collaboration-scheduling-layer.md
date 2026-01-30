@@ -1,5 +1,6 @@
 ---
 sidebar_label: Collaboration Scheduling Layer
+sidebar_position: 5
 slug: /architecture/collaboration-scheduling-layer
 ---
 

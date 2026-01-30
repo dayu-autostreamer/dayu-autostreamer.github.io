@@ -1,5 +1,6 @@
 ---
 sidebar_label: Application Service Layer
+sidebar_position: 6
 slug: /architecture/application-service-layer
 ---
 

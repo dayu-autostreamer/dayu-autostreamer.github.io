@@ -1,5 +1,7 @@
 ---
-slug: /architecture
+sidebar_label: 系统整体架构
+sidebar_position: 1
+slug: /architecture/brief-architecture
 ---
 
 # 系统整体架构

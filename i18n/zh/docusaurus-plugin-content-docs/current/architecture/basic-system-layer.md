@@ -1,11 +1,10 @@
 ---
-sidebar_label: Basic System Layer
+sidebar_label: 基础系统层
+sidebar_position: 2
 slug: /architecture/basic-system-layer
 ---
 
-# Basic System Layer
-
-[TBD]
+# 基础系统层
 
 基础系统层通过将 [KubeEdge 容器编排框架](https://kubeedge.io/) 部署在云边分布式节点上，从而为大禹调度系统提供底层的容器化编排支持。
 `KubeEdge` 是华为为边缘场景提出的 [Kubernetes 框架](https://kubernetes.io/) 扩展，能很好地部署在资源有限、性能低下的设备上，从而在云服务器和边缘节点上建立容器化编排基础框架。
@@ -17,4 +16,5 @@ slug: /architecture/basic-system-layer
 
 
 ![lower-layer-structure.png](/img/architecture/lower-layer-structure.png)
+
 

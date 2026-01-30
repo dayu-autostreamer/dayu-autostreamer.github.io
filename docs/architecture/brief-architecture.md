@@ -1,5 +1,7 @@
 ---
-slug: /architecture
+sidebar_label: Brief Architecture
+sidebar_position: 1
+slug: /architecture/breif-architecture
 ---
 
 # Brief Architecture

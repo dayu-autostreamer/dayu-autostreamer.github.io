@@ -1,5 +1,6 @@
 ---
 sidebar_label: 中间接口层
+sidebar_position: 3
 slug: /architecture/intermediate-interface-layer
 ---
 
