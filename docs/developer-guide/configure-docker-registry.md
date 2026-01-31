@@ -123,6 +123,6 @@ docker pull repo:5000/dayuhub/backend:v1.0
 # or: docker pull 114.212.87.136:5000/dayuhub/backend:v1.0
 ```
 
-When compiling and building images in the dayu system, please configure env parameter `REG` and `buildkitd.toml` to use the private repository. For details, please refer to [Build Components](/docs/developer-guide/how-to-build/build-components#quick-building).
+When compiling and building images in the dayu system, please configure env parameter `REG` and `buildkitd.toml` to use the private repository. For details, please refer to [How to Build](/docs/developer-guide/how-to-build).
 
 
