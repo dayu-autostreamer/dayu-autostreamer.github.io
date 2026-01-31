@@ -114,7 +114,7 @@ sudo chmod a+rw /var/run/docker.sock
 docker images
 ```
 
-如无法访问[Dockerhub](https://hub.docker.com/)，需设置docker镜像源，可参考[docker镜像源配置](/docs/developer-guide/how-to-build/docker-registry).
+如无法访问[Dockerhub](https://hub.docker.com/)，需设置docker镜像源，可参考[docker镜像源配置](/docs/developer-guide/configure-docker-registry).
 
 ## 设置跨节点时钟同步（云边共用）
 分布式系统需要保证每个节点的时钟是同步的，采用NTP服务同步云边分布式节点

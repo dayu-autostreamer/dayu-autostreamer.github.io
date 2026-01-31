@@ -1,10 +1,10 @@
 ---
-sidebar_label: Docker Registry Configuration
-slug: /developer-guide/how-to-build/docker-registry
+sidebar_label: Configure Docker Registry
+slug: /developer-guide/configure-docker-registry
 unlisted: true
 ---
 
-# Docker Registry Configuration
+# Configure Docker Registry
 
 To solve connection issues with the [Docker image repository](https://hub.docker.com/repositories/), two ways can be chosen: using a registry mirror and setting up an internal private repository.
 

@@ -1,9 +1,6 @@
 {
   "label": "Developer Guide",
-  "link": {
-    "type": "doc",
-    "id": "developer-guide/index"
-  },
+  "position": 4,
   "collapsible": true,
   "collapsed": true
 }

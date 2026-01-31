@@ -1,15 +1,20 @@
 ---
-sidebar_label: Build Components
-slug: /developer-guide/how-to-build/build-components
+sidebar_label: How to Build
+sidebar_position: 2
+slug: /developer-guide/how-to-build
 ---
 
-# Build Components
-
-## Quick Building
+# How to Build
 
 Components in the dayu system are dependent on docker containers. Thus, if you need to customize dayu system you should build specified images.
 
 The official images of Dayu system is at [dockerhub/dayuhub](https://hub.docker.com/u/dayuhub).
+
+## Prepare for building
+
+Dayu relies on docker buildx to build multi-arch images for cloud/edge devices, you can refer to [Install Docker Buildx](/docs/developer-guide/install-docker-buildx) to install docker buildx.
+
+## Build components
 
 set meta information of building
 ```bash
@@ -52,3 +57,6 @@ docker buildx ls
 docker buildx stop dayu-buildx
 docker buildx rm dayu-buildx
 ```
+
+
+

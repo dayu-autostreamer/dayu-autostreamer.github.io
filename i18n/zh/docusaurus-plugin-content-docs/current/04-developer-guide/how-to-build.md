@@ -1,12 +1,16 @@
 ---
-sidebar_label: 构建系统组件
-slug: /developer-guide/how-to-build/build-components
+sidebar_label: 如何构建
+sidebar_position: 2
+slug: /developer-guide/how-to-build
 ---
 
-# 构建系统组件
+# 如何构建
 
+## 构建准备工作
 
-## 快速构建
+大禹系统的构建依赖 docker buildx 构建多架构镜像，从而适配云/边异构设备，你可参照 [安装 Docker Buildx](/docs/developer-guide/install-docker-buildx) 来安装 Docker Buildx。
+
+## 构建系统组件
 
 大禹系统中的组件依赖于 Docker 容器，因此，如果您需要自定义大禹系统组件，您应该构建指定的镜像。
 

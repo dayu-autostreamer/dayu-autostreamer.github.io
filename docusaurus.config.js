@@ -137,10 +137,6 @@ const config = {
                                     label: 'Tutorial',
                                     to: '/docs',
                                 },
-                                {
-                                    label: 'Development',
-                                    to: '/docs/developer-guide',
-                                },
 
                             ],
                         },

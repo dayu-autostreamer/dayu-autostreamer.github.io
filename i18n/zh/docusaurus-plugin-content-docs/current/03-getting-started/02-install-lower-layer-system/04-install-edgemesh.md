@@ -119,7 +119,7 @@ kubectl apply -f build/agent/resources/
 ```
 
 
-提示: 如果使用[内网镜像仓库](/docs/developer-guide/how-to-build/docker-registry/)，请进入yaml文件中修改image源，如:
+提示: 如果使用[内网镜像仓库](/docs/developer-guide/configure-docker-registry)，请进入yaml文件中修改image源，如:
 ```
 dayuhub/edgemesh-gateway:v1.0 -> repo:5000/dayuhub/edgemesh-gateway:v1.0
 ```

@@ -1,6 +1,7 @@
 ---
-sidebar_label: 构建准备工作
-slug: /developer-guide/how-to-build/build-preparation
+sidebar_label: 安装 Docker Buildx
+slug: /developer-guide/install-docker-buildx
+unlisted: true
 ---
 
 # 构建准备工作

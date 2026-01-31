@@ -114,7 +114,7 @@ kubectl apply -f build/crds/istio/
 kubectl apply -f build/agent/resources/
 ```
 
-NOTE: If using the [Intranet Image Repository](/docs/developer-guide/how-to-build/docker-registry/), please modify the image in the yaml file, such as:
+NOTE: If using the [Intranet Image Repository](/docs/developer-guide/configure-docker-registry), please modify the image in the yaml file, such as:
 ```
 dayuhub/edgemesh-gateway:v1.0 -> repo:5000/dayuhub/edgemesh-gateway:v1.0
 ```

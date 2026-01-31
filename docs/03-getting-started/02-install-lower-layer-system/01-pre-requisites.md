@@ -117,7 +117,7 @@ docker images
 ```
 
 If unable to access [Dockerhub](https://hub.docker.com/), you need to configure Docker registry, 
-and you can refer to [Docker Registry Configuration](/docs/developer-guide/how-to-build/docker-registry) for instructions.
+and you can refer to [Docker Registry Configuration](/docs/developer-guide/configure-docker-registry) for instructions.
 
 ## Set cross-node clock synchronization (both cloud/edge)
 

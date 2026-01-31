@@ -1,15 +1,15 @@
 ---
-sidebar_label: Docker镜像源配置
-slug: /developer-guide/how-to-build/docker-registry
+sidebar_label: 配置 Docker 镜像源
+slug: /developer-guide/configure-docker-registry
 unlisted: true
 ---
 
-# Docker 镜像源配置
+# 配置 Docker 镜像源
 
 由于[docker镜像仓库](https://hub.docker.com/repositories/)的连接问题，可以使用registry mirror和内网私有仓库两种方式处理这个问题。
 
 
-##  使用registry mirror
+##  使用 registry mirror
 使用第三方镜像源，将域名加到/etc/docker/daemon.json中（[部分可用镜像源参考](https://www.wangdu.site/course/2109.html)）
 
 (缺点：速度较慢 适用场景：拉取外部镜像)

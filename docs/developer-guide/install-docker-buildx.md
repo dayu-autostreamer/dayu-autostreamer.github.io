@@ -1,9 +1,10 @@
 ---
-sidebar_label: Prepare for Building
-slug: /developer-guide/how-to-build/build-preparation
+sidebar_label: Install Docker Buildx
+slug: /developer-guide/install-docker-buildx
+unlisted: true
 ---
 
-# Prepare for Building
+# Install Docker Buildx
 
 ## Introduction
 Dayu is deployed on a cloud-edge collaborative environment with heterogeneous devices, which requires components in dayu has multi-architecture (like `amd64`/`arm64`). 
@@ -11,7 +12,7 @@ Dayu is deployed on a cloud-edge collaborative environment with heterogeneous de
 An easy way to build multi-architecture docker images is cross-building. 
 `buildx` is an official Docker build tool provided by Docker, which helps users quickly and efficiently build Docker images and supports building on multiple platforms. With `buildx`, users can build images for multiple architectures in a single command without manually operating multiple build commands. 
 
-## Enable Docker Experimental Mode
+## Enable docker experimental mode
 Edit `/etc/docker/daemon.json` and add the following line:
 ```
 {
@@ -25,8 +26,7 @@ systemctl daemon-reload
 systemctl restart docker
 ```
 
-
-## Install docker buildx
+## Download and install docker buildx
 
 Choose an appropriate buildx version at https://github.com/docker/buildx/releases based on your docker version.
 
