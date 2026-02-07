@@ -35,7 +35,7 @@ function HomepageHeader() {
                     <div className="margin-horiz--sm">
                         <Link
                             className="button button--secondary button--lg"
-                            to="https://github.com/dayu-autostreamer/dayu/">
+                            to="https://github.com/dayu-autostreamer/dayu">
                             <Translate>Github</Translate>
                         </Link>
                     </div>
