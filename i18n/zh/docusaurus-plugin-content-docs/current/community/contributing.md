@@ -14,7 +14,7 @@ Please make sure to read and observe our [Code of Conduct](https://github.com/da
 
 ## Getting started
 
-- Fork the [repository](https://github.com/dayu-autostreamer/dayu/) on GitHub
+- Fork the [repository](https://github.com/dayu-autostreamer/dayu) on GitHub
 - Read the [quick start](https://dayu-autostreamer.github.io/docs/getting-started/quick-start) for deployment.
 - Read the [Developer Guide](https://dayu-autostreamer.github.io/docs/developer-guide/how-to-develop) for development guide.
 
