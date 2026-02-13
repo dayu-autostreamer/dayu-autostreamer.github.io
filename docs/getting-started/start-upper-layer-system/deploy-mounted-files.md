@@ -1,0 +1,17 @@
+---
+sidebar_label: Deploy Mounted Files
+sidebar_position: 3
+slug: /getting-started/start-upper-layer-system/deploy-mounted-files
+---
+
+# Deploy Mounted Files
+
+Dayu system requires deploying files to support mounting of component containers.
+
+Download files from [mounted files link](https://box.nju.edu.cn/d/300d99fd77b049908606), it has the following structure:
+
+```text
+
+```
+
+
