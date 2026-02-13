@@ -124,7 +124,7 @@ docker pull repo:5000/dayuhub/backend:v1.0
 # 或：docker pull 114.212.87.136:5000/dayuhub/backend:v1.0
 ```
 
-编译构建大禹系统镜像时，请配置`REG`环境参数和`buildkitd.toml`文件来使用私有仓库，具体请查阅 [如何构建](/docs/developer-guide/how-to-buildg)
+编译构建大禹系统镜像时，请配置`REG`环境参数和`buildkitd.toml`文件来使用私有仓库，具体请查阅 [如何构建](/docs/developer-guide/how-to-build)
 
 
 
