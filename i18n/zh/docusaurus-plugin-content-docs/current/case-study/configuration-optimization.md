@@ -1,8 +1,8 @@
 ---
-sidebar_label: Configuration Optimization
+sidebar_label: 配置调优
 sidebar_position: 1
 slug: /case-study/configuration-optimization
 ---
 
-# Configuration Optimization
+# 配置调优
 

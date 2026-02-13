@@ -1,8 +1,8 @@
 ---
-sidebar_label: Adaptive Offloading
+sidebar_label: 自适应卸载
 sidebar_position: 2
 slug: /case-study/adaptive-offloading
 ---
 
-# Adaptive Offloading
+# 自适应卸载
 
