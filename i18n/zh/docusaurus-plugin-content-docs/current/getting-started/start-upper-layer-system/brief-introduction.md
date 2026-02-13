@@ -1,7 +1,7 @@
 ---
 sidebar_label: 简介
 sidebar_position: 1
-slug: /getting-started/start-upper-layer-system/brief-intorduction
+slug: /getting-started/start-upper-layer-system/brief-introduction
 ---
 
 # 启动大禹上层系统

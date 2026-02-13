@@ -1,7 +1,7 @@
 ---
 sidebar_label: 简介
 sidebar_position: 1
-slug: /getting-started/install-lower-layer-system/brief-intorduction
+slug: /getting-started/install-lower-layer-system/brief-introduction
 ---
 
 # 安装大禹下层系统
