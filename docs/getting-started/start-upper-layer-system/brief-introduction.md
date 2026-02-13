@@ -23,5 +23,5 @@ Please start in the following order:
 
 ## Tips
 
-- Please ensure that the lower-layer system has been correctly installed and is running normally before starting the upper-layer system. For installation instructions of the lower-layer system, please refer to [Install Lower Layer System](/docs/getting-started/install-lower-layer-system).
+- Please ensure that the lower-layer system has been correctly installed and is running normally before starting the upper-layer system. For installation instructions of the lower-layer system, please refer to [Install Lower Layer System](/docs/getting-started/install-lower-layer-system/brief-introduction).
 - During use of the system, you can refer to [FAQs](/docs/getting-started/install-lower-layer-system/faqs) to troubleshoot common issues. If you encounter problems that cannot be resolved, please submit [Github Issue](https://github.com/dayu-autostreamer/dayu/issues) or contact us through [Contact Us](/docs/community/contact-us).

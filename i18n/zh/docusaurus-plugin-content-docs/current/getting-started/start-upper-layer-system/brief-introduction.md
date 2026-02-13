@@ -23,6 +23,6 @@ slug: /getting-started/start-upper-layer-system/brief-intorduction
 
 ## 提示
 
-- 请确保在启动上层系统之前，下层系统已经正确安装并正常运行。关于下层系统的安装说明，请参阅[安装大禹下层系统](/docs/getting-started/install-lower-layer-system)。
+- 请确保在启动上层系统之前，下层系统已经正确安装并正常运行。关于下层系统的安装说明，请参阅[安装大禹下层系统](/docs/getting-started/install-lower-layer-system/brief-introduction)。
 - 在使用系统期间，您可以参考[FAQs](/docs/getting-started/install-lower-layer-system/faqs)来排查常见问题。如果您遇到无法解决的问题，请提交 [Github Issue](https://github.com/dayu-autostreamer/dayu/issues) 或[联系我们](/docs/community/contact-us)。
 
