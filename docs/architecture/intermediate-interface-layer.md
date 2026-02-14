@@ -6,27 +6,25 @@ slug: /architecture/intermediate-interface-layer
 
 # Intermediate Interface Layer
 
-[TBD]
 
-中间接口层基于 `KubeEdge` 系统部署，负责对接大禹调度系统的定制化需求，通过自定义组件的形式定制大禹调度系统需要的服务下装和节点通信接口。
-我们通过修改和扩展官方的 [服务下装组件 Sedna](https://sedna.readthedocs.io/) 和 [节点通信组件 EdgeMesh](https://edgemesh.netlify.app/) 构建中间接口层。
+The intermediate interface layer is based on the **KubeEdge** deployment and is responsible for meeting the customized requirements of our dayu system, adapting to the service deployment and node communication required by the dayu system in the form of custom components.
+
+We construct the intermediate interface layer by modifying and extending the official **[service deployment component (Sedna)](https://sedna.readthedocs.io/)** and **[node communication component (EdgeMesh)](https://edgemesh.netlify.app/)**.
+
 
 ![lower-layer-structure.png](/img/architecture/lower-layer-structure.png)
 
 **Sedna:**
 
-`Sedna` 通过在Master节点（云服务器）上部署全局管理器 `Global Manager` 、在每个设备上（包括云服务器）部署本地控制器 `Local Controller`（为便于与上层系统中的组件名区分，这里我们将 `Local Controller` 改名为 `Local Manager`），
-实现云边分布式系统上的统一服务下装与管理。
+Sedna achieves unified service deployment and management on the cloud-edge distributed system by deploying the Global Manager on the master node (cloud server) and deploying the Local Manager on each device (including the cloud server).,
 
-具体来说，`Global Manager` 负责云边定制化服务维护、云边服务协同处理、云边分布式配置管理等，可以通过定制化CRD的方式扩展新的云边协同服务；`Local Manager` 负责在每个设备上维护具体的服务运行时，其接受 `Global Manager` 的控制指令维护下装的服务组件，并将每个服务组件作为一个Worker管理，从而实现分布式系统上的跨设备服务维护。
+Specifically, the Global Manager is responsible for maintaining cloud-edge customized services, collaborative processing of cloud-edge services, and cloud-edge distributed configuration management, and can extend new cloud-edge collaborative services through the way of customizing CRD. The Local Manager is responsible for maintaining the specific service runtime on each device, which accepts control instructions from the Global Manager to maintain the deployed service components, and manages each service component as a Worker, thus realizing cross-device service maintenance on the distributed system.
 
-需要注意的是，在大禹调度系统中，上层系统中系统支撑层、协同调度层、应用服务层的功能组件都是以Worker的形式在 `Sedna` 中托管。我们通过修改扩展 `Global Manager` 和 `Local Controller` 中的CRD模板和CRD控制器，定制化实现大禹调度系统服务下装过程中需要的参数传递和文件挂在等过程 ([大禹定制版 Sedna](https://github.com/dayu-autostreamer/dayu-sedna))。
+It should be noted that in the dayu system, the functional components of the system support layer, collaborative scheduling layer, and application service layer in the upper-level system are all hosted in the form of Workers in Sedna. We customize the implementation of parameter passing and file mounting processes required in the service deployment process of the dayu system by modifying and extending the CRD template and CRD controller in Global Manager and Local Controller **[(Dayu-Customized Sedna)](https://github.com/dayu-autostreamer/dayu-sedna)**.
+
 
 **EdgeMesh:**
 
-`EdgeMesh` 通过在每个节点上部署 `EdgeMesh Agent` 组件，为云边分布式协同系统中不同节点上的Pod间通信提供高效方式，其具有高效路由、自动负载均衡等特性，适合大规模云边场景下的跨设备通信。
+EdgeMesh provides an efficient way for inter-pod communication between different nodes in a cloud-edge distributed collaboration platform by deploying the EdgeMesh Agent on each node. It has features such as efficient routing and automatic load balancing, making it suitable for cross-device communication in large-scale cloud-edge scenarios.
 
-根据大禹调度系统的需求，我们定制化修改了 `EdgeMesh Agent` 组件中的负载均衡算法策略，使其从原本的简单所有设备轮询转化为对特定目标设备的多个POD做负载均衡，从而对接上层系统的通信需求([大禹定制版 EdgeMesh](https://github.com/dayu-autostreamer/dayu-edgemesh))。
-
-
-
+In response to the requirements of the dayu system, we customized the load balancing algorithm strategy in the EdgeMesh Agent, transforming it from the original simple round-robin polling of all devices to load balancing for multiple pods on specific target devices, thereby meeting the communication needs of the upper-level system **[(Dayu-Customized EdgeMesh)](https://github.com/dayu-autostreamer/dayu-edgemesh)**.

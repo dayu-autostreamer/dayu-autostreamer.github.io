@@ -6,15 +6,11 @@ slug: /architecture/application-service-layer
 
 # Application Service Layer
 
-[TBD]
+The application service layer customizes specific application processing logic according to user needs, thereby providing an upper-level logical application representation to the dayu system.
 
-应用服务层为用户的需求定制具体的应用处理逻辑，从而向大禹调度系统提供上层的逻辑化应用表示。
+Specifically, user needs can be transformed into an application pipeline composed of one or more stages of AI processing services. 
+For example, if a user needs to complete road vehicle monitoring, it can be transformed into a video stream processing pipeline in the form of _[vehicle detection, license plate location, license plate recognition]_. In this pipeline, services such as _vehicle detection_ constitute a stage of the pipeline.
+Each stage can be represented by an independent AI processing logic, thus allowing it to be encapsulated into the processor of the collaborative scheduling layer. The application service layer provides users with all the service types supported by the current system and formulates corresponding specifications for the services.
+Users can arbitrarily arrange different services under the premise of compliance with the specifications, thereby combining the application processing logic required by the user.
 
-具体来说，用户的需求可以转化为由一个阶段或多个阶段AI处理服务组成的应用流水线，
-例如用户需要完成路面车辆监控，可以转化为“车辆检测、车牌定位、车牌识别”形式的视频流处理流水线，在这个流水线中“车辆检测”这样的服务构成了流水线的一个阶段，
-且每个阶段可以使用一种独立的AI处理逻辑表示，从而可以封装进协同调度层的处理器中。应用服务层中为用户提供当前系统支持的所有服务类型，并对服务制定对应的规约，
-用户可以在符合规约的前提下任意编排不同的服务，从而组合成用户需要的应用处理逻辑。
-
-需要注意的是，系统中支持的服务内容和用户对应用的编排均在用户与前端页面的交互中完成。
-
-
+It should be noted that the content of services supported by the system and the user's arrangement of applications are completed in the interaction between the user and the frontend page.
