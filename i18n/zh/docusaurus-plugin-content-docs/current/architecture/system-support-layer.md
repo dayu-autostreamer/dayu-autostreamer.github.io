@@ -6,10 +6,10 @@ slug: /architecture/system-support-layer
 
 # 系统支持层
 
-系统支撑层为大禹调度系统提供面向用户的功能性支撑服务，从而完成对用户直接需求的对接。
+系统支撑层为大禹系统提供面向用户的功能性支撑服务，从而完成对用户直接需求的对接。
 具体来说，系统支撑层由**前端服务器**、**后端服务器**和**数据源服务器**组成。
 
-- **[前端服务器(Frontend)](https://github.com/dayu-autostreamer/dayu/tree/main/frontend)** 使用VUE语言构建了一个可交互的网页式前端界面，在启动大禹调度系统后，用户可以直接访问前端页面，
+- **[前端服务器(Frontend)](https://github.com/dayu-autostreamer/dayu/tree/main/frontend)** 使用VUE语言构建了一个可交互的网页式前端界面，在启动大禹系统后，用户可以直接访问前端页面，
 通过前端页面提供的按钮完成所有操作流程。
 
 - **[后端服务器(Backend)](https://github.com/dayu-autostreamer/dayu/tree/main/backend)** 负责与前端交互，通过 Fastapi 构建HTTP响应式服务，
@@ -17,5 +17,5 @@ slug: /architecture/system-support-layer
 
 - **[数据源服务器(Datasource)](https://github.com/dayu-autostreamer/dayu/tree/main/datasource)** 为用户的流数据处理应用提供模拟数据源。在非真实的仿真场景或测试场景中，
 缺少真实流数据源（如真实摄像头）往往会导致系统行为和效果无法完全模拟真实场景，
-因此大禹调度系统中我们通过构建可选的数据源服务器，提供包括RTSP、HTTP在内的多种流数据源发生器的功能，覆盖真实场景下不同类型的数据源。
+因此大禹系统中我们通过构建可选的数据源服务器，提供包括RTSP、HTTP在内的多种流数据源发生器的功能，覆盖真实场景下不同类型的数据源。
 
