@@ -166,34 +166,155 @@ kubectl edit daemonset -n kube-system calico-node
 [//]: # (<img src="/img/install/kube-proxy.png" alt="kube-proxy" style="zoom:60%;" />)
 
 
-## 下载配置 metrics-service（云端）
+## 下载配置 metrics server（云端）
 
-### 下载metrics-service
+### 安装 metrics server
 
-metrics-service 用于追踪边缘节点日志，可以安装metrics-service来帮助监测云边分布式集群。
+metrics server 用于追踪边缘节点日志，可以安装 metrics server 来帮助监测云边分布式集群。
 
-下载方法包括官网安装与本地安装，如果官网安装方式失败可尝试本地安装方式。
-
-**官网安装** (可能会出错, 拉取镜像超时问题)：
+创建一个用于安装的YAML文件
 ```bash
-# 安装metrics-service
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-# 检查pod状态
-kubectl get pods -A
+vim metrics-server.yaml
 ```
-
-![metrics-service-official-install](/img/install/metrics-service-official-install.png)
-
-**本地安装**
-
-先下载官方提供的yaml
-```bash
-wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-```
-
-使用`vim components.yaml`，先查看yaml文件中官方的镜像版本，然后去 [dockerhub](https://hub.docker.com/) 搜索对应版本的非官方镜像，并在yaml文件中添加`- --kubelet-insecure-tls`，修改镜像名：
-```bash
+其内容如下：
+```bash yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    k8s-app: metrics-server
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
+  name: system:aggregated-metrics-reader
+rules:
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - pods
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: system:metrics-server
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes/metrics
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server-auth-reader
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server:system:auth-delegator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: system:metrics-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:metrics-server
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: metrics-server
+    service.edgemesh.kubeedge.io/service-proxy-name: "ignore"
+  name: metrics-server
+  namespace: kube-system
+spec:
+  ports:
+  - appProtocol: https
+    name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  selector:
+    k8s-app: metrics-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        k8s-app: metrics-server
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      nodeName: cloud.kubeedge
       containers:
       - args:
         - --cert-dir=/tmp
@@ -202,17 +323,76 @@ wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/
         - --kubelet-use-node-status-port
         - --metric-resolution=15s
         - --kubelet-insecure-tls
-        image: mingyangtech/klogserver:v0.6.4
+        image: dayuhub/metrics-server:v0.6.4
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          periodSeconds: 10
+        name: metrics-server
+        ports:
+        - containerPort: 4443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /readyz
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: system-cluster-critical
+      serviceAccountName: metrics-server
+      volumes:
+      - emptyDir: {}
+        name: tmp-dir
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: v1beta1.metrics.k8s.io
+spec:
+  group: metrics.k8s.io
+  groupPriorityMinimum: 100
+  insecureSkipTLSVerify: true
+  service:
+    name: metrics-server
+    namespace: kube-system
+  version: v1beta1
+  versionPriority: 100
 ```
 
-![metrics-service-local-install](/img/install/metrics-service-local-install.png)
-
-从定制后的yaml文件安装
+从yaml文件安装 metrics server:
 ```bash
-# 手动 pull 镜像
-docker pull mingyangtech/klogserver:v0.6.4
+# 手动拉取镜像
+docker pull dayuhub/metrics-server:v0.6.4
 # 安装
-kubectl apply -f components.yaml
+kubectl apply -f metrics-server.yaml
 ```
 
 ### 验证metrics-service
@@ -220,5 +400,12 @@ kubectl apply -f components.yaml
 检验是否部署成功
 ```bash
 kubectl top nodes
+```
+
+### 卸载 metrics server
+
+用yaml文件卸载 metrics server：
+```bash
+kubectl delete -f metrics-server.yaml
 ```
 

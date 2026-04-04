@@ -173,36 +173,156 @@ Use `kubectl get pods -A` to check if all calico related pods are running, and u
 [//]: # (<img src="/img/install/kube-proxy.png" alt="kube-proxy" style="zoom:60%;" />)
 
 
-## Download and configure metrics-service (cloud)
+## Download and configure metrics server (cloud)
 
-### Download metrics-service
+Metrics server is used to track edge node logs, and installing metrics server can help monitor cloud-edge distributed clusters.
 
-metrics-service is used to track edge node logs, 
-and installing metrics-service can help monitor cloud-edge distributed clusters.
+### Install metrics server
 
-There are official installation and local installation. 
-If the official installation fails, you can try local installation.
-
-**Official installation.** (There may be errors for pulling images timeout.)
+Create a YAML file for installing metrics server
 ```bash
-# Install metrics-service
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-# Check pod state
-kubectl get pods -A
+vim metrics-server.yaml
 ```
 
-![metrics-service-official-install](/img/install/metrics-service-official-install.png)
-
-**Local installation.**
-
-First download the official YAML file.
-```bash
-wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-```
-
-Check the official image version in `components.yaml` and search for the corresponding version of the unofficial image in [dockerhub](https://hub.docker.com/). Add `- --kubelet-insecure-tls` in the YAML file and modify the image name as follows:
-```bash
+and the content is as follows:
+```bash yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    k8s-app: metrics-server
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
+  name: system:aggregated-metrics-reader
+rules:
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - pods
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: system:metrics-server
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes/metrics
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server-auth-reader
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server:system:auth-delegator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: system:metrics-server
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:metrics-server
+subjects:
+- kind: ServiceAccount
+  name: metrics-server
+  namespace: kube-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: metrics-server
+    service.edgemesh.kubeedge.io/service-proxy-name: "ignore"
+  name: metrics-server
+  namespace: kube-system
+spec:
+  ports:
+  - appProtocol: https
+    name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  selector:
+    k8s-app: metrics-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: metrics-server
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        k8s-app: metrics-server
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      nodeName: cloud.kubeedge
       containers:
       - args:
         - --cert-dir=/tmp
@@ -211,24 +331,90 @@ Check the official image version in `components.yaml` and search for the corresp
         - --kubelet-use-node-status-port
         - --metric-resolution=15s
         - --kubelet-insecure-tls
-        image: mingyangtech/klogserver:v0.6.4
+        image: dayuhub/metrics-server:v0.6.4
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          periodSeconds: 10
+        name: metrics-server
+        ports:
+        - containerPort: 4443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /readyz
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: system-cluster-critical
+      serviceAccountName: metrics-server
+      volumes:
+      - emptyDir: {}
+        name: tmp-dir
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  labels:
+    k8s-app: metrics-server
+  name: v1beta1.metrics.k8s.io
+spec:
+  group: metrics.k8s.io
+  groupPriorityMinimum: 100
+  insecureSkipTLSVerify: true
+  service:
+    name: metrics-server
+    namespace: kube-system
+  version: v1beta1
+  versionPriority: 100
 ```
 
-![metrics-service-local-install](/img/install/metrics-service-local-install.png)
-
-Install from the customized YAML file.
+Install from the customized YAML file:
 ```bash
 # Manually pull image
-docker pull mingyangtech/klogserver:v0.6.4
+docker pull dayuhub/metrics-server:v0.6.4
 # Install
-kubectl apply -f components.yaml
+kubectl apply -f metrics-server.yaml
 ```
 
-### Verify metrics-service
 
-Verify the deployment of metrics-service.
+### Verify metrics server
 
+Verify the deployment of metrics server:
 ```bash
 kubectl top nodes
+```
+
+### Uninstall metrics server
+
+Uninstall the metrics server with yaml:
+```bash
+kubectl delete -f metrics-server.yaml
 ```
 
