@@ -43,6 +43,9 @@ file-mount:
     # NOTE: the following ones are optional
     # name of the file mount, which is optional and can be used for identification, default is "".
     name: controller-file-mount
+    # path prefix for the source path if the source path is relative, default is efault-file-mount-prefix in base.yaml.
+    # not work if the source path is absolute path.
+    prefix: "/data/dayu-files"
     # mount type, support: Directory | DirectoryOrCreate | File | FileOrCreate | Socket | CharDevice | BlockDevice, default is Directory.
     type: Directory
     # target path in the pod, which should be absolute path.
