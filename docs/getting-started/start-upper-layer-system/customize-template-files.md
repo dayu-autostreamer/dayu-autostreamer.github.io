@@ -48,19 +48,27 @@ template/
   └── ...
 ```
 
-The table below lists the template files and their functions. For more details about each file format, please refer to
+The table below lists the template files for meta information. For more details about each file format, please refer to
 the linked documentation:
 
-| File                       | Function                                                                                                                       | Details                                                                                         | 
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| base.yaml                  | contains basic information of dayu system                                                                                      | [detail formats](/docs/getting-started/start-upper-layer-system/base-template)                  | 
-| scheduler_policies.yaml    | contains list of switchable scheduling policies, which is further defined in `scheduler/`                                      | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
-| services.yaml              | contains list of available services, which is further defined in `processor/`                                                  | [detail formats](/docs/getting-started/start-upper-layer-system/services-template)              | 
-| result-visualizations.yaml | contains list of visualization modules for task results                                                                        | [detail formats](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
-| system-visualizations.yaml | contains list of visualization modules for system monitoring                                                                   | [detail formats](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
-| scheduler/*.yaml           | defines different scheduling policies in different yaml templates, which is switchable in frontend UI after running            | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-template)             | 
-| processor/*.yaml           | defines different services in different yaml templates, which can be orchestrated in frontend UI as applications after running | [detail formats](/docs/getting-started/start-upper-layer-system/processor-template)             | 
-| generator/*.yaml           | defines the generator component in yaml template                                                                               | [detail formats](/docs/getting-started/start-upper-layer-system/generator-template)             | 
-| controller/*.yaml          | defines the controller component in yaml template                                                                              | [detail formats](/docs/getting-started/start-upper-layer-system/controller-template)            | 
-| distributor/*.yaml         | defines the distributor component in yaml template                                                                             | [detail formats](/docs/getting-started/start-upper-layer-system/distributor-template)           |
-| monitor/*.yaml             | defines the monitor component in yaml template                                                                                 | [detail formats](/docs/getting-started/start-upper-layer-system/monitor-template)               | 
+| File                       | Function                                                                                  | Details                                                                                         | 
+|----------------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| base.yaml                  | contains basic information of dayu system                                                 | [detail formats](/docs/getting-started/start-upper-layer-system/base-template)                  | 
+| scheduler_policies.yaml    | contains list of switchable scheduling policies, which is further defined in `scheduler/` | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
+| services.yaml              | contains list of available services, which is further defined in `processor/`             | [detail formats](/docs/getting-started/start-upper-layer-system/services-template)              | 
+| result-visualizations.yaml | contains list of visualization modules for task results                                   | [detail formats](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
+| system-visualizations.yaml | contains list of visualization modules for system monitoring                              | [detail formats](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
+
+The following table lists the template files for pod installation, each yaml file is corresponding to an installable pod
+in sedna. For more details about each file format, please refer to the linked documentation:
+
+| File               | Function                                                                                                                       | Details                                                                               | 
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| common template    | common template for the following yamls as jointmultiedgeservice in dayu-sedna                                                 | [detail formats](/docs/getting-started/start-upper-layer-system/common-template)      |
+| scheduler/*.yaml   | defines different scheduling policies in different yaml templates, which is switchable in frontend UI after running            | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-template)   | 
+| processor/*.yaml   | defines different services in different yaml templates, which can be orchestrated in frontend UI as applications after running | [detail formats](/docs/getting-started/start-upper-layer-system/processor-template)   | 
+| generator/*.yaml   | defines the generator component in yaml template                                                                               | [detail formats](/docs/getting-started/start-upper-layer-system/generator-template)   | 
+| controller/*.yaml  | defines the controller component in yaml template                                                                              | [detail formats](/docs/getting-started/start-upper-layer-system/controller-template)  | 
+| distributor/*.yaml | defines the distributor component in yaml template                                                                             | [detail formats](/docs/getting-started/start-upper-layer-system/distributor-template) |
+| monitor/*.yaml     | defines the monitor component in yaml template                                                                                 | [detail formats](/docs/getting-started/start-upper-layer-system/monitor-template)     | 
+

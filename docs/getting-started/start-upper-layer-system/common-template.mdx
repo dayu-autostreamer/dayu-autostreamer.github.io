@@ -1,0 +1,72 @@
+---
+sidebar_label: Common Template
+slug: /getting-started/start-upper-layer-system/common-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# Common Template
+
+
+```yaml
+# Description of the common template for pod deployment in sedna, which can be used for all types of pods.
+# Note: the common template is transformed to jointmultiedgeservice template in dayu-sedna in backend.
+
+# deployed position of the pod. support: cloud/edge/both.
+position: both
+pod-template:
+  # image of the pod. support [<registry>/][<repository>/]<image>[:<tag>]
+  # the default ones in "[]" use definitions in base.yaml.
+  # e.g., repo:5000/dayuhub/controller:v1.0, dayuhub/controller:v1.0, controller:v1.0, controller
+  image: controller
+  # pull policy of the image, support: Always/Never/IfNotPresent.
+  imagePullPolicy: Always
+  # env variables for the pod, which can be used in the pod's command or args.
+  env:
+    - name: DISPLAY
+      value: "True"
+# open port for the pod, the corresponding external port on device is automatically assigned by edgemesh.
+port-open:
+  # open port on cloud/edge/both.
+  pos: both
+  # inner port of the pod
+  port: 9000
+# mount files to the pod
+file-mount:
+  # A mounted file/directory is an item of the list.
+  - # mount position on cloud/edge/both.
+    pos: cloud
+    # source path on device, which can be a file or directory. support absolute path or relative path.
+    path: 'controller/'
+    # the following ones are optional
+    # mount type, support: Directory | DirectoryOrCreate | File | FileOrCreate | Socket | CharDevice | BlockDevice, default is Directory.
+    type: Directory
+    # target path in the pod, which should be absolute path.
+    # If default, file will be mounted to '/home/data' if source path is relative, otherwise it will be mounted the same as source path.
+    target_path: '/app/controller/'
+    # specify the containers to mount files, default is all containers in the pod.
+    containers:
+      - controller
+    # extra env variables for the pod, ENV_NAME=<target.path>
+    env_name: CONTROLLER_FILE_PATH
+    # whether the mounted file is read-only, default is false.
+    read_only: true
+    # sub path in the mounted file to be mounted to the pod, default is "" which means mounting the whole file/directory.
+    sub_path: ""
+    # mount propagation mode, support: None/HostToContainer/ContainerToHost/Bidirectional, default is None.
+    mount_propagation: None
+```
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>
+
+
