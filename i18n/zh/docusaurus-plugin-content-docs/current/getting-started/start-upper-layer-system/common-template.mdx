@@ -38,12 +38,13 @@ file-mount:
   - # mount position on cloud/edge/both.
     pos: cloud
     # source path on device, which can be a file or directory. support absolute path or relative path.
+    # If the source path is relative, it will be resolved to an absolute path based on default-file-mount-prefix in base.yaml.
     path: 'controller/'
     # the following ones are optional
     # mount type, support: Directory | DirectoryOrCreate | File | FileOrCreate | Socket | CharDevice | BlockDevice, default is Directory.
     type: Directory
     # target path in the pod, which should be absolute path.
-    # If default, file will be mounted to '/home/data' if source path is relative, otherwise it will be mounted the same as source path.
+    # If default, file will be mounted to '/home/data' (as env DATA_PATH_PREFIX in pod) if source path is relative, otherwise it will be mounted the same as source path.
     target_path: '/app/controller/'
     # specify the containers to mount files, default is all containers in the pod.
     containers:
