@@ -40,7 +40,9 @@ file-mount:
     # source path on device, which can be a file or directory. support absolute path or relative path.
     # If the source path is relative, it will be resolved to an absolute path based on default-file-mount-prefix in base.yaml.
     path: 'controller/'
-    # the following ones are optional
+    # NOTE: the following ones are optional
+    # name of the file mount, which is optional and can be used for identification, default is "".
+    name: controller-file-mount
     # mount type, support: Directory | DirectoryOrCreate | File | FileOrCreate | Socket | CharDevice | BlockDevice, default is Directory.
     type: Directory
     # target path in the pod, which should be absolute path.
