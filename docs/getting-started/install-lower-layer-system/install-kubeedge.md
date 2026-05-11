@@ -279,30 +279,33 @@ spec:
         - |
           set -eu
 
-          if [ ! -f /host/etc/nv_tegra_release ]; then
-            echo "Not a Jetson (no /etc/nv_tegra_release). Skip."
-            sleep 360000
-          fi
+          while true; do
+            if [ ! -f /host/etc/nv_tegra_release ]; then
+              echo "Not a Jetson (no /etc/nv_tegra_release). Skip."
+            else
+              LINE="$(head -n 1 /host/etc/nv_tegra_release || true)"
+              L4T_MAJOR="$(echo "$LINE" | sed -n 's/.*R\([0-9]\+\).*/\1/p' | head -n1)"
 
-          LINE="$(head -n 1 /host/etc/nv_tegra_release || true)"
-          L4T_MAJOR="$(echo "$LINE" | sed -n 's/.*R\([0-9]\+\).*/\1/p' | head -n1)"
+              JP="unknown"
+              case "$L4T_MAJOR" in
+                32) JP="4" ;;
+                35) JP="5" ;;
+                36) JP="6" ;;
+              esac
 
-          JP="unknown"
-          case "$L4T_MAJOR" in
-            32) JP="4" ;;
-            35) JP="5" ;;
-            36) JP="6" ;;
-          esac
+              echo "node=$NODE_NAME L4T_MAJOR=${L4T_MAJOR:-unknown} -> JP=$JP"
 
-          echo "node=$NODE_NAME L4T_MAJOR=$L4T_MAJOR -> JP=$JP"
+              kubectl label node "$NODE_NAME" \
+                jetson.nvidia.com/jetpack.major="$JP" \
+                jetson.nvidia.com/l4t.major="${L4T_MAJOR:-unknown}" \
+                --overwrite
 
-          kubectl label node "$NODE_NAME" \
-            jetson.nvidia.com/jetpack.major="$JP" \
-            jetson.nvidia.com/l4t.major="${L4T_MAJOR:-unknown}" \
-            --overwrite
+              echo "label ok"
+            fi
 
-          echo "label ok"
-          sleep 360000
+            echo "sleep 4 days before next label refresh"
+            sleep 345600
+          done
 YAML
 ```
 
@@ -311,4 +314,16 @@ Verify that the labels have been set correctly:
 kubectl -n kube-system get pod -l app=jetpack-node-labeler -o wide
 kubectl -n kube-system logs -l app=jetpack-node-labeler --tail=100
 kubectl get nodes -L jetson.nvidia.com/jetpack.major,jetson.nvidia.com/l4t.major
+```
+
+### Remove Jetpack labeler
+
+If you no longer need the JetPack node labeler or you want to redeploy it, remove the DaemonSet and its related resources:
+
+```bash
+kubectl -n kube-system delete daemonset jetpack-node-labeler --ignore-not-found
+kubectl -n kube-system delete serviceaccount jetpack-node-labeler --ignore-not-found
+kubectl delete clusterrole jetpack-node-labeler --ignore-not-found
+kubectl delete clusterrolebinding jetpack-node-labeler --ignore-not-found
+kubectl -n kube-system delete secret jetpack-labeler-kubeconfig --ignore-not-found
 ```
