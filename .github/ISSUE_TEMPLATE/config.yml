@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Dayu system bugs and feature requests
+    url: https://github.com/dayu-autostreamer/dayu/issues
+    about: Use the system repository for runtime, deployment, scheduler, backend, frontend, and template issues.
+  - name: Security vulnerability report
+    url: https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/security/advisories/new
+    about: Please report vulnerabilities privately instead of opening a public issue.

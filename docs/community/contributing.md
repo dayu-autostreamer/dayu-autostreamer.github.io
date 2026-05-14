@@ -6,104 +6,80 @@ slug: /community/contributing
 
 # Contributing
 
+Dayu has two closely related repositories:
+
+- [dayu-autostreamer/dayu](https://github.com/dayu-autostreamer/dayu) contains the system implementation.
+- [dayu-autostreamer/dayu-autostreamer.github.io](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io)
+  contains this public documentation website.
+
+Use the website repository for documentation, blog, localization, homepage, and Docusaurus configuration changes. Use the
+system repository for backend, frontend, runtime, scheduler, deployment template, and test changes.
+
 ## Before you get started
 
-### Code of Conduct
+Please read and follow the [Code of Conduct](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/blob/main/CODE_OF_CONDUCT.md).
 
-Please make sure to read and observe our [Code of Conduct](https://github.com/dayu-autostreamer/dayu/tree/main/CODE_OF_CONDUCT.md).
+For website changes, also read the root
+[CONTRIBUTING.md](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/blob/main/CONTRIBUTING.md).
 
-## Getting started
+## Local documentation setup
 
-- Fork the [repository](https://github.com/dayu-autostreamer/dayu) on GitHub
-- Read the [quick start](https://dayu-autostreamer.github.io/docs/getting-start/quick-start) for deployment.
-- Read the [Developer Guide](https://dayu-autostreamer.github.io/docs/developer-guide) for development guide.
+Use Node.js `20`, then install dependencies and start the local Docusaurus server:
 
-
-## Your First Contribution
-
-We will help you to contribute in different areas like filing issues, developing features, fixing critical bugs and getting your work reviewed and merged.
-
-If you have questions about the development process, feel free to [contact us](https://dayu-autostreamer.github.io/docs/community/contact-us).
-
-### Find something to work on
-
-We are always in need of help, be it fixing documentation, reporting bugs or writing some code.
-Look at places where you feel best coding practices aren't followed, code refactoring is needed or tests are missing.
-Here is how you get started.
-
-#### Find a good first topic
-
-Dayu system focused on cloud-edge collaborative stream data analytics, and is flexible to develop based on hook functions.
-
-You can either expand the core functions of the whole system or expand the applicable research topics. 
-
-Another good way to contribute is to find a documentation improvement, such as a missing/broken link. Please see [Contributing](#contributor-workflow) below for the workflow.
-
-#### Work on an issue
-
-When you are willing to take on an issue, you can assign it to yourself. Just reply with `/assign` or `/assign @yourself` on an issue,
-then the robot will assign the issue to you and your name will present at `Assignees` list.
-
-#### File an Issue
-
-While we encourage everyone to contribute code, it is also appreciated when someone reports an issue.
-Issues should be filed under the [dayu repository](https://github.com/dayu-autostreamer/dayu/issues).
-
-Please follow the prompted submission guidelines while opening an issue.
-
-## Contributor Workflow
-
-Please do not ever hesitate to ask a question or send a pull request.
-
-This is a rough outline of what a contributor's workflow looks like:
-
-- Create a topic branch from where to base the contribution. This is usually master.
-- Make commits of logical units.
-- Make sure commit messages are in the proper format (see below).
-- Push changes in a topic branch to a personal fork of the repository.
-- Submit a pull request to [dayu-autostreamer/dayu](https://github.com/dayu-autostreamer/dayu).
-- The PR must receive an approval from two maintainers.
-
-### Creating Pull Requests
-
-Pull requests are often called simply "PR".
-Dayu generally follows the standard [GitHub pull request](https://help.github.com/articles/about-pull-requests/) process.
-To submit a proposed change, please develop the code/fix and add new test cases.
-
-
-### Code Review
-
-To make it easier for your PR to receive reviews, consider the reviewers will need you to:
-
-* follow [good coding guidelines](https://pep8.org/) for code formatting.
-* write [good commit messages](https://chris.beams.io/posts/git-commit/).
-* break large changes into a logical series of smaller patches which individually make easily understandable changes, and in aggregate solve a broader issue.
-
-#### Format of the commit message
-
-We follow a rough convention for commit messages that is designed to answer two questions: what changed and why.
-The subject line should feature the what and the body of the commit should describe the why.
-
-```
-scripts: add test codes for metamanager
-
-this add some unit test codes to improve code coverage for metamanager
-
-Fixes #12
+```bash
+npm ci
+npm start
 ```
 
-The format can be described more formally as follows:
+Before opening a pull request, run:
 
-```
-<subsystem>: <what changed>
-<BLANK LINE>
-<why this change was made>
-<BLANK LINE>
-<footer>
+```bash
+npm run build
 ```
 
-The first line is the subject and should be no longer than 70 characters, the second line is always blank, and other lines should be wrapped at 80 characters. This allows the message to be easier to read on GitHub as well as in various git tools.
+This catches broken links, MDX errors, and site configuration regressions.
 
-Note: if your pull request isn't getting enough attention, you can use the reach out to get help finding reviewers.
+## What to contribute
 
+Good website contributions include:
 
+- fixing broken links, stale screenshots, unclear wording, or missing translations
+- improving tutorials for installation, lower-layer setup, and upper-layer system startup
+- expanding architecture, API, hook, and scheduler policy explanations
+- adding release notes, research posts, case studies, and community updates
+- improving homepage content, navigation, or Docusaurus configuration
+
+## Documentation workflow
+
+- Keep English source pages under `docs/`.
+- Keep Simplified Chinese translations under `i18n/zh/docusaurus-plugin-content-docs/current/`.
+- Keep English blog posts under `blog/`.
+- Keep Simplified Chinese blog translations under `i18n/zh/docusaurus-plugin-content-blog/`.
+- Put shared assets under `static/img/` and reference them as `/img/...`.
+- Prefer relative links for internal documentation pages.
+
+When a Dayu system change affects user-facing behavior, update the documentation after the upstream issue, pull request,
+or release is clear enough to reference.
+
+## Pull request expectations
+
+Please keep pull requests focused and explain:
+
+- what reader problem the change solves
+- whether the content applies to English, Chinese, or both
+- which upstream Dayu issue, pull request, release, or paper the change reflects
+- whether `npm run build` passed locally
+
+Documentation pull requests should usually receive review from a website maintainer. Architecture, scheduler, runtime, or
+deployment tutorials may also need review from the corresponding Dayu system owner.
+
+## Commit messages
+
+Use short, scope-first commit messages:
+
+```text
+docs: explain scheduler template fields
+i18n: sync Chinese getting started guide
+site: update homepage feature copy
+ci: add pull request build check
+```

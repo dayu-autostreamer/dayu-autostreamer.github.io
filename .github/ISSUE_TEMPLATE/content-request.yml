@@ -1,0 +1,33 @@
+name: Content request
+description: Request a new tutorial, explanation, case study, or translation.
+title: "[CONTENT] "
+labels: ["documentation", "enhancement"]
+body:
+  - type: dropdown
+    id: content_type
+    attributes:
+      label: Content type
+      options:
+        - Tutorial
+        - Concept or architecture explanation
+        - API or hook documentation
+        - Case study
+        - Blog post
+        - Translation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: request
+    attributes:
+      label: What should be added?
+      description: Describe the reader problem and the expected documentation outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Upstream context
+      description: Link related Dayu issues, pull requests, releases, papers, or implementation files if available.
+    validations:
+      required: false

@@ -1,5 +1,5 @@
 {
-  "name": "my-website",
+  "name": "dayu-documentation-website",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -39,6 +39,6 @@
     ]
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=20.0"
   }
 }

@@ -1,0 +1,42 @@
+name: Website bug
+description: Report a bug in the documentation website itself.
+title: "[SITE] "
+labels: ["bug", "website"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Affected page
+      placeholder: https://dayu-autostreamer.github.io/...
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened?
+      description: Describe the broken layout, navigation issue, missing asset, build problem, or incorrect behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: false
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: Chrome 125 on macOS, Safari on iPhone, etc.
+    validations:
+      required: false

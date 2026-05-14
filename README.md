@@ -1,153 +1,100 @@
-# dayu-autostreamer.github.io
+English | [简体中文](./README_zh.md)
 
-Homepage of dayu system
+# Dayu Documentation Website
 
-# 文档撰写规范
+[![Deploy to GitHub Pages](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/actions/workflows/deploy.yaml/badge.svg)](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/actions/workflows/deploy.yaml)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fdayu-autostreamer.github.io%2F&label=website)](https://dayu-autostreamer.github.io/)
+[![License](https://img.shields.io/github/license/dayu-autostreamer/dayu-autostreamer.github.io.svg)](LICENSE)
+[![Docusaurus](https://img.shields.io/badge/Docusaurus-3.8.0-2e8555)](https://docusaurus.io/)
 
-## 基本操作
+This repository maintains the public homepage, documentation, blog, and localized content for the
+[Dayu](https://github.com/dayu-autostreamer/dayu) project.
 
-### 页面操作
+Dayu is a cloud-edge stream analytics platform for deploying, scheduling, and operating DAG-based AI pipelines across
+heterogeneous cloud and edge nodes. The system repository contains the backend control plane, Vue frontend, datasource
+runtime, templates, hooks, scheduling policies, tests, and implementation-facing technical documentation. This repository
+turns that project knowledge into the public documentation site at
+[dayu-autostreamer.github.io](https://dayu-autostreamer.github.io/).
 
-在 docs 文件夹下创建新文件夹，即可创建一个页面组。在页面组下，可以添加 Markdown 文件或 React 文件作为单独的页面。无论是 Markdown 文件还是 React 文件都要遵循一定的格式规范。
+## Repository Scope
 
-### 文档操作
+Use this repository for website and documentation work:
 
-文档是通过侧边栏，前后导航与版本相连接的一组页面。
+| Path | Purpose |
+| --- | --- |
+| `docs/` | English documentation source used by Docusaurus |
+| `i18n/zh/docusaurus-plugin-content-docs/current/` | Simplified Chinese documentation translation |
+| `blog/` | English release notes, research posts, and project updates |
+| `i18n/zh/docusaurus-plugin-content-blog/` | Simplified Chinese blog translation |
+| `src/pages/` | Homepage and standalone Docusaurus pages |
+| `src/components/` | React components used by the homepage |
+| `src/css/` | Global theme overrides |
+| `static/img/` | Logos, architecture diagrams, screenshots, and blog images |
+| `docusaurus.config.js` | Site metadata, navbar/footer, i18n, docs, blog, and deployment configuration |
+| `sidebars.js` | Documentation sidebar configuration |
 
-举例来说，一个包含了侧边栏的页面应该如下所示：
+Use the [dayu system repository](https://github.com/dayu-autostreamer/dayu) for source code, runtime bugs, scheduling
+policy changes, backend/frontend implementation work, tests, and system release history.
 
-Markdown 版本：
+## Local Development
 
-```markdown
----
-sidebar_label: "Hi!"
-sidebar_position: 3
----
-
-# Hello
-
-This is my **first Docusaurus document**!
-```
-
-### 进阶 Markdown 语法
-
-Docusaurus 的模板引擎对 Markdown 进行了一些额外的增强，将在这一部分进行进一步介绍。
-
-**前言** 实际上前文在 Markdown 段前添加的元数据可以称之为前言。其可以包含以下字段：
-
-```markdown
----
-id: my-doc-id
-title: My document title
-description: My document description
-slug: /my-custom-url
----
-```
-
-**链接** 支持相对路径链接和 URL 路径链接。举例来说，以下两种寻址方法结果都是一致的：
-
-```markdown
-Let's see how to [Create a page](/create-a-page).
-Let's see how to [Create a page](./create-a-page.md).
-```
-
-**图片** 支持常规 Markdown 图片，也可以直接使用 static 下的图片。
-
-```markdown
-![Docusaurus logo](/img/docusaurus.png)
-```
-
-**代码块** 可以支持词法高亮。
-
-````markdown
-```jsx title="src/components/HelloDocusaurus.js"
-function HelloDocusaurus() {
-  return <h1>Hello, Docusaurus!</h1>;
-}
-```
-````
-
-**Tips 和 Dangers** 文档中支持添加 Tips 和 Dangers 提示，如下所示：
-
-```
-:::tip[My tip]
-
-Use this awesome feature option
-
-:::
-
-:::danger[Take care]
-
-This action is dangerous
-
-:::
-```
-
-**交互式文档** 可以在 Markdown 文档中添加 React 的函数式组件，以进行响应交互。
-
-```javascript
-export const Highlight = ({children, color}) => (
-  <span
-    style={{
-      backgroundColor: color,
-      borderRadius: '20px',
-      color: '#fff',
-      padding: '10px',
-      cursor: 'pointer',
-    }}
-    onClick={() => {
-      alert(`You clicked the color ${color} with label ${children}`)
-    }}>
-    {children}
-  </span>
-);
-
-This is <Highlight color="#25c2a0">Docusaurus green</Highlight> !
-
-This is <Highlight color="#1877F2">Facebook blue</Highlight> !
-```
-
-## 文档的版本管理
-
-可以通过运行以下指令进行版本发布：
+Install Node.js `20` or use a version manager that reads [`.nvmrc`](.nvmrc).
 
 ```bash
-npm run docusaurus docs:version v1.0
+npm ci
+npm start
 ```
 
-之后 docs 文件夹会被复制到 versioned_docs/version-v1.0，同时会创建 versions.json 文件。
+The local development server starts at `http://localhost:3000/` by default.
 
-当前就有两个版本的文档了，这两个都可以进行修改。
+Run a production build before opening a pull request:
 
-- 1.0 版本在 http://localhost:3000/docs/
-- 当前的版本在 http://localhost:3000/docs/next/
-
-为了实现版本跳转，需要在docusaurus.config.js文件中进行配置。
-
-## 文档多语言管理
-
-在docusaurus.config.js文件中配置多语言：
-
-```
-i18n: {
-        defaultLocale: 'en',
-        locales: ['en', 'zh'],
-        localeConfigs: {
-            en: {
-                label: 'English',
-                direction: 'ltr',
-            },
-            zh: {
-                label: '简体中文',
-                direction: 'ltr',
-            },
-        },
-    }
+```bash
+npm run build
 ```
 
-生成非默认语言文档配置：
-```shell
-npm run write-translations -- --locale zh
+Preview the built site locally:
+
+```bash
+npm run serve
 ```
 
-此时会生成i18n/zh目录，可将翻译后的docs和blog复制到对应的文件夹，实现多语言管理
+## Documentation Workflow
+
+For content changes, treat English documentation under `docs/` as the canonical source and keep the Simplified Chinese
+translation under `i18n/zh/docusaurus-plugin-content-docs/current/` in sync. Blog posts follow the same pattern between
+`blog/` and `i18n/zh/docusaurus-plugin-content-blog/`.
+
+When adding or updating pages:
+
+- use Docusaurus front matter such as `sidebar_label`, `sidebar_position`, `slug`, `title`, and `description` where
+  appropriate
+- keep internal documentation links relative when possible
+- place shared images under `static/img/` and reference them as `/img/...`
+- update release, architecture, and tutorial content after corresponding changes land in the Dayu system repository
+- run `npm run build` to catch broken links, MDX errors, and site configuration regressions
+
+If a change belongs to Dayu implementation rather than the documentation site, open the issue or pull request in
+[dayu-autostreamer/dayu](https://github.com/dayu-autostreamer/dayu).
+
+## Community Files
+
+This repository follows the same open-source maintenance style as the main Dayu project:
+
+- [CONTRIBUTING.md](CONTRIBUTING.md) explains the website contribution workflow
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) defines expected community behavior
+- [SECURITY.md](SECURITY.md) explains private vulnerability reporting
+- [SUPPORT.md](SUPPORT.md) routes documentation, usage, and security questions
+- [MAINTAINERS.md](MAINTAINERS.md) lists website maintenance responsibilities
+
+## Useful Links
+
+- Website: <https://dayu-autostreamer.github.io/>
+- Dayu system repository: <https://github.com/dayu-autostreamer/dayu>
+- Dayu releases: <https://github.com/dayu-autostreamer/dayu/releases>
+- Dayu issues: <https://github.com/dayu-autostreamer/dayu/issues>
+- Documentation site issues: <https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/issues>
+
+## License
+
+This documentation website is licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.

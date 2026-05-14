@@ -5,7 +5,7 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
-import statcounterPlugin from './plugins/statcounter';
+import statcounterPlugin from './plugins/statcounter.js';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -24,7 +24,7 @@ const config = {
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'dayu-autostreamer', // Usually your GitHub org/user name.
-    projectName: 'dayu', // Usually your repo name.
+    projectName: 'dayu-autostreamer.github.io', // Usually your repo name.
 
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
