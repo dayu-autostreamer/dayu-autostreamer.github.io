@@ -6,12 +6,6 @@ slug: /getting-started/start-upper-layer-system/run-dayu-system
 
 # 运行大禹系统
 
-## 流程预览
-
-<video controls preload="metadata" muted playsInline width="100%">
-  <source src="/video/run-dayu-system/01-cover.mp4" type="video/mp4" />
-</video>
-
 ## 运行启动脚本
 
 ```bash

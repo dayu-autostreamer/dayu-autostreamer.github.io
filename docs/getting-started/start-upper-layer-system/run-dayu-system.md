@@ -6,12 +6,6 @@ slug: /getting-started/start-upper-layer-system/run-dayu-system
 
 # Run Dayu System
 
-## Workflow Preview
-
-<video controls preload="metadata" muted playsInline width="100%">
-  <source src="/video/run-dayu-system/01-cover.mp4" type="video/mp4" />
-</video>
-
 ## Run Starting Script
 
 ```bash
