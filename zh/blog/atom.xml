@@ -15,7 +15,6 @@
         <summary type="html"><![CDATA[Our paper "Tackling the Runtime Context Fluctuation: Steady Scheduling in Data Stream Analytics for Industrial Internet of Things" is Accepted by IEEE ICDCS 2026!]]></summary>
         <content type="html"><![CDATA[<p>Our paper "Tackling the Runtime Context Fluctuation: Steady Scheduling in Data Stream Analytics for Industrial Internet of Things" is Accepted by IEEE ICDCS 2026!</p>
 <p>This paper proposes a steady scheduling framework based on the concept of side-effect for IIoT data stream analytics, which updates only configurations with small side-effects to shrink the search space, thereby maintaining already-met QoS objectives while re-meeting violated ones under runtime context fluctuations.</p>
-<p>Refer to homepage: <a href="https://dayu-autostreamer.github.io/steady-scheduling/" target="_blank" rel="noopener noreferrer">https://dayu-autostreamer.github.io/steady-scheduling/</a>.</p>
 <p>For more information, please refer to:</p>
 <p><strong>Shuyu Cao, Wenhui Zhou, Jingyi Ning, and Lei Xie. Tackling the Runtime Context Fluctuation: Steady Scheduling in Data Stream Analytics for Industrial Internet of Things. Accepted to appear in Proceeding of IEEE International Conference on Distributed Computing Systems (IEEE ICDCS) 2026.</strong></p>
 <p><img decoding="async" loading="lazy" alt="steady-scheduling-paper-img" src="https://dayu-autostreamer.github.io/zh/assets/images/steady-scheduling-paper-f697c7d6a201057b9b9d1ae62b8f5da0.png" width="997" height="1289" class="img_ev3q"></p>]]></content>
