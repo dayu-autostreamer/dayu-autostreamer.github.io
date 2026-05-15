@@ -9,7 +9,6 @@ Our paper "Tackling the Runtime Context Fluctuation: Steady Scheduling in Data S
 
 This paper proposes a steady scheduling framework based on the concept of side-effect for IIoT data stream analytics, which updates only configurations with small side-effects to shrink the search space, thereby maintaining already-met QoS objectives while re-meeting violated ones under runtime context fluctuations.
 
-Refer to homepage: [https://dayu-autostreamer.github.io/steady-scheduling/](https://dayu-autostreamer.github.io/steady-scheduling/).
 
 <!-- truncate -->
 
