@@ -94,7 +94,7 @@ exposure-identification, category-classification and license-plate-recognition.<
 which simultaneously considers spatial and temporal imbalance and enhance long-term QoE performance in cloud-edge collaborative video analytics pipelines.</p>
 <p>Refer to homepage: <a href="https://dayu-autostreamer.github.io/hier-ei/" target="_blank" rel="noopener noreferrer">https://dayu-autostreamer.github.io/hier-ei/</a>.</p>
 <p>For more information, please refer to:</p>
-<p><strong>Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence. Accepted to appear in Proceeding of IEEE International Conference on Computer Communications (IEEE INFOCOM) 2026.</strong></p>
+<p><strong>Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. <a href="https://doi.org/10.1109/INFOCOM59046.2026.11571610" target="_blank" rel="noopener noreferrer">Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence</a>. IEEE INFOCOM, pp.1-10, 2026.</strong></p>
 <p><img decoding="async" loading="lazy" alt="hier-ei-paper-img" src="https://dayu-autostreamer.github.io/zh/assets/images/hier-ei-paper-abb2074181fd298303b393a8bf4d069c.png" width="668" height="866" class="img_ev3q"></p>]]></content>
         <author>
             <name>周文晖</name>
