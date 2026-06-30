@@ -16,6 +16,6 @@ Refer to homepage: [https://dayu-autostreamer.github.io/hier-ei/](https://dayu-a
 
 For more information, please refer to:
 
-**Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence. Accepted to appear in Proceeding of IEEE International Conference on Computer Communications (IEEE INFOCOM) 2026.**
+**Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. [Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence](https://doi.org/10.1109/INFOCOM59046.2026.11571610). IEEE INFOCOM, pp.1-10, 2026.**
 
 ![hier-ei-paper-img](/img/blog/hier-ei-paper.png)
