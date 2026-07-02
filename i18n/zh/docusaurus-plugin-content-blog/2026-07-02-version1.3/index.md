@@ -1,6 +1,6 @@
 ---
-slug: version1.2
-title: Dayu v1.2 Released
+slug: version1.3
+title: Dayu v1.3 Released
 authors: [whzhou, sycao]
 tags: [release]
 ---
