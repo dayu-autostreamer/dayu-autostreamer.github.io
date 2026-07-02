@@ -1,0 +1,48 @@
+---
+sidebar_label: Generator Template
+slug: /getting-started/start-upper-layer-system/generator-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# Template in generator/
+
+
+```yaml
+position: edge
+pod-template:
+  image: generator
+  imagePullPolicy: Always
+  env:
+    - name: GEN_FILTER_NAME
+      value: simple
+    - name: GEN_GETTER_FILTER_NAME
+      value: simple
+    - name: GEN_PROCESS_NAME
+      value: simple
+    - name: GEN_COMPRESS_NAME
+      value: simple
+    - name: GEN_BSO_NAME
+      value: simple
+    - name: GEN_BSTO_NAME
+      value: simple
+    - name: GEN_ASO_NAME
+      value: simple
+    # interval in source seconds to schedule requests (e.g, 1 request for 1s video), 0 for request at each task
+    - name: REQUEST_SCHEDULING_INTERVAL
+      value: "1"
+```
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.3/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>
+
+

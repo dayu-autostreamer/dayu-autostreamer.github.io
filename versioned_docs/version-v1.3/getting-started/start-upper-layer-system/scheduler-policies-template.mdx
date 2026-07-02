@@ -1,0 +1,51 @@
+---
+sidebar_label: Scheduler Policies Template
+slug: /getting-started/start-upper-layer-system/scheduler-policies-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# scheduler_policies.yaml
+
+`scheduler_policies.yaml` defines the available scheduler policies in the system. 
+Each policy includes its unique identifier, human-readable name, the YAML file that defines the policy, 
+and its dependencies on other components such as generator, controller, distributor, and monitor.
+
+These pre-defined Scheduling policies can be switched in the `Application Installation` page of the frontend UI after running system.
+
+```yaml
+# A list of scheduler policies available in the system.
+
+- id: fixed  # Unique identifier for the policy.
+  name: Fixed Policy  # Human-readable name of the policy.
+  yaml: fixed-policy.yaml  # YAML defining the policy, included in 'scheduler/' directory
+  dependency:  
+    # dependent components required by this policy
+    generator: generator-base.yaml  # YAML in 'generator/' directory
+    controller: controller-base.yaml  # YAML in 'controller/' directory
+    distributor: distributor-base.yaml  # YAML in 'distributor/' directory
+    monitor: monitor-base.yaml  # YAML in 'monitor/' directory
+    
+- id: hei
+  name: Hierarchical Embodied Intelligence (Hier-EI)
+  yaml: hei.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+    
+# ......
+```
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.3/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>
