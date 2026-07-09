@@ -118,8 +118,10 @@ keadm gettoken
 在边端执行:
 ```bash
 # 注意这里是要加入master的IP地址，token是master上获取的
-keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=9e1832528ae701aba2c4f7dfb49183ab2487e874c8090e68c19c95880cd93b50.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTk1NjU4MzF9.1B4su4QwvQy_ZCPs-PIyDT9ixsDozfN1oG4vX59tKDs
+sudo keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=<token> --edgenode-name=<edge-node-name> --tarballpath=/home/nvidia --cgroupdriver=systemd
 ```
+
+`--tarballpath` 应填写包含 `kubeedge-v1.9.2-linux-arm64.tar.gz` 的目录。对于 JetPack 6 / Ubuntu 22.04 且 Docker cgroup driver 为 `systemd` 的设备，请保留 `--cgroupdriver=systemd`，否则 edgecore 可能因 cgroup driver 不匹配启动失败。
 
 可能出现 [问题二十五：边端join报错](/docs/getting-started/install-lower-layer-system/faqs#问题二十五边端join报错)
 

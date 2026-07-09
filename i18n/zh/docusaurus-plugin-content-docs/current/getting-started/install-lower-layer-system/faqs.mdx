@@ -901,8 +901,11 @@ sudo vim /etc/kubeedge/config/edgecore.yaml
 
 设置：
 ```yaml
+cgroupDriver: systemd
 cgroupsPerQOS: false
 ```
+
+如果 edgecore 报错 `kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "systemd"`，请在 `keadm join` 时加入 `--cgroupdriver=systemd`，或者在 `/etc/kubeedge/config/edgecore.yaml` 中设置 `cgroupDriver: systemd`。
 
 然后重启 edgecore。如果旧的 `kubepods` slice 仍被 systemd 保留，可以先停止这些 slice，再启动 edgecore：
 ```bash
@@ -958,6 +961,8 @@ scp keadm-v1.9.2-linux-arm64.tar.gz kubeedge-v1.9.2-linux-arm64.tar.gz <user>@<e
 keadm join --cloudcore-ipport=<cloud-ip>:10000 --token=<token> --kubeedge-version=1.9.2 --edgenode-name=<edge-node-name> --tarballpath=/home/<user>
 ```
 
+即使已经预置 release tarball，`keadm join` 仍可能访问 GitHub 下载 `checksum_kubeedge-v1.9.2-linux-arm64.tar.gz.txt` 和 `edgecore.service`。如果卡在 `checksum_kubeedge...` 或 `[Run as service] start to download service file for edgecore`，请确保 GitHub/raw.githubusercontent.com 可访问，或者通过临时本地镜像/wget wrapper 预置这两个小文件。如果使用 wrapper，join 完成后必须立刻恢复系统 `wget`。
+
 2. 如果集群有内部镜像仓库，请在边缘节点上配置 Docker 使用该仓库。请将以下配置合并到 `/etc/docker/daemon.json` 中，不要覆盖已有 Docker 配置：
 ```json
 {
@@ -977,3 +982,36 @@ sudo systemctl restart edgecore.service
 ```bash
 docker images | grep 'kubeedge/pause'
 ```
+
+## 问题三十二：edgemesh-agent 为 Running 但日志中 127.0.0.1:10550 connection refused
+
+`edgemesh-agent` pod 可能显示为 `Running`，但日志持续出现：
+```bash
+Get "http://127.0.0.1:10550/api/v1/services...": dial tcp 127.0.0.1:10550: connect: connection refused
+```
+
+**原因：**
+
+edgecore 没有开启边缘 Kube-API endpoint。此时 Edgemesh 可以启动，但无法从 `127.0.0.1:10550` watch Services 和 Endpoints。
+
+**解决：**
+
+在边缘节点的 `/etc/kubeedge/config/edgecore.yaml` 中开启 `edgeStream` 和 `metaServer`：
+```yaml
+edgeStream:
+  enable: true
+  server: <cloud-ip>:10004
+
+metaManager:
+  metaServer:
+    enable: true
+    server: 127.0.0.1:10550
+```
+
+然后重启 edgecore 并检查本地 edge API：
+```bash
+sudo systemctl restart edgecore.service
+curl -fsS --max-time 3 http://127.0.0.1:10550/api/v1/services
+```
+
+等待几秒后，`edgemesh-agent` 日志应出现 cache sync 或 iptables 更新信息，而不是持续刷 `10550 connection refused`。

@@ -118,8 +118,10 @@ keadm gettoken
 Execute on the edge:
 ```bash
 # Add IP address of the master here. The token here is obtained from the master
-keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=9e1832528ae701aba2c4f7dfb49183ab2487e874c8090e68c19c95880cd93b50.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTk1NjU4MzF9.1B4su4QwvQy_ZCPs-PIyDT9ixsDozfN1oG4vX59tKDs
+sudo keadm join --cloudcore-ipport=114.212.81.11:10000 --kubeedge-version=1.9.2 --token=<token> --edgenode-name=<edge-node-name> --tarballpath=/home/nvidia --cgroupdriver=systemd
 ```
+
+`--tarballpath` should be the directory containing `kubeedge-v1.9.2-linux-arm64.tar.gz`. On JetPack 6 / Ubuntu 22.04 devices whose Docker cgroup driver is `systemd`, keep `--cgroupdriver=systemd`; otherwise edgecore may fail with a cgroup driver mismatch.
 
 This step may occur [Question 25：keadm join error on edge nodes](/docs/getting-started/install-lower-layer-system/faqs#question-25-keadm-join-error-on-edge-nodes).
 

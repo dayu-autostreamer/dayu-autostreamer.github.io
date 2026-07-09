@@ -918,8 +918,11 @@ sudo vim /etc/kubeedge/config/edgecore.yaml
 
 Set:
 ```yaml
+cgroupDriver: systemd
 cgroupsPerQOS: false
 ```
+
+If edgecore reports `kubelet cgroup driver: "cgroupfs" is different from docker cgroup driver: "systemd"`, run `keadm join` with `--cgroupdriver=systemd`, or set `cgroupDriver: systemd` in `/etc/kubeedge/config/edgecore.yaml`.
 
 Then restart edgecore. If the old `kubepods` slices are still held by systemd, stop them before starting edgecore:
 ```bash
@@ -975,6 +978,8 @@ When joining, `--tarballpath` should be the directory containing `kubeedge-v1.9.
 keadm join --cloudcore-ipport=<cloud-ip>:10000 --token=<token> --kubeedge-version=1.9.2 --edgenode-name=<edge-node-name> --tarballpath=/home/<user>
 ```
 
+Even with the release tarball prepared, `keadm join` may still access GitHub for `checksum_kubeedge-v1.9.2-linux-arm64.tar.gz.txt` and `edgecore.service`. If it hangs at `checksum_kubeedge...` or `[Run as service] start to download service file for edgecore`, make GitHub/raw.githubusercontent.com reachable or pre-provision these small files through a temporary local mirror/wget wrapper. Restore the system `wget` immediately after join if you use a wrapper.
+
 2. If the cluster has an internal image registry, configure Docker on the edge node to use it. Merge the following key into `/etc/docker/daemon.json` instead of overwriting existing Docker settings:
 ```json
 {
@@ -994,3 +999,36 @@ Finally, confirm that `kubeedge/pause:3.1` exists locally:
 ```bash
 docker images | grep 'kubeedge/pause'
 ```
+
+## Question 32: Edgemesh-agent is Running but logs 127.0.0.1:10550 connection refused
+
+The `edgemesh-agent` pod may be `Running`, but its logs keep reporting:
+```bash
+Get "http://127.0.0.1:10550/api/v1/services...": dial tcp 127.0.0.1:10550: connect: connection refused
+```
+
+**Reason:**
+
+The edge Kube-API endpoint is not enabled in edgecore. Edgemesh can start, but it cannot watch Services and Endpoints from `127.0.0.1:10550`.
+
+**Solution:**
+
+On the edge node, enable `edgeStream` and `metaServer` in `/etc/kubeedge/config/edgecore.yaml`:
+```yaml
+edgeStream:
+  enable: true
+  server: <cloud-ip>:10004
+
+metaManager:
+  metaServer:
+    enable: true
+    server: 127.0.0.1:10550
+```
+
+Then restart edgecore and check the local edge API:
+```bash
+sudo systemctl restart edgecore.service
+curl -fsS --max-time 3 http://127.0.0.1:10550/api/v1/services
+```
+
+After a few seconds, `edgemesh-agent` logs should show cache sync or iptables update messages instead of repeated `10550 connection refused` errors.
