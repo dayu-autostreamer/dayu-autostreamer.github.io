@@ -45,7 +45,7 @@ iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
 
 ## Question 2: calico and coredns are always in initializing state
 
-The follwoing message will occur when using `kubectl describe <podname>`  which is roughly related to network and sandbox issues.
+The following message will occur when using `kubectl describe <podname>`  which is roughly related to network and sandbox issues.
 ```bash
 Failed to create pod sandbox: rpc error: code = Unknown desc = [failed to set up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to set up pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout, failed to clean up sandbox container "7f5b66ebecdfc2c206027a2afcb9d1a58ec5db1a6a10a91d4d60c0079236e401" network for pod "calico-kube-controllers-577f77cb5c-99t8z": networkPlugin cni failed to teardown pod "calico-kube-controllers-577f77cb5c-99t8z_kube-system" network: error getting ClusterInformation: Get "https://[10.96.0.1]:443/apis/crd.projectcalico.org/v1/clusterinformations/default": dial tcp 10.96.0. 1:443: i/o timeout]
 ```
@@ -900,3 +900,97 @@ sudo journalctl -u edgecore -f --no-pager
 Another temporary solution is to reinstall kubeedge on edge node as [instruction](/docs/getting-started/install-lower-layer-system/install-kubeedge#join-kubeedge-cluster-edge) shows.
 
 Permanently, this error has been fixed after dayu v1.3 release. Use the latest [dayu script](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh) can avoid this error.
+
+## Question 29: Edgecore fails to restart on JetPack 6 or cgroup v2
+
+On JetPack 6 or other cgroup v2 systems, `edgecore.service` may repeatedly restart and report errors similar to:
+```bash
+failed to create top level Burstable QOS cgroup ... Unit kubepods-burstable.slice already exists.
+```
+
+**Solution:**
+
+Disable per-QoS cgroups in `/etc/kubeedge/config/edgecore.yaml`:
+```bash
+sudo cp -a /etc/kubeedge/config/edgecore.yaml /etc/kubeedge/config/edgecore.yaml.bak-$(date +%F-%H%M%S)
+sudo vim /etc/kubeedge/config/edgecore.yaml
+```
+
+Set:
+```yaml
+cgroupsPerQOS: false
+```
+
+Then restart edgecore. If the old `kubepods` slices are still held by systemd, stop them before starting edgecore:
+```bash
+sudo systemctl stop edgecore.service || true
+sudo systemctl stop kubepods-besteffort.slice kubepods-burstable.slice kubepods.slice || true
+sudo systemctl start edgecore.service
+systemctl status edgecore.service
+```
+
+## Question 30: NVIDIA device plugin is Running but GPU resource is not registered
+
+The `nvidia-device-plugin` pod being `Running` only means the plugin container starts successfully. It does not guarantee that Kubernetes has registered GPU capacity for the edge node.
+
+**Check:**
+```bash
+kubectl get pods -n kube-system -o wide | grep nvidia-device-plugin
+kubectl get node <edge-node-name> -o jsonpath='gpu={.status.capacity.nvidia\.com/gpu} alloc={.status.allocatable.nvidia\.com/gpu}{"\n"}'
+```
+
+The expected output should contain `gpu=1 alloc=1` or another positive GPU count. If the output is empty, check the NVIDIA device plugin logs and edgecore GPU switches:
+```bash
+kubectl logs -n kube-system <nvidia-device-plugin-pod-name>
+sudo vim /etc/kubeedge/config/edgecore.yaml
+```
+
+Make sure both options are enabled on the edge node:
+```yaml
+devicePluginEnabled: true
+gpuPluginEnabled: true
+```
+
+Then restart edgecore and check the node resource again:
+```bash
+sudo systemctl restart edgecore.service
+kubectl get node <edge-node-name> -o jsonpath='gpu={.status.capacity.nvidia\.com/gpu} alloc={.status.allocatable.nvidia\.com/gpu}{"\n"}'
+```
+
+## Question 31: Edge node cannot download from DockerHub or GitHub
+
+Some edge nodes cannot directly reach DockerHub or GitHub, or keep timing out when `keadm join` downloads KubeEdge release packages and the `kubeedge/pause:3.1` image.
+
+**Solution:**
+
+Prepare the release packages and pause image before running `keadm join`.
+
+1. Download the matching KubeEdge release packages on a machine that can reach GitHub, then copy them to the edge node:
+```bash
+scp keadm-v1.9.2-linux-arm64.tar.gz kubeedge-v1.9.2-linux-arm64.tar.gz <user>@<edge-node>:/home/<user>/
+```
+
+When joining, `--tarballpath` should be the directory containing `kubeedge-v1.9.2-linux-arm64.tar.gz`, not the tarball file itself:
+```bash
+keadm join --cloudcore-ipport=<cloud-ip>:10000 --token=<token> --kubeedge-version=1.9.2 --edgenode-name=<edge-node-name> --tarballpath=/home/<user>
+```
+
+2. If the cluster has an internal image registry, configure Docker on the edge node to use it. Merge the following key into `/etc/docker/daemon.json` instead of overwriting existing Docker settings:
+```json
+{
+  "insecure-registries": ["repo:5000", "114.212.87.136:5000"]
+}
+```
+
+Then restart Docker, pre-pull and tag the pause image:
+```bash
+sudo systemctl restart docker
+docker pull repo:5000/kubeedge/pause:3.1
+docker tag repo:5000/kubeedge/pause:3.1 kubeedge/pause:3.1
+sudo systemctl restart edgecore.service
+```
+
+Finally, confirm that `kubeedge/pause:3.1` exists locally:
+```bash
+docker images | grep 'kubeedge/pause'
+```

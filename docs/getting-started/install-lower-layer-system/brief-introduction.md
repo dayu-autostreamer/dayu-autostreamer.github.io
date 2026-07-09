@@ -19,9 +19,9 @@ Please install in the following order:
 
 - [Prepare for pre-requisites](/docs/getting-started/install-lower-layer-system/pre-requisites)
 - [Install Kubernetes](/docs/getting-started/install-lower-layer-system/install-kubernetes)
-- [Install KubeEdge](/docs/getting-started/install-lower-layer-system/install-kubernetes)
-- [Install EdgeMesh](/docs/getting-started/install-lower-layer-system/install-kubeedge)
-- [Install Sedna](/docs/getting-started/install-lower-layer-system/install-edgemesh)
+- [Install KubeEdge](/docs/getting-started/install-lower-layer-system/install-kubeedge)
+- [Install EdgeMesh](/docs/getting-started/install-lower-layer-system/install-edgemesh)
+- [Install Sedna](/docs/getting-started/install-lower-layer-system/install-sedna)
 - [Install Nvidia GPU Support](/docs/getting-started/install-lower-layer-system/install-nvidia-gpu-support)
 
 ## Tips
@@ -41,4 +41,3 @@ Please read the following tips before installing:
 - Before deployment, you can get familiar with [common commands](/docs/getting-started/install-lower-layer-system/common-commands).
 - Please check [Q&A](/docs/getting-started/install-lower-layer-system/faqs) first if you encounter any problems.
 - Most of the components in the lower-layer system are customized based on the official/open-source software, so if you encounter unsolvable problems during the installation process, you can search for the problem yourself and try to solve it. Also, you can [submit an issue](https://github.com/dayu-autostreamer/dayu/issues) or [contact us](/docs/community/contact-us).
-

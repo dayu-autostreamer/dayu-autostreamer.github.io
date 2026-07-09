@@ -868,7 +868,7 @@ sudo iptables -t nat -nvL
 ```bash
 # 停止 edgecore
 sudo systemctl stop edgecore
-# 备份 kuebedge 数据
+# 备份 kubeedge 数据
 sudo tar -czf /tmp/kubeedge-backup-$(date +%F-%H%M%S).tgz /var/lib/kubeedge
 # 清空 kubeedge 数据库
 sudo rm -rf /var/lib/kubeedge
@@ -882,4 +882,98 @@ sudo journalctl -u edgecore -f --no-pager
 
 另一种临时解决方案是参照[文档](/docs/getting-started/install-lower-layer-system/install-kubeedge#加入kubeedge集群边端)在边缘节点上重新安装 KubeEdge 。
 
-该问题已在大禹`v1.3`版本被永久解决，使用最新的大[禹启动脚本](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh)可以避免此问题。
+该问题已在大禹`v1.3`版本被永久解决，使用最新的[大禹启动脚本](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh)可以避免此问题。
+
+## 问题二十九：JetPack 6 或 cgroup v2 上 edgecore 重启失败
+
+在 JetPack 6 或其他 cgroup v2 系统上，`edgecore.service` 可能反复重启，并出现类似如下错误：
+```bash
+failed to create top level Burstable QOS cgroup ... Unit kubepods-burstable.slice already exists.
+```
+
+**解决：**
+
+在 `/etc/kubeedge/config/edgecore.yaml` 中关闭按 QoS 创建 cgroup：
+```bash
+sudo cp -a /etc/kubeedge/config/edgecore.yaml /etc/kubeedge/config/edgecore.yaml.bak-$(date +%F-%H%M%S)
+sudo vim /etc/kubeedge/config/edgecore.yaml
+```
+
+设置：
+```yaml
+cgroupsPerQOS: false
+```
+
+然后重启 edgecore。如果旧的 `kubepods` slice 仍被 systemd 保留，可以先停止这些 slice，再启动 edgecore：
+```bash
+sudo systemctl stop edgecore.service || true
+sudo systemctl stop kubepods-besteffort.slice kubepods-burstable.slice kubepods.slice || true
+sudo systemctl start edgecore.service
+systemctl status edgecore.service
+```
+
+## 问题三十：NVIDIA device plugin 为 Running 但 GPU 资源未注册
+
+`nvidia-device-plugin` pod 为 `Running` 只说明插件容器启动成功，并不代表 Kubernetes 已经为该边缘节点注册 GPU 资源。
+
+**检查：**
+```bash
+kubectl get pods -n kube-system -o wide | grep nvidia-device-plugin
+kubectl get node <edge-node-name> -o jsonpath='gpu={.status.capacity.nvidia\.com/gpu} alloc={.status.allocatable.nvidia\.com/gpu}{"\n"}'
+```
+
+预期输出应包含 `gpu=1 alloc=1` 或其他正数 GPU 数量。如果输出为空，请检查 NVIDIA device plugin 日志和 edgecore 的 GPU 开关：
+```bash
+kubectl logs -n kube-system <nvidia-device-plugin-pod-name>
+sudo vim /etc/kubeedge/config/edgecore.yaml
+```
+
+确认边缘节点上同时开启以下配置：
+```yaml
+devicePluginEnabled: true
+gpuPluginEnabled: true
+```
+
+然后重启 edgecore，并再次检查节点资源：
+```bash
+sudo systemctl restart edgecore.service
+kubectl get node <edge-node-name> -o jsonpath='gpu={.status.capacity.nvidia\.com/gpu} alloc={.status.allocatable.nvidia\.com/gpu}{"\n"}'
+```
+
+## 问题三十一：边缘节点无法从 DockerHub 或 GitHub 下载内容
+
+部分边缘节点无法直连 DockerHub 或 GitHub，或者在 `keadm join` 下载 KubeEdge release 包和 `kubeedge/pause:3.1` 镜像时持续超时。
+
+**解决：**
+
+在执行 `keadm join` 前，先预置 release 包和 pause 镜像。
+
+1. 在可访问 GitHub 的机器上下载匹配架构的 KubeEdge release 包，然后拷贝到边缘节点：
+```bash
+scp keadm-v1.9.2-linux-arm64.tar.gz kubeedge-v1.9.2-linux-arm64.tar.gz <user>@<edge-node>:/home/<user>/
+```
+
+执行 join 时，`--tarballpath` 应填写包含 `kubeedge-v1.9.2-linux-arm64.tar.gz` 的目录，而不是 tarball 文件本身：
+```bash
+keadm join --cloudcore-ipport=<cloud-ip>:10000 --token=<token> --kubeedge-version=1.9.2 --edgenode-name=<edge-node-name> --tarballpath=/home/<user>
+```
+
+2. 如果集群有内部镜像仓库，请在边缘节点上配置 Docker 使用该仓库。请将以下配置合并到 `/etc/docker/daemon.json` 中，不要覆盖已有 Docker 配置：
+```json
+{
+  "insecure-registries": ["repo:5000", "114.212.87.136:5000"]
+}
+```
+
+然后重启 Docker，预拉取并标记 pause 镜像：
+```bash
+sudo systemctl restart docker
+docker pull repo:5000/kubeedge/pause:3.1
+docker tag repo:5000/kubeedge/pause:3.1 kubeedge/pause:3.1
+sudo systemctl restart edgecore.service
+```
+
+最后确认本地已经存在 `kubeedge/pause:3.1`：
+```bash
+docker images | grep 'kubeedge/pause'
+```

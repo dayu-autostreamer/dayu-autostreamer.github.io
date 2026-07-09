@@ -16,8 +16,9 @@ kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.1
 Modify `edgecore.yaml` on the edge:
 ```bash
 vim /etc/kubeedge/config/edgecore.yaml
-# Modify the follwoing part:
+# Modify the following part:
 devicePluginEnabled: true
+gpuPluginEnabled: true
 
 # Restart edgecore
 systemctl restart edgecore.service
@@ -40,6 +41,13 @@ Modify `/etc/docker/daemon.json` on all cloud/edge devices, and add the followin
 
 On the cloud, use `kubectl get pods -A` to find all the nvidia related pods. Then, use `kubectl logs xxx -n xxx` or `kubectl describe pod xxx -n xxx` to check pod state.
 
+The NVIDIA device plugin pod being `Running` only means the pod starts successfully. You also need to check whether GPU resources are registered on the node:
+```bash
+kubectl get node <edge-node-name> -o jsonpath='{.status.capacity.nvidia\.com/gpu}{"\n"}'
+```
+
+The expected output is `1` or another positive GPU count. If the output is empty, check `devicePluginEnabled` and `gpuPluginEnabled` in `/etc/kubeedge/config/edgecore.yaml`, then restart `edgecore.service`.
+
 Pod state on the cloud:
 
 ![nvidia-plugin1.png](/img/install/nvidia-plugin1.png)
@@ -61,4 +69,3 @@ kubectl run -i -t nvidia --image=jitteam/devicequery
 ```
 
 ![nvidia-plugin5.png](/img/install/nvidia-plugin5.png)
-

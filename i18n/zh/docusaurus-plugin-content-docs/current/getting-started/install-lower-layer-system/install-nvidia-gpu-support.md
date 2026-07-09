@@ -18,6 +18,7 @@ kubectl apply -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.1
 vim /etc/kubeedge/config/edgecore.yaml
 # 修改以下部分
 devicePluginEnabled: true
+gpuPluginEnabled: true
 
 # 重启edgecore
 systemctl restart edgecore.service
@@ -39,6 +40,13 @@ systemctl restart edgecore.service
 ## 正常运行状态
 
 在云端使用 `kubectl get pods -A` 查看nvidia相关pod，并使用 `kubectl logs xxx -n xxx` 或 `kubectl describe pod xxx -n xxx` 检查pod的情况。
+
+NVIDIA device plugin pod 为 `Running` 只代表 pod 已经启动，还需要检查节点是否真正注册了 GPU 资源：
+```bash
+kubectl get node <edge-node-name> -o jsonpath='{.status.capacity.nvidia\.com/gpu}{"\n"}'
+```
+
+预期输出为 `1` 或其他正数 GPU 数量。如果输出为空，请检查 `/etc/kubeedge/config/edgecore.yaml` 中的 `devicePluginEnabled` 和 `gpuPluginEnabled`，然后重启 `edgecore.service`。
 
 云端pod情况：
 

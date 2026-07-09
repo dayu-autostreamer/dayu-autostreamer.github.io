@@ -16,9 +16,9 @@ slug: /getting-started/install-lower-layer-system/brief-introduction
 
 - [前置要求](/docs/getting-started/install-lower-layer-system/pre-requisites)
 - [安装 Kubernetes](/docs/getting-started/install-lower-layer-system/install-kubernetes)
-- [安装 KubeEdge](/docs/getting-started/install-lower-layer-system/install-kubernetes)
-- [安装 EdgeMesh](/docs/getting-started/install-lower-layer-system/install-kubeedge)
-- [安装 Sedna](/docs/getting-started/install-lower-layer-system/install-edgemesh)
+- [安装 KubeEdge](/docs/getting-started/install-lower-layer-system/install-kubeedge)
+- [安装 EdgeMesh](/docs/getting-started/install-lower-layer-system/install-edgemesh)
+- [安装 Sedna](/docs/getting-started/install-lower-layer-system/install-sedna)
 - [安装 Nvidia GPU 支持](/docs/getting-started/install-lower-layer-system/install-nvidia-gpu-support)
 
 
@@ -40,4 +40,3 @@ slug: /getting-started/install-lower-layer-system/brief-introduction
 - 部署前可以先熟悉[常用命令](/docs/getting-started/install-lower-layer-system/common-commands)
 - 遇到问题请先查看看[Q&A](/docs/getting-started/install-lower-layer-system/faqs)
 - 下层系统的大部分组件都是依托于官方/开源软件架构定制的，因此如在安装过程中遇到无法解决的问题，可以自行搜索问题尝试解决，也可以给我们[提issue](https://github.com/dayu-autostreamer/dayu/issues)或[联系我们](/docs/community/contact-us)
-
