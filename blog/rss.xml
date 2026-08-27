@@ -4,10 +4,84 @@
         <title>Dayu Blog</title>
         <link>https://dayu-autostreamer.github.io/blog</link>
         <description>Dayu Blog</description>
-        <lastBuildDate>Thu, 02 Jul 2026 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 28 Aug 2026 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Dayu v1.4 Released]]></title>
+            <link>https://dayu-autostreamer.github.io/blog/version1.4</link>
+            <guid>https://dayu-autostreamer.github.io/blog/version1.4</guid>
+            <pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[Dayu system Version 1.4 is released!]]></description>
+            <content:encoded><![CDATA[<p><strong>Dayu system Version 1.4 is released!</strong></p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/blog/version1.4#breaking-changes" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes">​</a></h3>
+<p>Replace application <code>JointMultiEdgeService</code> generation and edge-side Kubernetes discovery with immutable Sedna
+<code>RuntimeService</code> resources, Scheduler-owned exact <code>RuntimeDirectory</code> routes, and revision task leases. Runtime workers
+no longer ship the Kubernetes Python client or accept legacy discovery/cache configuration.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.4#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<ul>
+<li>Add transactional scheduler-first installation, RuntimeDirectory proposal/CAS publication, Redis-backed restart
+recovery, lease-aware drain, and exact-UID runtime retirement (<code>backend</code>/<code>scheduler</code>).</li>
+<li>Restrict Kubernetes access to the singleton backend with namespace-local lifecycle RBAC and a per-namespace cluster
+observer binding (<code>backend</code>).</li>
+<li>Unify all deployment policies on the validated <code>logical service -&gt; node list</code> contract; add explicit cloud-only,
+full, and full-edge initial/redeployment policies; and let fixed policies resolve <code>@cloud</code> or apply
+<code>include_cloud=false|true</code> without a fixed cloud hostname (<code>scheduler</code>).</li>
+<li>Change the Generator hook lifecycle to filter an ingestion round, reserve its root task identity, schedule when due,
+and only then materialize source data (<code>generator</code>/<code>scheduler</code>).</li>
+<li>Add task-aware scheduling contracts with framework-reserved <code>TaskIdentity</code>, identity-attributed schedule decisions,
+canonical plan digests, idempotent Redis-backed pending-to-active task admission records, and a common Scheduler
+snapshot of resources, reservations, active tasks, and known task barriers (<code>generator</code>/<code>controller</code>/<code>scheduler</code>).</li>
+<li>Replace queue length with an atomic structured queue-state contract covering ordered waiting identities, running
+identity, and processing/handoff phase (<code>processor</code>/<code>monitor</code>/<code>scheduler</code>).</li>
+<li>Reorganize multi-file hook implementations into algorithm-owned packages with explicit <code>hook.py</code> entry points and
+names matching their sibling single-file Hook entries.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.4#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h3>
+<ul>
+<li>Fix possible failure in install/uninstall with one crash-recoverable ConfigMap CAS session and exact RuntimeService
+ownership identities (<code>backend</code>).</li>
+<li>Prevent source-selection scope from collapsing to the processor <code>node_set</code>, and reject invalid fixed source
+configuration instead of silently changing the selected source (<code>backend</code>/<code>scheduler</code>).</li>
+<li>Eliminate Kubernetes service-DNS search-path stalls by preserving stable RuntimeDirectory names while using absolute
+<code>*.svc.cluster.local.</code> hosts only at HTTP, Redis, iperf, and support-datasource connection boundaries.</li>
+<li>Remove the legacy per-source query startup delay and make result collection generation-scoped, immediately
+cancellable, and bounded by an explicit Distributor request timeout and batch size (<code>backend</code>/<code>distributor</code>).</li>
+<li>Make install lifecycle-cancellable: stop signals an in-flight RuntimeService activation/planning transaction before
+serialized cleanup, preserves its crash-recoverable ownership session, and removes pre-publication resources without
+waiting for an unready Scheduler or the full activation timeout (<code>backend</code>).</li>
+<li>Keep uninstall ownership until Foreground RuntimeService deletion and the complete Kubernetes dependent-resource
+barrier are empty; prolonged no-progress cleanup now remains retryable and install-fenced while exposing durable
+diagnostics to every frontend window (<code>backend</code>/<code>frontend</code>).</li>
+<li>Prevent Scheduler supervisor heartbeat timeouts and cascading Generator exits by running one direct Uvicorn process,
+dispatching blocking Redis endpoints through FastAPI's thread pool,  and reducing each task to Generator acquire plus
+Distributor final-renew/release (<code>generator</code>/<code>scheduler</code>).</li>
+<li>Prevent silent task loss with root-lease-scoped atomic artifacts, exact per-hop ownership ACKs, Generator/Processor
+backpressure, retry-safe parallel joins, and idempotent durable Distributor acceptance (<code>generator</code>/<code>processor</code>/
+<code>distributor</code>).</li>
+<li>Preserve Scheduler management rejection details through Backend RuntimeSession state and frontend presentation, and
+emit bounded Scheduler 4xx diagnostics without logging complete request payloads.</li>
+<li>Prevent schedule-plan corruption by isolating after-schedule hook mutations, and fix before-submit hooks
+to operate on the task passed by the Generator instead of an undefined Generator field (<code>scheduler</code>).</li>
+<li>Align built-in scheduling, deployment, redeployment, frame-processing, and compression hooks with full-DAG policy
+materialization and revision-consistent LIVE RuntimeDirectory state; preserve pipeline partition semantics while
+rejecting unsupported DAG shapes and inactive execution targets (<code>generator</code>/<code>scheduler</code>).</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.4#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update">​</a></h3>
+<ul>
+<li>Add more services: traffic-detection, road-context-segmentation, traffic-signal-recognition, vehicle-tracking,
+vehicle-attribute-recognition, vehicle-trajectory-prediction, pedestrian-pose-estimation,
+pedestrian-intent-recognition, risk-graph-generation (<code>processor</code>).</li>
+<li>Change input/output format of processors from value to list (<code>processor</code>).</li>
+<li>Add import/export of dag in DAG Orchestrain frontend page (<code>frontend</code>).</li>
+<li>Update dockerfile building to support concise modification of ultra parameters.</li>
+<li>Unify input/output interface format of processors (<code>processor</code>).</li>
+<li>Add Gantt visualization to display task result (<code>frontend</code>/<code>backend</code>).</li>
+</ul>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.4" target="_blank" rel="noopener noreferrer">dayu-v1.4</a>.</p>]]></content:encoded>
+            <category>release</category>
+        </item>
         <item>
             <title><![CDATA[Dayu v1.3 Released]]></title>
             <link>https://dayu-autostreamer.github.io/blog/version1.3</link>
