@@ -14,71 +14,71 @@
         <updated>2026-08-28T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.4 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.4 is released!</strong></p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/blog/version1.4#breaking-changes" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/blog/version1.4#breaking-changes" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes" translate="no">​</a></h3>
 <p>Replace application <code>JointMultiEdgeService</code> generation and edge-side Kubernetes discovery with immutable Sedna
 <code>RuntimeService</code> resources, Scheduler-owned exact <code>RuntimeDirectory</code> routes, and revision task leases. Runtime workers
 no longer ship the Kubernetes Python client or accept legacy discovery/cache configuration.</p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.4#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.4#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
-<li>Add transactional scheduler-first installation, RuntimeDirectory proposal/CAS publication, Redis-backed restart
+<li class="">Add transactional scheduler-first installation, RuntimeDirectory proposal/CAS publication, Redis-backed restart
 recovery, lease-aware drain, and exact-UID runtime retirement (<code>backend</code>/<code>scheduler</code>).</li>
-<li>Restrict Kubernetes access to the singleton backend with namespace-local lifecycle RBAC and a per-namespace cluster
+<li class="">Restrict Kubernetes access to the singleton backend with namespace-local lifecycle RBAC and a per-namespace cluster
 observer binding (<code>backend</code>).</li>
-<li>Unify all deployment policies on the validated <code>logical service -&gt; node list</code> contract; add explicit cloud-only,
+<li class="">Unify all deployment policies on the validated <code>logical service -&gt; node list</code> contract; add explicit cloud-only,
 full, and full-edge initial/redeployment policies; and let fixed policies resolve <code>@cloud</code> or apply
 <code>include_cloud=false|true</code> without a fixed cloud hostname (<code>scheduler</code>).</li>
-<li>Change the Generator hook lifecycle to filter an ingestion round, reserve its root task identity, schedule when due,
+<li class="">Change the Generator hook lifecycle to filter an ingestion round, reserve its root task identity, schedule when due,
 and only then materialize source data (<code>generator</code>/<code>scheduler</code>).</li>
-<li>Add task-aware scheduling contracts with framework-reserved <code>TaskIdentity</code>, identity-attributed schedule decisions,
+<li class="">Add task-aware scheduling contracts with framework-reserved <code>TaskIdentity</code>, identity-attributed schedule decisions,
 canonical plan digests, idempotent Redis-backed pending-to-active task admission records, and a common Scheduler
 snapshot of resources, reservations, active tasks, and known task barriers (<code>generator</code>/<code>controller</code>/<code>scheduler</code>).</li>
-<li>Replace queue length with an atomic structured queue-state contract covering ordered waiting identities, running
+<li class="">Replace queue length with an atomic structured queue-state contract covering ordered waiting identities, running
 identity, and processing/handoff phase (<code>processor</code>/<code>monitor</code>/<code>scheduler</code>).</li>
-<li>Reorganize multi-file hook implementations into algorithm-owned packages with explicit <code>hook.py</code> entry points and
+<li class="">Reorganize multi-file hook implementations into algorithm-owned packages with explicit <code>hook.py</code> entry points and
 names matching their sibling single-file Hook entries.</li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.4#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.4#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix" translate="no">​</a></h3>
 <ul>
-<li>Fix possible failure in install/uninstall with one crash-recoverable ConfigMap CAS session and exact RuntimeService
+<li class="">Fix possible failure in install/uninstall with one crash-recoverable ConfigMap CAS session and exact RuntimeService
 ownership identities (<code>backend</code>).</li>
-<li>Prevent source-selection scope from collapsing to the processor <code>node_set</code>, and reject invalid fixed source
+<li class="">Prevent source-selection scope from collapsing to the processor <code>node_set</code>, and reject invalid fixed source
 configuration instead of silently changing the selected source (<code>backend</code>/<code>scheduler</code>).</li>
-<li>Eliminate Kubernetes service-DNS search-path stalls by preserving stable RuntimeDirectory names while using absolute
+<li class="">Eliminate Kubernetes service-DNS search-path stalls by preserving stable RuntimeDirectory names while using absolute
 <code>*.svc.cluster.local.</code> hosts only at HTTP, Redis, iperf, and support-datasource connection boundaries.</li>
-<li>Remove the legacy per-source query startup delay and make result collection generation-scoped, immediately
+<li class="">Remove the legacy per-source query startup delay and make result collection generation-scoped, immediately
 cancellable, and bounded by an explicit Distributor request timeout and batch size (<code>backend</code>/<code>distributor</code>).</li>
-<li>Make install lifecycle-cancellable: stop signals an in-flight RuntimeService activation/planning transaction before
+<li class="">Make install lifecycle-cancellable: stop signals an in-flight RuntimeService activation/planning transaction before
 serialized cleanup, preserves its crash-recoverable ownership session, and removes pre-publication resources without
 waiting for an unready Scheduler or the full activation timeout (<code>backend</code>).</li>
-<li>Keep uninstall ownership until Foreground RuntimeService deletion and the complete Kubernetes dependent-resource
+<li class="">Keep uninstall ownership until Foreground RuntimeService deletion and the complete Kubernetes dependent-resource
 barrier are empty; prolonged no-progress cleanup now remains retryable and install-fenced while exposing durable
 diagnostics to every frontend window (<code>backend</code>/<code>frontend</code>).</li>
-<li>Prevent Scheduler supervisor heartbeat timeouts and cascading Generator exits by running one direct Uvicorn process,
+<li class="">Prevent Scheduler supervisor heartbeat timeouts and cascading Generator exits by running one direct Uvicorn process,
 dispatching blocking Redis endpoints through FastAPI's thread pool,  and reducing each task to Generator acquire plus
 Distributor final-renew/release (<code>generator</code>/<code>scheduler</code>).</li>
-<li>Prevent silent task loss with root-lease-scoped atomic artifacts, exact per-hop ownership ACKs, Generator/Processor
+<li class="">Prevent silent task loss with root-lease-scoped atomic artifacts, exact per-hop ownership ACKs, Generator/Processor
 backpressure, retry-safe parallel joins, and idempotent durable Distributor acceptance (<code>generator</code>/<code>processor</code>/
 <code>distributor</code>).</li>
-<li>Preserve Scheduler management rejection details through Backend RuntimeSession state and frontend presentation, and
+<li class="">Preserve Scheduler management rejection details through Backend RuntimeSession state and frontend presentation, and
 emit bounded Scheduler 4xx diagnostics without logging complete request payloads.</li>
-<li>Prevent schedule-plan corruption by isolating after-schedule hook mutations, and fix before-submit hooks
+<li class="">Prevent schedule-plan corruption by isolating after-schedule hook mutations, and fix before-submit hooks
 to operate on the task passed by the Generator instead of an undefined Generator field (<code>scheduler</code>).</li>
-<li>Align built-in scheduling, deployment, redeployment, frame-processing, and compression hooks with full-DAG policy
+<li class="">Align built-in scheduling, deployment, redeployment, frame-processing, and compression hooks with full-DAG policy
 materialization and revision-consistent LIVE RuntimeDirectory state; preserve pipeline partition semantics while
 rejecting unsupported DAG shapes and inactive execution targets (<code>generator</code>/<code>scheduler</code>).</li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.4#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.4#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update" translate="no">​</a></h3>
 <ul>
-<li>Add more services: traffic-detection, road-context-segmentation, traffic-signal-recognition, vehicle-tracking,
+<li class="">Add more services: traffic-detection, road-context-segmentation, traffic-signal-recognition, vehicle-tracking,
 vehicle-attribute-recognition, vehicle-trajectory-prediction, pedestrian-pose-estimation,
 pedestrian-intent-recognition, risk-graph-generation (<code>processor</code>).</li>
-<li>Change input/output format of processors from value to list (<code>processor</code>).</li>
-<li>Add import/export of dag in DAG Orchestrain frontend page (<code>frontend</code>).</li>
-<li>Update dockerfile building to support concise modification of ultra parameters.</li>
-<li>Unify input/output interface format of processors (<code>processor</code>).</li>
-<li>Add Gantt visualization to display task result (<code>frontend</code>/<code>backend</code>).</li>
+<li class="">Change input/output format of processors from value to list (<code>processor</code>).</li>
+<li class="">Add import/export of dag in DAG Orchestrain frontend page (<code>frontend</code>).</li>
+<li class="">Update dockerfile building to support concise modification of ultra parameters.</li>
+<li class="">Unify input/output interface format of processors (<code>processor</code>).</li>
+<li class="">Add Gantt visualization to display task result (<code>frontend</code>/<code>backend</code>).</li>
 </ul>
-<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.4" target="_blank" rel="noopener noreferrer">dayu-v1.4</a>.</p>]]></content>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.4" target="_blank" rel="noopener noreferrer" class="">dayu-v1.4</a>.</p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
@@ -92,28 +92,28 @@ pedestrian-intent-recognition, risk-graph-generation (<code>processor</code>).</
         <updated>2026-07-02T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.3 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.3 is released!</strong></p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.3#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.3#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
-<li>Add our work on deployment and offloading: Hedger, a hierarchical scheduling framework for macro-level service deployment and micro-level task offloading. It uses dual-agent with GNNs and DRLs to make accurate and feasible decisions. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.3/template/scheduler/hedger.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
-<li>Add our work on configuration optimization: Steady Scheduler, a configuration selection framework for steady scheduling. It uses side-effect to shrink search space and adapt to context fluctuations. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.3/template/scheduler/steady.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
+<li class="">Add our work on deployment and offloading: Hedger, a hierarchical scheduling framework for macro-level service deployment and micro-level task offloading. It uses dual-agent with GNNs and DRLs to make accurate and feasible decisions. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.3/template/scheduler/hedger.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
+<li class="">Add our work on configuration optimization: Steady Scheduler, a configuration selection framework for steady scheduling. It uses side-effect to shrink search space and adapt to context fluctuations. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.3/template/scheduler/steady.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.3#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.3#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix" translate="no">​</a></h3>
 <ul>
-<li>Fix iptables rule accumulation for edgemesh in incorrect dayu shutdowns with <code>dayu.sh</code> script correction.</li>
-<li>Separate task temporary directory for different users (<code>controller</code>/<code>processor</code>).</li>
-<li>Fix incompatibility of real cameras in rtsp video datasource (<code>generator</code>/<code>backend</code>).</li>
-<li>Change defualt redeployment plan from full-deployment to raw deployment (<code>backend</code>).</li>
+<li class="">Fix iptables rule accumulation for edgemesh in incorrect dayu shutdowns with <code>dayu.sh</code> script correction.</li>
+<li class="">Separate task temporary directory for different users (<code>controller</code>/<code>processor</code>).</li>
+<li class="">Fix incompatibility of real cameras in rtsp video datasource (<code>generator</code>/<code>backend</code>).</li>
+<li class="">Change defualt redeployment plan from full-deployment to raw deployment (<code>backend</code>).</li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.3#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.3#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update" translate="no">​</a></h3>
 <ul>
-<li>Update log export mode to support large logs in multi-stream scenarios (<code>backend</code>/<code>distributor</code>).</li>
-<li>Change storage mode of http video datasource from video frame to video to avoid disk occupation (<code>datasource</code>).</li>
-<li>Reconstruct the dataset format for datasource to support more flexible video data organization and processing (<code>datasource</code>).</li>
-<li>Change generator selection scope to optional for node set or all edge nodes (<code>backend</code>/<code>scheduler</code>).</li>
-<li>Update file mount to be compatible with different deployment environments.</li>
-<li>Optimize the frontend interfaces of dayu system (<code>frontend</code>/<code>backend</code>).</li>
+<li class="">Update log export mode to support large logs in multi-stream scenarios (<code>backend</code>/<code>distributor</code>).</li>
+<li class="">Change storage mode of http video datasource from video frame to video to avoid disk occupation (<code>datasource</code>).</li>
+<li class="">Reconstruct the dataset format for datasource to support more flexible video data organization and processing (<code>datasource</code>).</li>
+<li class="">Change generator selection scope to optional for node set or all edge nodes (<code>backend</code>/<code>scheduler</code>).</li>
+<li class="">Update file mount to be compatible with different deployment environments.</li>
+<li class="">Optimize the frontend interfaces of dayu system (<code>frontend</code>/<code>backend</code>).</li>
 </ul>
-<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.3" target="_blank" rel="noopener noreferrer">dayu-v1.3</a>.</p>]]></content>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.3" target="_blank" rel="noopener noreferrer" class="">dayu-v1.3</a>.</p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
@@ -152,44 +152,44 @@ pedestrian-intent-recognition, risk-graph-generation (<code>processor</code>).</
         <updated>2026-01-15T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.2 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.2 is released!</strong></p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.2#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.2#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
-<li>Add a cyclic redeployment mechanism of service processors for further flexible task processing.</li>
-<li>Add new services to construct a logical topology, including pedestrian-detection, vehicle-detection,
+<li class="">Add a cyclic redeployment mechanism of service processors for further flexible task processing.</li>
+<li class="">Add new services to construct a logical topology, including pedestrian-detection, vehicle-detection,
 exposure-identification, category-classification and license-plate-recognition.</li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.2#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.2#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix" translate="no">​</a></h3>
 <ul>
-<li>Fix concurrency conflicts for starting up multiple streams in rtsp video and http video (<code>datasource</code>).</li>
-<li>Fix frame index updating error in http video source (<code>datasource</code>).</li>
-<li>Fix port occupation bug of rtsp video datasource after shutting down (<code>datasource</code>).</li>
-<li>Support dynamic variable update in visualization modules (<code>frontend</code>).</li>
-<li>Support cloud-only deployment of processors (<code>backend</code>).</li>
-<li>Fix task forwarding bug in inconsistent deployment and offloading decisions (<code>controller</code>).</li>
-<li>Fix possible database locking in concurrency access of distributor (<code>distributor</code>).</li>
-<li>Add cache TTL of Kubernetes configurations to avoid additional expense in <code>PortInfo</code> and <code>KubeConfig</code>.</li>
+<li class="">Fix concurrency conflicts for starting up multiple streams in rtsp video and http video (<code>datasource</code>).</li>
+<li class="">Fix frame index updating error in http video source (<code>datasource</code>).</li>
+<li class="">Fix port occupation bug of rtsp video datasource after shutting down (<code>datasource</code>).</li>
+<li class="">Support dynamic variable update in visualization modules (<code>frontend</code>).</li>
+<li class="">Support cloud-only deployment of processors (<code>backend</code>).</li>
+<li class="">Fix task forwarding bug in inconsistent deployment and offloading decisions (<code>controller</code>).</li>
+<li class="">Fix possible database locking in concurrency access of distributor (<code>distributor</code>).</li>
+<li class="">Add cache TTL of Kubernetes configurations to avoid additional expense in <code>PortInfo</code> and <code>KubeConfig</code>.</li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.2#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.2#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update" translate="no">​</a></h3>
 <ul>
-<li>Update more flexible visualization modules to switch different user-defined configurations in multi-stream scenarios (<code>frontend</code> / <code>backend</code>).</li>
-<li>Clean up frontend code and beatify frontend pages (<code>frontend</code>).</li>
-<li>Add persistent storage of installation configuration (<code>frontend</code>).</li>
-<li>Add system visualization to monitor system parameters, including resource usage, scheduling cost and so on (<code>frontend</code> / <code>backend</code> / <code>scheduler</code>).</li>
-<li>Improving a fine-grained monitoring architecture including monitoring cpu and gpu flops (<code>monitor</code>).</li>
-<li>Add 'USE_TENSORRT' option in processors to choose whether using tensorrt mode (<code>processor</code>).</li>
-<li>Add model flops calculation in processors to support model flops monitoring (<code>processor</code>).</li>
-<li>Update 'ImagePullPolicy' in template files from 'IfNotPresent' to 'Always' to ensure pulling the latest images.</li>
-<li>Update detailed overhead time statistics in scheduling logs (<code>scheduler</code>).</li>
-<li>Accelerate backend visualization through caching mechanism (<code>backend</code>).</li>
-<li>Add ROI ID to detection/tracking applications to support roi-accelerated classification applications (<code>processor</code>).</li>
-<li>Add ROI Classifier to accelerate roi-level classification applications (<code>processor</code>).</li>
-<li>Optimize local service processor by sharing temporary directory on local devices (<code>controller</code>/<code>processor</code>).</li>
-<li>Add adjustable request scheduling interval in generator to avoid frequent scheduling (<code>generator</code>).</li>
-<li>Add temporary file cleaning mechanism in local controller to avoid disk occupation (<code>controller</code>).</li>
-<li>Add compatible docker image building for jp4/jp5/jp6 for processor in Nvidia Jetson devices (<code>processor</code>/<code>monitor</code>).</li>
-<li>Update scenario data structure and processing (<code>processor</code>).</li>
+<li class="">Update more flexible visualization modules to switch different user-defined configurations in multi-stream scenarios (<code>frontend</code> / <code>backend</code>).</li>
+<li class="">Clean up frontend code and beatify frontend pages (<code>frontend</code>).</li>
+<li class="">Add persistent storage of installation configuration (<code>frontend</code>).</li>
+<li class="">Add system visualization to monitor system parameters, including resource usage, scheduling cost and so on (<code>frontend</code> / <code>backend</code> / <code>scheduler</code>).</li>
+<li class="">Improving a fine-grained monitoring architecture including monitoring cpu and gpu flops (<code>monitor</code>).</li>
+<li class="">Add 'USE_TENSORRT' option in processors to choose whether using tensorrt mode (<code>processor</code>).</li>
+<li class="">Add model flops calculation in processors to support model flops monitoring (<code>processor</code>).</li>
+<li class="">Update 'ImagePullPolicy' in template files from 'IfNotPresent' to 'Always' to ensure pulling the latest images.</li>
+<li class="">Update detailed overhead time statistics in scheduling logs (<code>scheduler</code>).</li>
+<li class="">Accelerate backend visualization through caching mechanism (<code>backend</code>).</li>
+<li class="">Add ROI ID to detection/tracking applications to support roi-accelerated classification applications (<code>processor</code>).</li>
+<li class="">Add ROI Classifier to accelerate roi-level classification applications (<code>processor</code>).</li>
+<li class="">Optimize local service processor by sharing temporary directory on local devices (<code>controller</code>/<code>processor</code>).</li>
+<li class="">Add adjustable request scheduling interval in generator to avoid frequent scheduling (<code>generator</code>).</li>
+<li class="">Add temporary file cleaning mechanism in local controller to avoid disk occupation (<code>controller</code>).</li>
+<li class="">Add compatible docker image building for jp4/jp5/jp6 for processor in Nvidia Jetson devices (<code>processor</code>/<code>monitor</code>).</li>
+<li class="">Update scenario data structure and processing (<code>processor</code>).</li>
 </ul>
-<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.2" target="_blank" rel="noopener noreferrer">dayu-v1.2</a>.</p>]]></content>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.2" target="_blank" rel="noopener noreferrer" class="">dayu-v1.2</a>.</p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
@@ -209,9 +209,9 @@ exposure-identification, category-classification and license-plate-recognition.<
         <content type="html"><![CDATA[<p>Our paper "Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence" is Accepted by IEEE INFOCOM 2026!</p>
 <p>This paper proposes Hier-EI (Hierahical Embodied Intelligence), an efficient scheduling framework that integrates a two-phase hierarchical design with embodied intelligence,
 which simultaneously considers spatial and temporal imbalance and enhance long-term QoE performance in cloud-edge collaborative video analytics pipelines.</p>
-<p>Refer to homepage: <a href="https://dayu-autostreamer.github.io/hier-ei/" target="_blank" rel="noopener noreferrer">https://dayu-autostreamer.github.io/hier-ei/</a>.</p>
+<p>Refer to homepage: <a href="https://dayu-autostreamer.github.io/hier-ei/" target="_blank" rel="noopener noreferrer" class="">https://dayu-autostreamer.github.io/hier-ei/</a>.</p>
 <p>For more information, please refer to:</p>
-<p><strong>Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. <a href="https://doi.org/10.1109/INFOCOM59046.2026.11571610" target="_blank" rel="noopener noreferrer">Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence</a>. IEEE INFOCOM, pp.1-10, 2026.</strong></p>
+<p><strong>Wenhui Zhou, Lei Xie, Jingyi Ning, Shuyu Cao, Hao Wu, Qinghua Peng and Long Fan. <a href="https://doi.org/10.1109/INFOCOM59046.2026.11571610" target="_blank" rel="noopener noreferrer" class="">Tackling the Imbalance in Video Analytics Pipelines with Hierarchical Embodied Intelligence</a>. IEEE INFOCOM, pp.1-10, 2026.</strong></p>
 <p><img decoding="async" loading="lazy" alt="hier-ei-paper-img" src="https://dayu-autostreamer.github.io/assets/images/hier-ei-paper-abb2074181fd298303b393a8bf4d069c.png" width="668" height="866" class="img_ev3q"></p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
@@ -230,31 +230,31 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
         <updated>2025-05-07T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.1 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.1 is released!</strong></p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/blog/version1.1#breaking-changes" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/blog/version1.1#breaking-changes" class="hash-link" aria-label="Direct link to Breaking Changes" title="Direct link to Breaking Changes" translate="no">​</a></h3>
 <p>The basic structure of tasks in dayu is updated from linear pipeline to topological dag (directed acyclic graph) to support more complicated application scenarios.</p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.1#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.1#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
-<li>A brand-new forwarding mechanism in the dayu system for tasks with dag structure, including splitting nodes with forking and merging nodes with redis.</li>
-<li>A fine-grained and flexible deployment and offloading mechanism for topological logic nodes and physical nodes, which separates the process of model deployment and task offloading and allows collaboration among multi-edges and cloud.</li>
-<li>A more flexible visualization module in frontend to display customized visualization views for system analysis.</li>
-<li>Add our work on model evolution, adaptively switch models based on scenarios. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/model-switch.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
-<li>Add our latest work on video encoding: CRAVE (Collaborative Region-aware Adaptive Video Encoding). It is a region-adaptive video encoding algorithm for cloud-edge collaborative object detection. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/crave.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
+<li class="">A brand-new forwarding mechanism in the dayu system for tasks with dag structure, including splitting nodes with forking and merging nodes with redis.</li>
+<li class="">A fine-grained and flexible deployment and offloading mechanism for topological logic nodes and physical nodes, which separates the process of model deployment and task offloading and allows collaboration among multi-edges and cloud.</li>
+<li class="">A more flexible visualization module in frontend to display customized visualization views for system analysis.</li>
+<li class="">Add our work on model evolution, adaptively switch models based on scenarios. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/model-switch.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
+<li class="">Add our latest work on video encoding: CRAVE (Collaborative Region-aware Adaptive Video Encoding). It is a region-adaptive video encoding algorithm for cloud-edge collaborative object detection. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/crave.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.1#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/blog/version1.1#bug-fix" class="hash-link" aria-label="Direct link to Bug Fix" title="Direct link to Bug Fix" translate="no">​</a></h3>
 <ul>
-<li>Fix problem of write queue full in rtsp datasource server (<code>datasource</code>).</li>
-<li>Fix possible task loss in the system (<code>controller</code> / <code>distributor</code>).</li>
-<li>Add optional cloud/edge parameters filling in template files for flexible parameter specification in cloud-edge pods.</li>
+<li class="">Fix problem of write queue full in rtsp datasource server (<code>datasource</code>).</li>
+<li class="">Fix possible task loss in the system (<code>controller</code> / <code>distributor</code>).</li>
+<li class="">Add optional cloud/edge parameters filling in template files for flexible parameter specification in cloud-edge pods.</li>
 </ul>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.1#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/blog/version1.1#minor-update" class="hash-link" aria-label="Direct link to Minor Update" title="Direct link to Minor Update" translate="no">​</a></h3>
 <ul>
-<li>Add cloud and edge template supplementary to support heterogeneous parameters (<code>backend</code>).</li>
-<li>Beatify frontend pages (<code>frontend</code>).</li>
-<li>Refactor template directory to simplify file structure.</li>
-<li>Unify the base image for system components.</li>
-<li>Add application of age classification. (Current available applications: car-detection, face-detection, gender-classification, age-classification)</li>
+<li class="">Add cloud and edge template supplementary to support heterogeneous parameters (<code>backend</code>).</li>
+<li class="">Beatify frontend pages (<code>frontend</code>).</li>
+<li class="">Refactor template directory to simplify file structure.</li>
+<li class="">Unify the base image for system components.</li>
+<li class="">Add application of age classification. (Current available applications: car-detection, face-detection, gender-classification, age-classification)</li>
 </ul>
-<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.1" target="_blank" rel="noopener noreferrer">dayu-v1.1</a>.</p>]]></content>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.1" target="_blank" rel="noopener noreferrer" class="">dayu-v1.1</a>.</p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
@@ -282,7 +282,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
         <content type="html"><![CDATA[<p>Our paper "Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection" is Accepted by IEEE ICDCSW 2025!</p>
 <p>This paper proposes CRAVE (Collaborative Region-aware Adaptive Video Encoding), which achieves efficient candidate region extraction through lightweight foreground detection and historical inference result analysis.</p>
 <p>For more information, please refer to:</p>
-<p><strong>Bingyun Yang, Jingyi Ning, Wenhui Zhou, Chuyu Wang, Lei Xie, Zhenjie Lin, Liming Wang. <a href="https://doi.org/10.1109/ICDCSW63273.2025.00012" target="_blank" rel="noopener noreferrer">Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection</a>. IEEE ICDCSW, pp. 32-37, 2025.</strong></p>
+<p><strong>Bingyun Yang, Jingyi Ning, Wenhui Zhou, Chuyu Wang, Lei Xie, Zhenjie Lin, Liming Wang. <a href="https://doi.org/10.1109/ICDCSW63273.2025.00012" target="_blank" rel="noopener noreferrer" class="">Adaptive Region-aware Video Encoding for Real-time Cloud-edge Collaborative Object Detection</a>. IEEE ICDCSW, pp. 32-37, 2025.</strong></p>
 <p><img decoding="async" loading="lazy" alt="crave-paper-img" src="https://dayu-autostreamer.github.io/assets/images/crave-paper-1d10e694eddd9027bc8f98803d9d0a79.png" width="639" height="823" class="img_ev3q"></p>]]></content>
         <author>
             <name>Bingyun Yang</name>
@@ -301,15 +301,15 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
         <updated>2025-02-21T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.0 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.0 is released!</strong></p>
-<h3 class="anchor anchorWithStickyNavbar_LWe7" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.0#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/blog/version1.0#features" class="hash-link" aria-label="Direct link to Features" title="Direct link to Features" translate="no">​</a></h3>
 <ul>
-<li>Complete online processing, scheduling and displaying flow of video analytics pipelines.</li>
-<li>Compatible with different operations among the whole flow with various hook functions.</li>
-<li>Easy to deploy on distributed systems and scalable to heterogeneous devices based on KubeEdge.</li>
-<li>Support heterogeneous hook function extensions for research of different topics (like data configuration, task offloading, video encoding, and so on) and implementation of different methods (for baseline comparison).</li>
-<li>Include our latest work on video configuration and task offloading: hierarchical-EI, a two-phase hierarchical scheduling framework based on Embodied Intelligence. It helps adjust system configuration with low cost and high scenario adaption.  <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.0/template/scheduler/hei.yaml" target="_blank" rel="noopener noreferrer">(link)</a></li>
+<li class="">Complete online processing, scheduling and displaying flow of video analytics pipelines.</li>
+<li class="">Compatible with different operations among the whole flow with various hook functions.</li>
+<li class="">Easy to deploy on distributed systems and scalable to heterogeneous devices based on KubeEdge.</li>
+<li class="">Support heterogeneous hook function extensions for research of different topics (like data configuration, task offloading, video encoding, and so on) and implementation of different methods (for baseline comparison).</li>
+<li class="">Include our latest work on video configuration and task offloading: hierarchical-EI, a two-phase hierarchical scheduling framework based on Embodied Intelligence. It helps adjust system configuration with low cost and high scenario adaption.  <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.0/template/scheduler/hei.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
 </ul>
-<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.0" target="_blank" rel="noopener noreferrer">dayu-v1.0</a>.</p>]]></content>
+<p>For more details, please refer to <a href="https://github.com/dayu-autostreamer/dayu/releases/tag/v1.0" target="_blank" rel="noopener noreferrer" class="">dayu-v1.0</a>.</p>]]></content>
         <author>
             <name>Wenhui Zhou</name>
             <uri>https://github.com/zwh2119</uri>
@@ -330,7 +330,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <p>We provide infrastructure for cloud-edge collaborative stream data analytics and focus on scheduling tasks like configuration optimization, model evolution, task offloading, and so on.</p>
 <!-- -->
 <img src="https://dayu-autostreamer.github.io/img/dayu-logo-horizontal.svg" alt="dayu image" class="themedComponent_mlkZ themedComponent--light_NVdE" style="width:50%;height:auto"><img src="https://dayu-autostreamer.github.io/img/dayu-logo-horizontal-white.svg" alt="dayu image" class="themedComponent_mlkZ themedComponent--dark_xIcU" style="width:50%;height:auto">
-<p>For more information of dayu, please refer to <a href="https://dayu-autostreamer.github.io/docs/">Introduction</a>.</p>]]></content>
+<p>For more information of dayu, please refer to <a class="" href="https://dayu-autostreamer.github.io/docs/">Introduction</a>.</p>]]></content>
         <author>
             <name>Lei Xie</name>
             <uri>https://cs.nju.edu.cn/lxie</uri>

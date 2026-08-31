@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdayu_documentation_website=self.webpackChunkdayu_documentation_website||[]).push([[1903],{1912:e=>{e.exports=JSON.parse('{"blogBasePath":"/zh/blog","blogTitle":"\u535a\u5ba2","authorsListPath":"/zh/blog/authors"}')}}]);

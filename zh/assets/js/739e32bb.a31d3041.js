@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdayu_documentation_website=self.webpackChunkdayu_documentation_website||[]).push([[9828],{5652:e=>{e.exports=JSON.parse('{"tags":[{"label":"release","permalink":"/zh/blog/tags/release","count":5},{"label":"paper","permalink":"/zh/blog/tags/paper","count":3},{"label":"welcome","permalink":"/zh/blog/tags/welcome","count":1}]}')}}]);
