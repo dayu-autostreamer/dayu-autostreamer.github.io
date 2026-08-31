@@ -7,6 +7,16 @@ updates:
       day: monday
       time: "09:00"
       timezone: Asia/Shanghai
+    groups:
+      docusaurus:
+        applies-to: version-updates
+        patterns:
+          - "@docusaurus/*"
+      react-runtime:
+        applies-to: version-updates
+        patterns:
+          - react
+          - react-dom
     labels:
       - dependencies
       - website
