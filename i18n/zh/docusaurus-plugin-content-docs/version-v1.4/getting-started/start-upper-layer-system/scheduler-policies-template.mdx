@@ -1,0 +1,58 @@
+---
+sidebar_label: 调度策略模板
+slug: /getting-started/start-upper-layer-system/scheduler-policies-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# scheduler_policies.yaml
+
+`scheduler_policies.yaml` 是安装时策略目录。前端通过 Backend 读取该文件，并在应用安装页面显示可用的 policy ID 与名称。
+
+```yaml
+- id: fixed
+  name: Fixed Policy
+  yaml: fixed-policy.yaml
+  dependency:
+    generator: generator-base.yaml
+    controller: controller-base.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-base.yaml
+
+- id: fragsplice
+  name: FragSplice
+  yaml: fragsplice.yaml
+  dependency:
+    generator: generator-with-bursty.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-queue-state.yaml
+```
+
+| 字段 | 含义 |
+| --- | --- |
+| `id` | 前端或 API 提交的稳定值，必须唯一。 |
+| `name` | 向用户显示的可读名称。 |
+| `yaml` | `template/scheduler/` 下的 Scheduler 模板。 |
+| `dependency` | 与该策略组合的 Generator、Controller、Distributor 与 Monitor 模板。 |
+
+当前目录包含 fixed、cloud-only、edge-only、dynamic 和 profiling 等通用策略，Hier-EI、Steady、Hedger、CASVA、
+CEVAS、Chameleon、CRAVE 等大禹系统研究策略，以及 FragSplice、IBDASH、Distream、DTODRL 等实验策略和基线。
+部分条目明确属于训练、benchmark、cold-sample 或 ablation 变体，需要挂载 profile、模型或 checkpoint。
+
+Scheduler 会在其余运行时之前安装，因为数据源选择与初始部署属于 Scheduler API 契约。Backend 会在创建任何 processor 路由前
+校验返回的部署计划。因此，把条目加入目录只会使策略可供安装，并不会绕过其 hook、资产或计划校验要求。
+
+实现流程见[自定义调度](/docs/v1.4/developer-guide/how-to-develop/customize-scheduling)。
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">返回模板列表</span>
+    </span>
+  </Link>
+</div>

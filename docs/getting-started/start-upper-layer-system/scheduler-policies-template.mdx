@@ -8,36 +8,47 @@ hide_table_of_contents: true
 
 # scheduler_policies.yaml
 
-`scheduler_policies.yaml` defines the available scheduler policies in the system. 
-Each policy includes its unique identifier, human-readable name, the YAML file that defines the policy, 
-and its dependencies on other components such as generator, controller, distributor, and monitor.
-
-These pre-defined Scheduling policies can be switched in the `Application Installation` page of the frontend UI after running system.
+`scheduler_policies.yaml` is the install-time policy catalog. The frontend reads it through Backend and displays the
+available policy IDs and names on the application installation page.
 
 ```yaml
-# A list of scheduler policies available in the system.
-
-- id: fixed  # Unique identifier for the policy.
-  name: Fixed Policy  # Human-readable name of the policy.
-  yaml: fixed-policy.yaml  # YAML defining the policy, included in 'scheduler/' directory
-  dependency:  
-    # dependent components required by this policy
-    generator: generator-base.yaml  # YAML in 'generator/' directory
-    controller: controller-base.yaml  # YAML in 'controller/' directory
-    distributor: distributor-base.yaml  # YAML in 'distributor/' directory
-    monitor: monitor-base.yaml  # YAML in 'monitor/' directory
-    
-- id: hei
-  name: Hierarchical Embodied Intelligence (Hier-EI)
-  yaml: hei.yaml
+- id: fixed
+  name: Fixed Policy
+  yaml: fixed-policy.yaml
   dependency:
     generator: generator-base.yaml
-    controller: controller-for-evaluation.yaml
+    controller: controller-base.yaml
     distributor: distributor-base.yaml
     monitor: monitor-base.yaml
-    
-# ......
+
+- id: fragsplice
+  name: FragSplice
+  yaml: fragsplice.yaml
+  dependency:
+    generator: generator-with-bursty.yaml
+    controller: controller-for-evaluation.yaml
+    distributor: distributor-base.yaml
+    monitor: monitor-queue-state.yaml
 ```
+
+| Field | Meaning |
+| --- | --- |
+| `id` | Stable value submitted by the frontend or API. It must be unique. |
+| `name` | Human-readable label shown to the user. |
+| `yaml` | Scheduler template under `template/scheduler/`. |
+| `dependency` | Generator, Controller, Distributor, and Monitor templates composed with the policy. |
+
+The current catalog includes general fixed, cloud-only, edge-only, dynamic, and profiling policies; Dayu research
+families such as Hier-EI, Steady, Hedger, CASVA, CEVAS, Chameleon, and CRAVE; and experiment policies and baselines
+for FragSplice, IBDASH, Distream, and DTODRL. Some entries are explicitly marked as training, benchmark, cold-sample, or
+ablation variants and may require mounted profiles, models, or checkpoints.
+
+Scheduler is installed before the remaining runtime because source selection and initial deployment are Scheduler API
+contracts. Backend validates the returned deployment plan before creating any processor routes. Adding an entry to this
+catalog therefore exposes a policy for installation, but does not bypass its hook, asset, or plan-validation
+requirements.
+
+See [Customize Scheduling](/docs/developer-guide/how-to-develop/customize-scheduling) for the implementation workflow.
 
 import Link from '@docusaurus/Link';
 

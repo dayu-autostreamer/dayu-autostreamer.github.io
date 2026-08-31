@@ -1,0 +1,38 @@
+---
+sidebar_label: Distributor Template
+slug: /getting-started/start-upper-layer-system/distributor-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# Template in distributor/
+
+Distributor is a cloud runtime service that durably accepts completed tasks, stores results for Backend queries, and
+exports result logs.
+
+```yaml
+position: cloud
+pod-template:
+  image: distributor
+  imagePullPolicy: Always
+  env:
+port-open:
+  pos: cloud
+  port: 9000
+```
+
+The base template has no policy-specific environment variables. Distributor performs the final task-lease
+renewal before persistence, reports completion to Scheduler, and releases the lease. Acceptance is idempotent, so a
+retry of the same completed task does not create a second logical result.
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>

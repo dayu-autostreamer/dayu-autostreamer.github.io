@@ -18,11 +18,14 @@ pod-template:
       value: "5"
     - name: MONITORS
       value: >
-        ['memory_capacity','cpu_usage', 'memory_usage', 'gpu_usage', 'available_bandwidth',  'gpu_flops', 'model_flops', 'model_memory','queue_length']
+        ['memory_capacity','cpu_usage', 'memory_usage', 'gpu_usage', 'available_bandwidth',  'gpu_flops', 'model_flops', 'model_memory','queue_state']
 port-open:
   pos: cloud
   port: 9000
 ```
+
+需要 invocation-level queue state 的策略使用 `monitor-queue-state.yaml`，以更短间隔仅上报 `queue_state`。
+Queue state 包含按顺序等待的 task identity 与当前 running/processing phase，而不是单个 queue length 数值。
 
 import Link from '@docusaurus/Link';
 
@@ -34,4 +37,3 @@ import Link from '@docusaurus/Link';
     </span>
   </Link>
 </div>
-

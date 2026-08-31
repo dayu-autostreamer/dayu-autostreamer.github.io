@@ -8,15 +8,17 @@ slug: /getting-started/install-lower-layer-system/install-sedna
 
 ## 下载Sedna（云端）
 ```bash
-# clone sedna代码（大禹定制版）
-git clone https://github.com/dayu-autostreamer/dayu-sedna.git
+# 克隆大禹系统配套的 Sedna 版本
+git clone --branch v1.1 --depth 1 https://github.com/dayu-autostreamer/dayu-sedna.git
 # 进入dayu-sedna文件目录
 cd dayu-sedna
 ```
 
+大禹系统要求使用 `dayu-sedna v1.1`，并与 `dayu-edgemesh v1.1` 配套。
+
 ## 安装Sedna （云端）
 
-可能遇到 [问题十：lc12700-5353-no-such-hostconnection-refused](/docs/getting-started/install-lower-layer-system/faqs#问题十lc12700-5353-no-such-hostconnection-refused)
+可能遇到[问题十：Sedna LC 无法解析 `gm.sedna`](/docs/getting-started/install-lower-layer-system/faqs#question-10-sedna-lc-dns)。
 
 ```bash
 # 设置镜像源，不设置默认为dockerhub(docker.io)
@@ -34,4 +36,3 @@ SEDNA_ACTION=delete bash - install.sh
 ![lc](/img/install/sedna_lc.png)
 
 ![gm](/img/install/sedna_gm.png)
-

@@ -204,28 +204,96 @@ sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 ```
 
-## Question 10: lc127.0.0. 53:53 no such host/connection refused
+## Question 10: Sedna LC reports `lookup gm.sedna on 127.0.0.53:53: no such host` {#question-10-sedna-lc-dns}
 
-During the Sedna installation stage, an error occurs in logs: `lc127.0.0. 53:53 no such host/connection refused`.
+During Dayu-Sedna installation, LC pods can be `Running` while their logs repeatedly report:
 
-**Reason:** See question 5 in [EdgeMesh Q&A](https://zhuanlan.zhihu.com/p/585749690).
+```text
+client tries to connect global manager(address: gm.sedna:9000) failed, error: dial tcp: lookup gm.sedna on 127.0.0.53:53: no such host
+```
 
-**Solution:**
+With the Sedna release used by the current system, this also prevents edge RuntimeServices from completing activation. Their workloads may be running, but the resources remain `Activated=False`, `Ready=False`, and `AwaitingNodeAck` because LC cannot receive activation requests from GM.
 
-First check whether `Hostnetwork` is in the script `install.sh`. Delete `Hostnetwork` options if it exists (`install.sh` in [dayu-cusomized sedna](https://github.com/dayu-autostreamer/dayu-sedna) is correct).
+**Reason:**
 
-If `Hostnetwork` does not exist but the error is still reported, use the following method to temporarily solve (**not recommend**):
+Dayu-Sedna v1.1 LC intentionally uses `hostNetwork: true` so that it can verify the node-local EdgeMesh route through `127.0.0.1:10551`. If `edged.clusterDNS` is empty or incorrect, the host-networked LC inherits the host resolver, such as `127.0.0.53`, instead of the EdgeMesh DNS server at `169.254.96.16`. The Kubernetes name `gm.sedna` therefore cannot be resolved.
 
-1. Add `nameserver 169.254.96.16` to the last line of file `/etc/resolv.conf` on edge nodes with sedna pod error.
-2. Check whether clusterDNS is `169.254.96.16` in `/etc/kubeedge/config/edgecore.yaml` on edge nodes.
-3. If error still exists, reinstall Sedna.
+> Keep `hostNetwork` on the current Dayu-Sedna LC. Removing it prevents the LC from acknowledging RuntimeService routes through the node-local EdgeMesh path.
 
-## Question 11: 169.254.96.16:no such host
+**Troubleshooting and solution:**
 
-Check the configuration of EdgeMesh:
+1. Check which LC nodes cannot connect to GM:
 
-1. Check the chain in iptables as [Hybrid proxy | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html).
-2. Check `clusterDNS` as required in [EdgeMesh Installation](/docs/getting-started/install-lower-layer-system/install-edgemesh#configure-edge-network-edge).
+   ```bash
+   kubectl get pods -n sedna -o wide
+   kubectl logs -n sedna <lc-pod-name>
+   ```
+
+2. On every affected edge node, check `/etc/kubeedge/config/edgecore.yaml`. The effective configuration must contain:
+
+   ```yaml
+   modules:
+     edged:
+       clusterDNS: 169.254.96.16
+       clusterDomain: cluster.local
+   ```
+
+3. Confirm that the EdgeMesh agent on the same node is Ready and that EdgeDNS has started:
+
+   ```bash
+   kubectl get pods -n kubeedge -o wide
+   kubectl logs -n kubeedge <edgemesh-agent-pod> | grep -E 'EdgeDNS|169.254.96.16'
+   ```
+
+   A healthy agent logs that EdgeDNS is running and listening on `169.254.96.16:53`.
+
+4. After correcting `edgecore.yaml`, restart edgecore on one node at a time:
+
+   ```bash
+   sudo systemctl restart edgecore.service
+   sudo systemctl status edgecore.service
+   ```
+
+5. Recreate the LC pod on that node because an existing pod keeps its old `/etc/resolv.conf`:
+
+   ```bash
+   kubectl delete pod -n sedna <lc-pod-name>
+   ```
+
+6. Verify the end state instead of relying only on Pod readiness:
+
+   ```bash
+   kubectl exec -n sedna <new-lc-pod-name> -- cat /etc/resolv.conf
+   kubectl logs -n sedna <new-lc-pod-name>
+   kubectl get runtimeservices.sedna.io -n <dayu-namespace>
+   ```
+
+   The LC resolver should use `169.254.96.16`, the LC log should show a successful GM websocket connection, and endpoint-bearing RuntimeServices should become `Activated=True` and `Ready=True`.
+
+Do not permanently edit `/etc/resolv.conf`; it is generated for the pod and the change can be lost after a restart. Fix `edgecore.yaml` instead.
+
+## Question 11: `169.254.96.16` cannot resolve a service or times out {#question-11-edgemesh-dns}
+
+First distinguish this failure from [Question 10](#question-10-sedna-lc-dns):
+
+- A query sent to `127.0.0.53` means the pod is using the wrong resolver; fix `edged.clusterDNS`.
+- A query sent to `169.254.96.16` that times out means EdgeDNS is unavailable or unreachable on that node.
+- A query answered by `169.254.96.16` with `NXDOMAIN` usually means EdgeMesh has not synchronized the Service and Endpoint data yet.
+
+Check the following in order:
+
+1. Verify `clusterDNS` as required in [EdgeMesh Installation](/docs/getting-started/install-lower-layer-system/install-edgemesh#configure-edge-network-edge).
+2. Verify that the node's `edgemesh-agent` is Ready and its logs show EdgeDNS startup without repeated errors.
+3. On the affected edge node, verify the local edge API used by EdgeMesh:
+
+   ```bash
+   curl -fsS --max-time 3 http://127.0.0.1:10550/api/v1/services
+   ```
+
+   If port `10550` refuses the connection, follow [Question 32](#question-32-edgemesh-local-api).
+
+4. Check the iptables chains as described in [Hybrid proxy | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html).
+5. If the EdgeMesh image itself is unavailable on a newly joined node, follow [Question 24](#question-24-16925496-1653-io-timeout).
 
 
 ## Question 12: `kubectl logs <pod-name>` timeout
@@ -864,6 +932,16 @@ Remember to modify `cloudcore.yaml` as [[Install KubeEdge]](/docs/getting-starte
 
 In dayu system containers, connection refused error is reported when accessing services, but the pods are normal and logs show no error.
 
+For Dayu RuntimeServices, check activation before treating this as stale iptables state:
+
+```bash
+kubectl get runtimeservices.sedna.io -n <dayu-namespace>
+kubectl get pods -n sedna -o wide
+kubectl logs -n sedna <lc-pod-name>
+```
+
+If the workloads are running but endpoint-bearing RuntimeServices remain `Activated=False` with reason `AwaitingNodeAck`, follow [Question 10](#question-10-sedna-lc-dns). Clearing the edgecore database does not repair a disconnected Sedna LC and can cause unnecessary data loss.
+
 **Reason:**
 
 Check the status of `edgemesh-agent` on edge nodes:
@@ -872,16 +950,16 @@ kubectl get pods -n kubeedge -owide
 kubectl logs -n kubeedge edgemesh-agent-xxxxx # xxxxx is the pod name
 ```
 
-From the edgemesh-agent logs, we can see that service port conflict happens, then check iptables on edge nodes:
+Only when the edgemesh-agent logs explicitly show a service port conflict, check iptables on edge nodes:
 ```bash
 sudo iptables -t nat -nvL
 ```
 
 Redundant iptable rules are recorded in `KUBE-NODEPORT-CONTAINER`, `KUBE-NODEPORT-HOST`, `KUBE-PORTALS-CONTAINER` and `KUBE-PORTALS-HOST` (which are residual after stop system).
 
-**Solution:**
+**Residual-state solution:**
 
-Temporarily, flush edgecore database on edge node (it may cause data loss):
+If RuntimeService activation is healthy and the residual rules above are confirmed, temporarily flush the edgecore database on the affected edge node. This may cause data loss, so back it up first:
 ```bash
 # Stop edgecore
 sudo systemctl stop edgecore
@@ -899,7 +977,7 @@ sudo journalctl -u edgecore -f --no-pager
 
 Another temporary solution is to reinstall kubeedge on edge node as [instruction](/docs/getting-started/install-lower-layer-system/install-kubeedge#join-kubeedge-cluster-edge) shows.
 
-Permanently, this error has been fixed after dayu v1.3 release. Use the latest [dayu script](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh) can avoid this error.
+The current [Dayu startup script](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh) fixes this issue.
 
 ## Question 29: Edgecore fails to restart on JetPack 6 or cgroup v2
 
@@ -1000,7 +1078,7 @@ Finally, confirm that `kubeedge/pause:3.1` exists locally:
 docker images | grep 'kubeedge/pause'
 ```
 
-## Question 32: Edgemesh-agent is Running but logs 127.0.0.1:10550 connection refused
+## Question 32: Edgemesh-agent is Running but logs 127.0.0.1:10550 connection refused {#question-32-edgemesh-local-api}
 
 The `edgemesh-agent` pod may be `Running`, but its logs keep reporting:
 ```bash

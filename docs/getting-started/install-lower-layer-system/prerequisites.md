@@ -1,20 +1,20 @@
 ---
-sidebar_label: 前置要求
+sidebar_label: Prerequisites
 sidebar_position: 2
-slug: /getting-started/install-lower-layer-system/pre-requisites
+slug: /getting-started/install-lower-layer-system/prerequisites
 ---
 
-# 前置要求
+# Prerequisites
 
-请在安装前完成前置要求的准备工作。
+Complete the following steps on every cloud and edge node before installation.
 
-## 关闭防火墙（云边共用）
+## Turn off the firewall (both cloud/edge)
 ```bash
 ufw disable	
 ```
 
-## 开启 ipv 4 转发配置 iptables 参数（云边共用）
-将桥接的 `IPv4/IPv6` 流量传递到 iptables 的链
+## Enable IPv4 forwarding in iptables (both cloud/edge)
+Translate the bridged `IPv4/IPv6` traffic to the iptables chain
 ```bash
 modprobe br_netfilter
 
@@ -27,39 +27,41 @@ EOF
 sysctl -p 
 ```
 
-## 禁用 swap 分区（云边共用）
+## Disable swap partition on disk (both cloud/edge)
 ```bash
-# 临时关闭
+# Temporary
 swapoff -a
-# 永久关闭                                          
-sed -ri 's/.*swap.*/#&/' /etc/fstab                 
+# Permanent                                        
+sed -ri 's/.*swap.*/#&/' /etc/fstab
 ```
 
-## 设置主机名（云边共用）
+## Set hostname (both cloud/edge)
 ```bash
-# 为分布式集群的每个节点设置主机名
-# 如:
-# 云服务器
+# Set hostname for each node
+# such as:
+# cloud (master)
 hostnamectl set-hostname master   
-# 边
+# edge
 hostnamectl set-hostname edge1
 hostnamectl set-hostname edge2
 ```
 
-## 设置 DNS（云边共用）
+## Set DNS (both cloud/edge)
 ```bash
-# 不同主机上使用ifconfig查看ip地址
-sudo vim /etc/hosts
+# view ip address on different nodes
+ipconfig
 
-# 根据自己的ip添加
-# ip 主机名
+# add all ip address to each node
+sudo vim /etc/hosts
+# such as:
+# (ip hostname)
 192.168.247.128 master
 192.168.247.129 edge1
 ```
 
-## 安装并配置 docker（云边共用）
+## Install and configure docker (both cloud/edge)
 ```bash
-# X86/AMD64架构
+# X86/AMD64
 sudo apt-get update
 sudo apt-get install docker.io -y
 
@@ -68,7 +70,7 @@ sudo systemctl enable docker
 
 sudo docker --version
 
-# ARM64 架构
+# ARM64
 sudo apt-get update
 sudo apt-get install curl wget apt-transport-https ca-certificates software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -80,58 +82,59 @@ sudo docker --version
 
 ```
 
-配置docker daemon
+Configure docker daemon
 ```bash
 sudo vim /etc/docker/daemon.json
 
-# 云服务器master节点添加：
+# on cloud (master) add：
 {
   "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"],
   "exec-opts": ["native.cgroupdriver=systemd"]
 }
 
-# 边缘节点添加：
+# on edge add：
 {
   "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"],
   "exec-opts": ["native.cgroupdriver=cgroupfs"]
 }
 
-# 云/边都要执行
+# execute both on cloud/edge:
 sudo systemctl daemon-reload
 sudo systemctl restart docker
 
-# 查看修改后的docker Cgroup的参数
+# check docker Cgroup
 docker info | grep Cgroup
 ```
 
-为非root用户配置不需要sudo操作docker
+Configure Docker for non-root users without sudo operation
 ```bash
-sudo groupadd docker  # 创建组，如果已存在会报错，可忽略
+sudo groupadd docker  # Create a group (if already exists, an error will be reported, ignore it)
 sudo gpasswd -a ${USER} docker
 sudo systemctl restart docker
 sudo chmod a+rw /var/run/docker.sock
 
-# 验证
+# validation
 docker images
 ```
 
-如无法访问[Dockerhub](https://hub.docker.com/)，需设置docker镜像源，可参考[docker镜像源配置](/docs/developer-guide/configure-docker-registry).
+If unable to access [Dockerhub](https://hub.docker.com/), you need to configure Docker registry, 
+and you can refer to [Docker Registry Configuration](/docs/developer-guide/configure-docker-registry) for instructions.
 
-## 设置跨节点时钟同步（云边共用）
-分布式系统需要保证每个节点的时钟是同步的，采用NTP服务同步云边分布式节点
+## Set cross-node clock synchronization (both cloud/edge)
 
-安装NTP服务
+Distributed systems need to ensure that the clocks of each node are synchronized, using NTP services to synchronize the cloud-edge distributed nodes.
+
+Install NTP Service.
 ```bash
 sudo apt update
 sudo apt install ntp
 ```
 
-配置NTP服务，修改/etc/ntp.conf文件
+To configure NTP service, you should `vim /etc/ntp.conf`.
 
-云端从公共NTP服务器同步时间
+For cloud node, synchronize time from public NTP servers.
 ```
 # Specify one or more NTP servers.
-
 server 1.networktime.org iburst
 server 2.networktime.org iburst
 server ntp.synet.edu.cn iburst
@@ -140,20 +143,19 @@ server ntp.gwadar.cn iburst
 server ntp.neu.edu.cn iburst
 ```
 
-边端从云端同步时间
+For edge node, synchronize time from the cloud node.
 ```
 # Specify one or more NTP servers.
 server 114.212.81.11  iburst
 ```
 
-启动NTP服务
+Start NTP service.
 ```bash
 sudo systemctl start ntp
 sudo systemctl enable ntp
 ```
 
-验证时间同步状态
+Verify the time synchronization status.
 ```bash
 ntpq -p
 ```
-

@@ -17,7 +17,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 
 步骤 2: 给 Kubernetes API 服务添加过滤标签
 ```bash
-kubectl label services kubernetes service.edgemesh.kubeedge.io/service-proxy-name=""
+kubectl label service kubernetes -n default service.edgemesh.kubeedge.io/service-proxy-name=""
 ```
 
 步骤 3: 启用 KubeEdge 的边缘 Kube-API 端点服务
@@ -88,11 +88,13 @@ curl 127.0.0.1:10550/api/v1/services
 
 下载 edgemesh代码
 ```bash
-# clone edgemesh代码（大禹定制版）
-git clone https://github.com/dayu-autostreamer/dayu-edgemesh.git
+# 克隆大禹系统配套的 EdgeMesh 版本
+git clone --branch v1.1 --depth 1 https://github.com/dayu-autostreamer/dayu-edgemesh.git
 # 进入代码文件夹
 cd dayu-edgemesh
 ```
+
+大禹系统要求使用 `dayu-edgemesh v1.1`，并与 `dayu-sedna v1.1` 配套。
 
 添加relay node
 ```bash

@@ -1,0 +1,101 @@
+---
+sidebar_label: Scheduler 模板
+slug: /getting-started/start-upper-layer-system/scheduler-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# scheduler/ 下的模板
+
+Scheduler 模板选择已注册的 hook alias，并传入对应参数。下面的 fixed policy 展示当前的数据源选择、部署和逐任务调度契约。
+
+```yaml
+position: cloud
+pod-template:
+  image: scheduler
+  imagePullPolicy: Always
+  env:
+    - name: SCH_CONFIG_EXTRACTION_NAME
+      value: simple
+    - name: SCH_SCENARIO_RETRIEVAL_NAME
+      value: simple
+    - name: SCH_STARTUP_POLICY_NAME
+      value: fixed
+    - name: SCH_POLICY_RETRIEVAL_NAME
+      value: simple
+    - name: SCH_SELECTION_POLICY_NAME
+      value: fixed
+    - name: SCH_SELECTION_POLICY_PARAMETERS
+      value: >
+        {
+          'scope': 'all_edge_nodes',
+          'fixed_value': 'edgex1',
+          'fixed_type':'hostname'
+        }
+    - name: SCH_INITIAL_DEPLOYMENT_POLICY_NAME
+      value: fixed
+    - name: SCH_INITIAL_DEPLOYMENT_POLICY_PARAMETERS
+      value: >
+        {
+          'policy':{
+            "vehicle-detection": ["edge5"],
+            "pedestrian-detection": ["edge5"],
+            "category-identification": ["edgexn8"],
+            "license-plate-recognition": ["edgexn11", "edgexn12"],
+            "exposure-identification": ["edgexn11", "edgexn12", "edgexn8"]
+          }
+        }
+    - name: SCH_REDEPLOYMENT_POLICY_NAME
+      value: fixed
+    - name: SCH_REDEPLOYMENT_POLICY_PARAMETERS
+      value: >
+        {
+          'policy':{
+            "vehicle-detection": ["edge5"],
+            "pedestrian-detection": ["edge5"],
+            "category-identification": ["edgexn8"],
+            "license-plate-recognition": ["edgexn11", "edgexn12"],
+            "exposure-identification": ["edgexn11", "edgexn12", "edgexn8"]
+          }
+        }
+    - name: SCH_AGENT_NAME
+      value: fixed
+    - name: SCH_AGENT_PARAMETERS
+      value: >
+        {
+          'configuration':{
+            'resolution': '720p',
+            'fps': 10,
+            'encoding': 'mp4v',
+            'buffer_size': 4
+          },
+          'offloading':{
+            'pedestrian-detection':'edge5',
+            'exposure-identification':'edgexn12',
+            'vehicle-detection':'edge5',
+            'category-identification':'edgexn8',
+            'license-plate-recognition':'edgexn11'
+          }
+        }
+port-open:
+  pos: cloud
+  port: 9000
+file-mount:
+  - pos: cloud
+    path: 'scheduler/fixed/'
+```
+
+请把示例 hostname 与 service map 替换为本次安装可用的节点和 DAG 服务。Backend 与 Scheduler 会拒绝缺失服务、空部署位置和
+授权候选集之外的节点。部署 hook 返回完整的 `logical service -> node list` 计划，不负责创建 Kubernetes 资源或发现拓扑。
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">返回模板列表</span>
+    </span>
+  </Link>
+</div>

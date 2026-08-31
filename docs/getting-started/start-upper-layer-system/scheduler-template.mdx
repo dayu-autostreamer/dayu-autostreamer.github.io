@@ -8,6 +8,9 @@ hide_table_of_contents: true
 
 # Template in scheduler/
 
+Scheduler templates select registered hook aliases and pass their parameters. The fixed policy below illustrates the
+current source-selection, deployment, and per-task scheduling contracts.
+
 ```yaml
 position: cloud
 pod-template:
@@ -27,7 +30,8 @@ pod-template:
     - name: SCH_SELECTION_POLICY_PARAMETERS
       value: >
         {
-          'fixed_value': 'edgexn12',
+          'scope': 'all_edge_nodes',
+          'fixed_value': 'edgex1',
           'fixed_type':'hostname'
         }
     - name: SCH_INITIAL_DEPLOYMENT_POLICY_NAME
@@ -36,11 +40,11 @@ pod-template:
       value: >
         {
           'policy':{
-            'pedestrian-detection':['edge5'],
-            'exposure-identification':['edgexn11','edgexn12'], 
-            'vehicle-detection':['edge5'],
-            'category-identification':['edgexn8','edgexn11'],
-            'license-plate-recognition':['edgexn11','edgexn12']
+            "vehicle-detection": ["edge5"],
+            "pedestrian-detection": ["edge5"],
+            "category-identification": ["edgexn8"],
+            "license-plate-recognition": ["edgexn11", "edgexn12"],
+            "exposure-identification": ["edgexn11", "edgexn12", "edgexn8"]
           }
         }
     - name: SCH_REDEPLOYMENT_POLICY_NAME
@@ -49,11 +53,11 @@ pod-template:
       value: >
         {
           'policy':{
-            'pedestrian-detection':['edge5'],
-            'exposure-identification':['edgexn11','edgexn12'], 
-            'vehicle-detection':['edge5'],
-            'category-identification':['edgexn8','edgexn11'],
-            'license-plate-recognition':['edgexn11','edgexn12']
+            "vehicle-detection": ["edge5"],
+            "pedestrian-detection": ["edge5"],
+            "category-identification": ["edgexn8"],
+            "license-plate-recognition": ["edgexn11", "edgexn12"],
+            "exposure-identification": ["edgexn11", "edgexn12", "edgexn8"]
           }
         }
     - name: SCH_AGENT_NAME
@@ -69,10 +73,10 @@ pod-template:
           },
           'offloading':{
             'pedestrian-detection':'edge5',
-            'exposure-identification':'edgexn11', 
+            'exposure-identification':'edgexn12',
             'vehicle-detection':'edge5',
             'category-identification':'edgexn8',
-            'license-plate-recognition':'edgexn12'
+            'license-plate-recognition':'edgexn11'
           }
         }
 port-open:
@@ -83,6 +87,9 @@ file-mount:
     path: 'scheduler/fixed/'
 ```
 
+Replace the example hostnames and service map with nodes and DAG services available to the installation. Backend and
+Scheduler reject missing services, empty placements, and nodes outside the authorized candidate set. Deployment hooks
+return a complete `logical service -> node list` plan; they do not create Kubernetes resources or discover topology.
 
 import Link from '@docusaurus/Link';
 
@@ -94,5 +101,3 @@ import Link from '@docusaurus/Link';
     </span>
   </Link>
 </div>
-
-

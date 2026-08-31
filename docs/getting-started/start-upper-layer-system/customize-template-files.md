@@ -6,18 +6,15 @@ slug: /getting-started/start-upper-layer-system/customize-template-files
 
 # Customize Template Files
 
-Dayu system runs based on `template/` directory and the files in it. Before run the system, you should customize the
-template files according to your requirements.
-
-Get dayu template files by cloning the dayu repository on the master node (cloud server):
+Dayu composes each installation from the YAML files under `template/`. Clone the system repository on the cloud node and
+edit a copy of this directory for the target deployment:
 
 ```bash
 git clone https://github.com/dayu-autostreamer/dayu.git
-
 cd dayu/template
 ```
 
-`template/` directory structure is as follows:
+The main layout is:
 
 ```text
 template/
@@ -27,48 +24,40 @@ template/
 ├── result-visualizations.yaml
 ├── system-visualizations.yaml
 ├── scheduler/
-│ ├── fixed-policy.yaml
-│ ├── hei.yaml
-│ └── ...
 ├── processor/
-│ ├── age-classification.yaml
-│ ├── pedestrian-detection.yaml
-│ └── ...
 ├── generator/
-│ ├── generator-base.yaml
-│ └── ...
 ├── controller/
-│ ├── controller-base.yaml
-│ └── ...
 ├── distributor/
-│ ├── distributor-base.yaml
-│ └── ...
 └── monitor/
-  ├── monitor-base.yaml
-  └── ...
 ```
 
-The table below lists the template files for meta information. For more details about each file format, please refer to
-the linked documentation:
+## Catalog and system files
 
-| File                       | Function                                                                                  | Details                                                                                         | 
-|----------------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| base.yaml                  | contains basic information of dayu system                                                 | [detail formats](/docs/getting-started/start-upper-layer-system/base-template)                  | 
-| scheduler_policies.yaml    | contains list of switchable scheduling policies, which is further defined in `scheduler/` | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
-| services.yaml              | contains list of available services, which is further defined in `processor/`             | [detail formats](/docs/getting-started/start-upper-layer-system/services-template)              | 
-| result-visualizations.yaml | contains list of visualization modules for task results                                   | [detail formats](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
-| system-visualizations.yaml | contains list of visualization modules for system monitoring                              | [detail formats](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
+| File | Purpose | Reference |
+| --- | --- | --- |
+| `base.yaml` | Namespace, Backend RBAC, runtime timeouts, images, mounts, datasource mode, and catalog imports. | [Base Template](/docs/getting-started/start-upper-layer-system/base-template) |
+| `scheduler_policies.yaml` | Installable policy catalog and each policy's component-template dependencies. | [Scheduler Policies](/docs/getting-started/start-upper-layer-system/scheduler-policies-template) |
+| `services.yaml` | DAG service catalog and processor-template mapping. | [Services](/docs/getting-started/start-upper-layer-system/services-template) |
+| `result-visualizations.yaml` | Task-result visualization modules. | [Result Visualizations](/docs/getting-started/start-upper-layer-system/result-visualizations-template) |
+| `system-visualizations.yaml` | Runtime and resource visualization modules. | [System Visualizations](/docs/getting-started/start-upper-layer-system/system-visualizations-template) |
 
-The following table lists the template files for pod installation, each yaml file is corresponding to an installable pod
-in sedna. For more details about each file format, please refer to the linked documentation:
+## Component templates
 
-| File               | Function                                                                                                                       | Details                                                                               | 
-|--------------------|--------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| common template    | common template for the following yamls as jointmultiedgeservice in dayu-sedna                                                 | [detail formats](/docs/getting-started/start-upper-layer-system/common-template)      |
-| scheduler/*.yaml   | defines different scheduling policies in different yaml templates, which is switchable in frontend UI after running            | [detail formats](/docs/getting-started/start-upper-layer-system/scheduler-template)   | 
-| processor/*.yaml   | defines different services in different yaml templates, which can be orchestrated in frontend UI as applications after running | [detail formats](/docs/getting-started/start-upper-layer-system/processor-template)   | 
-| generator/*.yaml   | defines the generator component in yaml template                                                                               | [detail formats](/docs/getting-started/start-upper-layer-system/generator-template)   | 
-| controller/*.yaml  | defines the controller component in yaml template                                                                              | [detail formats](/docs/getting-started/start-upper-layer-system/controller-template)  | 
-| distributor/*.yaml | defines the distributor component in yaml template                                                                             | [detail formats](/docs/getting-started/start-upper-layer-system/distributor-template) |
-| monitor/*.yaml     | defines the monitor component in yaml template                                                                                 | [detail formats](/docs/getting-started/start-upper-layer-system/monitor-template)     | 
+Files under `scheduler/`, `processor/`, `generator/`, `controller/`, `distributor/`, and `monitor/` are logical component
+templates. Backend combines the selected policy, DAG, source, nodes, image defaults, and mounted files, then renders
+immutable Sedna `RuntimeService` resources. These templates are no longer converted into one application
+`JointMultiEdgeService`.
 
+| Template | Role | Reference |
+| --- | --- | --- |
+| common fields | Position, image, environment, port, cloud/edge overlays, and host-path mounts. | [Common Template](/docs/getting-started/start-upper-layer-system/common-template) |
+| `scheduler/*.yaml` | Scheduler hook selection and policy parameters. | [Scheduler Template](/docs/getting-started/start-upper-layer-system/scheduler-template) |
+| `processor/*.yaml` | AI service image, processor family, queue, model parameters, and files. | [Processor Template](/docs/getting-started/start-upper-layer-system/processor-template) |
+| `generator/*.yaml` | Source-processing and scheduling-request hooks. | [Generator Template](/docs/getting-started/start-upper-layer-system/generator-template) |
+| `controller/*.yaml` | Task forwarding behavior. | [Controller Template](/docs/getting-started/start-upper-layer-system/controller-template) |
+| `distributor/*.yaml` | Result persistence and export service. | [Distributor Template](/docs/getting-started/start-upper-layer-system/distributor-template) |
+| `monitor/*.yaml` | Resource and queue-state monitor sets. | [Monitor Template](/docs/getting-started/start-upper-layer-system/monitor-template) |
+
+Backend validates catalog references, node permissions, deployment plans, ports, mounts, and effective environment
+before route publication. Keep policy-specific model or profile assets under the mounted paths expected by that
+template.

@@ -1,0 +1,50 @@
+---
+sidebar_label: 系统可视化模板
+slug: /getting-started/start-upper-layer-system/system-visualizations-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# system-visualizations.yaml
+
+`system-visualizations.yaml` 配置 Frontend 的 System Visualization 页面所展示的模块。当前默认配置为：
+
+```yaml
+- name: CPU Usage
+  type: curve
+  x_axis: Time
+  y_axis: Usage (%)
+  variables: []
+  hook_name: cpu_usage
+  size: 1
+- name: Memory Usage
+  type: curve
+  x_axis: Time
+  y_axis: Usage (%)
+  variables: []
+  hook_name: memory_usage
+  size: 1
+- name: Scheduling Overhead
+  type: curve
+  x_axis: Time
+  y_axis: Overhead (ms)
+  variables: [ "Overhead" ]
+  hook_name: schedule_overhead
+  size: 1
+```
+
+`hook_name` 选择 `dependency/core/lib/algorithms/system_visualizer/` 下已注册的 system visualizer。CPU 与 memory
+hook 的 `variables` 为空时会包含所有可用设备；非空列表用于限制显示的 series。`size` 与结果可视化一样，
+使用一至三列的页面布局。
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">返回模板列表</span>
+    </span>
+  </Link>
+</div>

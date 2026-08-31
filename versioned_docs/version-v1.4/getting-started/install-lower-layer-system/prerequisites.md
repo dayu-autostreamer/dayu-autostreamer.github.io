@@ -1,12 +1,12 @@
 ---
-sidebar_label: Pre-requisites
+sidebar_label: Prerequisites
 sidebar_position: 2
-slug: /getting-started/install-lower-layer-system/pre-requisites
+slug: /getting-started/install-lower-layer-system/prerequisites
 ---
 
-# Pre-requisites
+# Prerequisites
 
-Please prepare for pre-requisites before installation.
+Complete the following steps on every cloud and edge node before installation.
 
 ## Turn off the firewall (both cloud/edge)
 ```bash
@@ -118,7 +118,7 @@ docker images
 ```
 
 If unable to access [Dockerhub](https://hub.docker.com/), you need to configure Docker registry, 
-and you can refer to [Docker Registry Configuration](/docs/developer-guide/configure-docker-registry) for instructions.
+and you can refer to [Docker Registry Configuration](/docs/v1.4/developer-guide/configure-docker-registry) for instructions.
 
 ## Set cross-node clock synchronization (both cloud/edge)
 
@@ -159,4 +159,3 @@ Verify the time synchronization status.
 ```bash
 ntpq -p
 ```
-

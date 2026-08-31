@@ -8,15 +8,17 @@ slug: /getting-started/install-lower-layer-system/install-sedna
 
 ## Download Sedna (cloud)
 ```bash
-# clone sedna code (customized by dayu)
-git clone https://github.com/dayu-autostreamer/dayu-sedna.git
+# Clone the Sedna release used by Dayu.
+git clone --branch v1.1 --depth 1 https://github.com/dayu-autostreamer/dayu-sedna.git
 # move to code directory
 cd dayu-sedna
 ```
 
+Dayu requires `dayu-sedna v1.1`. Keep it paired with `dayu-edgemesh v1.1`.
+
 ## Install Sedna (cloud)
 
-This step may occur [Question 10: lc127.0.0. 53:53 no such host/connection refused](/docs/getting-started/install-lower-layer-system/faqs#question-10-lc12700-5353-no-such-hostconnection-refused).
+This step may encounter [Question 10: Sedna LC cannot resolve `gm.sedna`](/docs/getting-started/install-lower-layer-system/faqs#question-10-sedna-lc-dns).
 
 ```bash
 # Set image source. The default source is dockerhub (docker.io).
@@ -34,5 +36,3 @@ After installation, check the logs with `kubectl logs xxx -n sedna`, and pay spe
 ![lc](/img/install/sedna_lc.png)
 
 ![gm](/img/install/sedna_gm.png)
-
-

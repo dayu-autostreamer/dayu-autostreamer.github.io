@@ -11,9 +11,9 @@ This repository maintains the public homepage, documentation, blog, and localize
 [Dayu](https://github.com/dayu-autostreamer/dayu) project.
 
 Dayu is a cloud-edge stream analytics platform for deploying, scheduling, and operating DAG-based AI pipelines across
-heterogeneous cloud and edge nodes. The system repository contains the backend control plane, Vue frontend, datasource
-runtime, templates, hooks, scheduling policies, tests, and implementation-facing technical documentation. This repository
-turns that project knowledge into the public documentation site at
+heterogeneous cloud and edge nodes. The system repository contains the source code, runtime implementation, scheduling
+policies, tests, and implementation-facing technical documentation. This repository turns that project knowledge into
+the public documentation site at
 [dayu-autostreamer.github.io](https://dayu-autostreamer.github.io/).
 
 ## Repository Scope
@@ -22,8 +22,11 @@ Use this repository for website and documentation work:
 
 | Path | Purpose |
 | --- | --- |
-| `docs/` | English documentation source used by Docusaurus |
-| `i18n/zh/docusaurus-plugin-content-docs/current/` | Simplified Chinese documentation translation |
+| `docs/` | English source for the current documentation |
+| `i18n/zh/docusaurus-plugin-content-docs/current/` | Simplified Chinese translation of the current documentation |
+| `versioned_docs/version-<release>/` | Immutable English snapshots for published releases (currently `v1.4` and `v1.3`) |
+| `i18n/zh/docusaurus-plugin-content-docs/version-<release>/` | Immutable Simplified Chinese snapshots for published releases |
+| `versions.json` and `versioned_sidebars/` | Published documentation versions and their frozen sidebar metadata |
 | `blog/` | English release notes, research posts, and project updates |
 | `i18n/zh/docusaurus-plugin-content-blog/` | Simplified Chinese blog translation |
 | `src/pages/` | Homepage and standalone Docusaurus pages |
@@ -64,6 +67,10 @@ npm run serve
 For content changes, treat English documentation under `docs/` as the canonical source and keep the Simplified Chinese
 translation under `i18n/zh/docusaurus-plugin-content-docs/current/` in sync. Blog posts follow the same pattern between
 `blog/` and `i18n/zh/docusaurus-plugin-content-blog/`.
+
+The `docs/` tree is the Docusaurus `current` version and tracks the active development branch. Published versions are
+generated as frozen snapshots under `versioned_docs/` and the matching localized version directories. Update the current
+sources for ongoing work; do not modify a published snapshot after it is frozen.
 
 When adding or updating pages:
 

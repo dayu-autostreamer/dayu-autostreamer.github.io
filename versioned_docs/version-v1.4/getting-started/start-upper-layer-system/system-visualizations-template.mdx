@@ -1,0 +1,52 @@
+---
+sidebar_label: System Visualizations Template
+slug: /getting-started/start-upper-layer-system/system-visualizations-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# system-visualizations.yaml
+
+`system-visualizations.yaml` configures the modules shown on the Frontend's System Visualization page. The current
+default set is:
+
+```yaml
+- name: CPU Usage
+  type: curve
+  x_axis: Time
+  y_axis: Usage (%)
+  variables: []
+  hook_name: cpu_usage
+  size: 1
+- name: Memory Usage
+  type: curve
+  x_axis: Time
+  y_axis: Usage (%)
+  variables: []
+  hook_name: memory_usage
+  size: 1
+- name: Scheduling Overhead
+  type: curve
+  x_axis: Time
+  y_axis: Overhead (ms)
+  variables: [ "Overhead" ]
+  hook_name: schedule_overhead
+  size: 1
+```
+
+`hook_name` selects a registered system visualizer under
+`dependency/core/lib/algorithms/system_visualizer/`. An empty `variables` list lets the CPU and memory hooks include all
+available devices; a non-empty list limits the displayed series. `size` uses the same one-to-three column layout as
+result visualizations.
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>

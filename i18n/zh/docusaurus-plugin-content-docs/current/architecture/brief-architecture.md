@@ -1,22 +1,30 @@
 ---
-sidebar_label: 系统整体架构
+sidebar_label: 架构总览
 sidebar_position: 1
 slug: /architecture/brief-architecture
 ---
 
-# 系统整体架构
+# 架构总览
 
-大禹系统拥有五层架构，
-其中，**基础系统层**和**中间接口层**构成了下层系统，主要包含支持容器化编排、自定义任务下装、跨异构节点通信的基础设施结构，为流数据处理应用提供底层保障；
-**系统支撑层**、**协同调度层**、**应用服务层**构成了上层系统，主要包含支撑情境感知、计算决策、流程控制的功能组件，为流数据处理应用提供感算控一体化处理、调度、监控的全流程服务。
+大禹系统采用五层架构。**基础系统层**与**中间接口层**构成下层平台，负责集群编排、运行时部署与跨节点通信；
+**系统支撑层**、**协同调度层**与**应用服务层**构成用户配置和操作的上层系统。
 
-![arch](/img/architecture/arch-zh.svg)
+![大禹系统架构](/img/architecture/arch.svg)
 
-具体来说，每层的详细功能如下：
+## 运行流程
 
-- **[基础系统层](/docs/architecture/basic-system-layer)**：该层采用 KubeEdge 容器编排架构，部署在云边协同环境的所有分布式节点上。KubeEdge 是华为为边缘场景提出的 Kubernetes 框架扩展，能很好地部署在资源有限、性能低下的设备上，从而在云服务器和边缘节点上建立容器化编排基础框架。
-- **[中间接口层](/docs/architecture/intermediate-interface-layer)**：该层通过修改和扩展官方接口组件 Sedna 和通信组件 EdgeMesh，提供定制化的容器服务安装和组件通信，从而满足整体系统的应用部署和节点通信需求。
-- **[系统支撑层](/docs/architecture/system-support-layer)**：该层为整个系统提供支持服务，包含前端服务器（为用户提供交互式UI）、后端服务器（响应前端请求，完成任务的自动安装）和数据源服务器（模拟真实数据源）。
-- **[协同调度层](/docs/architecture/collaboration-scheduling-layer)**：该层由我们自主开发的多个功能组件组成，为流数据处理应用提供处理、调度、监控等全流程细粒度操作，从而支持实时流数据分析流水线的处理。
-- **[应用服务层](/docs/architecture/application-service-layer)**：该层以容器化无状态微服务的形式接收用户自定义的服务应用。只要用户根据平台定义的统一接口需求开发服务，就可以以容器形式嵌入平台，并编排成流水线，从而在云边节点之间的协同调度执行。
+1. 操作者启动支撑服务，并选择数据源、DAG、调度策略与目标节点。
+2. 大禹系统在云端和边缘节点部署应用所需的运行时服务，并确认应用运行时已经就绪。
+3. 流数据转换为任务，并根据调度决策沿 DAG 依次执行。
+4. 受控的运行时更新可以调整执行位置，同时保证在途任务一致完成。
+5. 运行结果与系统状态被汇总，用于可视化、分析和进一步的策略评估。
 
+## 各层职责
+
+- **[基础系统层](/docs/architecture/basic-system-layer)** 提供覆盖云端与边缘节点的集群基础设施。
+- **[中间接口层](/docs/architecture/intermediate-interface-layer)** 提供运行时部署与跨节点服务通信能力。
+- **[系统支撑层](/docs/architecture/system-support-layer)** 提供用户界面、系统控制、数据源管理与平台状态维护。
+- **[协同调度层](/docs/architecture/collaboration-scheduling-layer)** 协调任务生成、调度、执行、结果交付与资源观测。
+- **[应用服务层](/docs/architecture/application-service-layer)** 通过通用接口和模板提供用户可组合的 AI 服务。
+
+实现级生命周期和 API 细节见[仓库文档](https://github.com/dayu-autostreamer/dayu/tree/main/docs)。

@@ -62,6 +62,18 @@ Short practical guidance.
 When you change an English page that already has a Chinese counterpart, update both files in the same pull request. If a
 translation needs to follow later, say so clearly in the pull request body.
 
+### Versioned Documentation
+
+The source directories contain the continuously updated current documentation:
+
+- English: `docs/`
+- Simplified Chinese: `i18n/zh/docusaurus-plugin-content-docs/current/`
+
+Published releases are immutable snapshots under `versioned_docs/version-<release>/` and the corresponding localized
+`version-<release>/` directory. Do not fix a later release by editing an older snapshot. Update the current sources
+first, then create and review a new English and Chinese snapshot when the matching Dayu release is cut. Keep `versions.json`,
+`versioned_sidebars/`, and the `versions` configuration in `docusaurus.config.js` synchronized with that release.
+
 ## Pull Request Checklist
 
 Before requesting review:

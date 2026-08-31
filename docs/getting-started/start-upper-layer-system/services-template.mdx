@@ -22,23 +22,48 @@ These pre-defined services can be orchestrated in the `DAG Orchestration` page o
   service: car-detection  # Real invoking service related to images in "https://hub.docker.com/u/dayuhub" or code in "dependency/core/applications"
   name: car detection  # Human-readable name of the service.
   description: car detection (detection + tracking)  # Description of the service.
-  input: frame  # Input data type for the service.
-  output: bbox  # Output data type for the service.
+  input: [frame]  # Input data forms for the service.
+  output: [bbox]  # Output data forms for the service.
   yaml: car-detection.yaml  # YAML defining the service, included in 'processor/' directory
 
 - id: license-plate-recognition
   service: license-plate-recognition
   name: license plate recognition
   description: license plate recognition
-  input: bbox
-  output: text
+  input: [bbox]
+  output: [text]
   yaml: license-plate-recognition.yaml
+
+- id: traffic-detection
+  service: traffic-detection
+  name: traffic detection
+  description: traffic detection for vehicles, pedestrians, cyclists, lights, and signs
+  input: [frame]
+  output: [bbox]
+  yaml: traffic-detection.yaml
+
+- id: risk-graph-generation
+  service: risk-graph-generation
+  name: risk graph generation
+  description: traffic risk and violation event graph generation
+  input: [segmentation, text, trajectory]
+  output: [graph]
+  yaml: risk-graph-generation.yaml
 
 # ......
 ```
 
-The input/output data types defined in services are required to be consistent when orchestrating different services into
-dag-structured applications (the output of one service is the input of the next service).
+`input` and `output` must be YAML lists, even when the service has only one input or output form. The labels describe
+payload form rather than business meaning. Common labels include `frame`, `bbox`, `text`, `segmentation`, `track`,
+`attribute`, `trajectory`, `pose`, and `graph`.
+
+The input/output forms defined in services must be compatible when orchestrating DAG-structured applications. For
+example, a service that outputs `[bbox]` can feed a downstream service that requires `[bbox]`.
+
+For the built-in structured traffic service catalog, see
+[Application Service Layer](/docs/architecture/application-service-layer). Implementation-specific backend and
+recommended DAG details are maintained in the
+[Structured Traffic Services reference](https://github.com/dayu-autostreamer/dayu/blob/main/docs/configuration/structured-traffic-services.md).
 
 
 import Link from '@docusaurus/Link';

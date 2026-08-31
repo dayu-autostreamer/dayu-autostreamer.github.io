@@ -1,0 +1,36 @@
+---
+sidebar_label: Distributor 模板
+slug: /getting-started/start-upper-layer-system/distributor-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# distributor/ 模板
+
+Distributor 是云端运行时服务，负责持久接受已完成 task、保存 Backend 查询所需结果，并导出结果日志。
+
+```yaml
+position: cloud
+pod-template:
+  image: distributor
+  imagePullPolicy: Always
+  env:
+port-open:
+  pos: cloud
+  port: 9000
+```
+
+基础模板没有策略专用环境变量。Distributor 会在持久化前完成最后一次 task lease 续租，
+向 Scheduler 报告完成并释放 lease。接收过程具有幂等性，因此同一已完成 task 的重试不会产生第二条逻辑结果。
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">返回模板列表</span>
+    </span>
+  </Link>
+</div>

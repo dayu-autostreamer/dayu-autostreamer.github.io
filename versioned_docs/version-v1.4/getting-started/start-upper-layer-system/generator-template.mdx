@@ -1,0 +1,61 @@
+---
+sidebar_label: Generator Template
+slug: /getting-started/start-upper-layer-system/generator-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# Template in generator/
+
+Generator templates select the source-side data path and lifecycle hooks. The default template is:
+
+```yaml
+position: edge
+pod-template:
+  image: generator
+  imagePullPolicy: Always
+  env:
+    - name: GEN_FILTER_NAME
+      value: simple
+    - name: GEN_GETTER_FILTER_NAME
+      value: simple
+    - name: GEN_PROCESS_NAME
+      value: simple
+    - name: GEN_COMPRESS_NAME
+      value: simple
+    - name: GEN_BSO_NAME
+      value: simple
+    - name: GEN_BSTO_NAME
+      value: simple
+    - name: GEN_ASO_NAME
+      value: simple
+    # interval in source seconds to schedule requests (e.g, 1 request for 1s video), 0 for request at each task
+    - name: REQUEST_SCHEDULING_INTERVAL
+      value: "1"
+```
+
+| Setting | Purpose |
+| --- | --- |
+| `GEN_GETTER_FILTER_NAME` | Controls whether the next source batch may be fetched. |
+| `GEN_FILTER_NAME` | Selects frames from the fetched source batch. |
+| `GEN_PROCESS_NAME` and `GEN_COMPRESS_NAME` | Transform and encode accepted frames. |
+| `GEN_BSO_NAME` | Builds the Scheduler request before a schedule decision. |
+| `GEN_ASO_NAME` | Applies the validated Scheduler response to Generator state. |
+| `GEN_BSTO_NAME` | Enriches the materialized task immediately before submission. |
+| `REQUEST_SCHEDULING_INTERVAL` | Reuses a schedule for the configured amount of source time; `0` requests a schedule for every task. |
+
+The Generator filters an ingestion round, reserves the root task identity, requests a schedule when due, and
+only then materializes and submits source data with that identity. Policy-specific Generator templates may select
+scheduler-permitted admission, bursty arrivals, adaptive encoding, or other registered hook aliases.
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>

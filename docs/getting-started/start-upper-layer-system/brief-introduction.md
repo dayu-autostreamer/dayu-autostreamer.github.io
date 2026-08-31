@@ -4,24 +4,24 @@ sidebar_position: 1
 slug: /getting-started/start-upper-layer-system/brief-introduction
 ---
 
-# Start Upper Layer System
+# Start Upper-Layer System
 
 ## Introduction
 
-The upper-layer system of dayu, constructed based on the lower-layer system, is the core functional part of the entire system, which can be easily started and stopped as needed in a lightweight manner.
+Dayu's upper-layer system has two lifecycle scopes:
 
-For the specific functions and structure of the upper-layer system, please refer to [architecture](/docs/architecture/brief-architecture).
+- the support layer contains Backend, Frontend, Datasource, and Redis and is started by `dayu.sh`;
+- the application runtime contains Scheduler, Generator, Controller, Processor, Distributor, and Monitor
+  RuntimeServices and is installed from the frontend or Backend API.
 
-## Start Process
+Starting the support layer does not install a scheduler policy or application DAG. This separation lets operators
+change or remove an application runtime without rebuilding the lower-layer cluster.
 
-Please start in the following order:
+## Start process
 
-- [Customize template files](/docs/getting-started/start-upper-layer-system/customize-template-files)
-- [Deploy mounted files](/docs/getting-started/start-upper-layer-system/deploy-mounted-files)
-- [Run Dayu system](/docs/getting-started/start-upper-layer-system/run-dayu-system)
+1. [Customize template files](/docs/getting-started/start-upper-layer-system/customize-template-files).
+2. [Deploy mounted files](/docs/getting-started/start-upper-layer-system/deploy-mounted-files).
+3. [Run Dayu system](/docs/getting-started/start-upper-layer-system/run-dayu-system).
 
-
-## Tips
-
-- Please ensure that the lower-layer system has been correctly installed and is running normally before starting the upper-layer system. For installation instructions of the lower-layer system, please refer to [Install Lower Layer System](/docs/getting-started/install-lower-layer-system/brief-introduction).
-- During use of the system, you can refer to [FAQs](/docs/getting-started/install-lower-layer-system/faqs) to troubleshoot common issues. If you encounter problems that cannot be resolved, please submit [Github Issue](https://github.com/dayu-autostreamer/dayu/issues) or contact us through [Contact Us](/docs/community/contact-us).
+Before starting, confirm the lower-layer system is healthy and the registry and mounted paths in `template/base.yaml`
+are reachable from every selected node.

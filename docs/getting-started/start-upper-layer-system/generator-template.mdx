@@ -8,6 +8,7 @@ hide_table_of_contents: true
 
 # Template in generator/
 
+Generator templates select the source-side data path and lifecycle hooks. The default template is:
 
 ```yaml
 position: edge
@@ -34,6 +35,20 @@ pod-template:
       value: "1"
 ```
 
+| Setting | Purpose |
+| --- | --- |
+| `GEN_GETTER_FILTER_NAME` | Controls whether the next source batch may be fetched. |
+| `GEN_FILTER_NAME` | Selects frames from the fetched source batch. |
+| `GEN_PROCESS_NAME` and `GEN_COMPRESS_NAME` | Transform and encode accepted frames. |
+| `GEN_BSO_NAME` | Builds the Scheduler request before a schedule decision. |
+| `GEN_ASO_NAME` | Applies the validated Scheduler response to Generator state. |
+| `GEN_BSTO_NAME` | Enriches the materialized task immediately before submission. |
+| `REQUEST_SCHEDULING_INTERVAL` | Reuses a schedule for the configured amount of source time; `0` requests a schedule for every task. |
+
+The Generator filters an ingestion round, reserves the root task identity, requests a schedule when due, and
+only then materializes and submits source data with that identity. Policy-specific Generator templates may select
+scheduler-permitted admission, bursty arrivals, adaptive encoding, or other registered hook aliases.
+
 import Link from '@docusaurus/Link';
 
 <div className="backBtnWrap">
@@ -44,4 +59,3 @@ import Link from '@docusaurus/Link';
     </span>
   </Link>
 </div>
-

@@ -10,15 +10,13 @@ hide_table_of_contents: true
 
 
 ```yaml
-# Description of the common template for pod deployment in sedna, which can be used for all types of pods.
-# Note: the common template is transformed to jointmultiedgeservice template in dayu-sedna in backend.
+# Logical component template rendered by Backend as an immutable Sedna RuntimeService.
 
 # deployed position of the pod. support: cloud/edge/both.
 position: both
 pod-template:
-  # image of the pod. support [<registry>/][<repository>/]<image>[:<tag>]
-  # the default ones in "[]" use definitions in base.yaml.
-  # e.g., repo:5000/dayuhub/controller:v1.0, dayuhub/controller:v1.0, controller:v1.0, controller
+  # image format: [<registry>/][<repository>/]<image>[:<tag>]
+  # Unqualified image names use default-image-meta from base.yaml.
   image: controller
   # pull policy of the image, support: Always/Never/IfNotPresent.
   imagePullPolicy: Always
@@ -43,7 +41,7 @@ file-mount:
     # NOTE: the following ones are optional
     # name of the file mount, which is optional and can be used for identification, default is "".
     name: controller-file-mount
-    # path prefix for the source path if the source path is relative, default is efault-file-mount-prefix in base.yaml.
+    # path prefix for a relative source path; defaults to default-file-mount-prefix in base.yaml.
     # not work if the source path is absolute path.
     prefix: "/data/dayu-files"
     # mount type, support: Directory | DirectoryOrCreate | File | FileOrCreate | Socket | CharDevice | BlockDevice, default is Directory.
@@ -64,6 +62,10 @@ file-mount:
     mount_propagation: None
 ```
 
+`position` 限制组件可渲染的位置。可选的 `cloud-pod-template` 与 `edge-pod-template` 会覆盖合并到
+`pod-template`，用于设置节点类型相关的环境变量。Backend 会在创建 RuntimeService 前校验目标 slot、端口、容器引用、
+host-path 类型与 target path。
+
 import Link from '@docusaurus/Link';
 
 <div className="backBtnWrap">
@@ -74,5 +76,3 @@ import Link from '@docusaurus/Link';
     </span>
   </Link>
 </div>
-
-

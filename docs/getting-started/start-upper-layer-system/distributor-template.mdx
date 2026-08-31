@@ -8,6 +8,8 @@ hide_table_of_contents: true
 
 # Template in distributor/
 
+Distributor is a cloud runtime service that durably accepts completed tasks, stores results for Backend queries, and
+exports result logs.
 
 ```yaml
 position: cloud
@@ -20,6 +22,10 @@ port-open:
   port: 9000
 ```
 
+The base template has no policy-specific environment variables. Distributor performs the final task-lease
+renewal before persistence, reports completion to Scheduler, and releases the lease. Acceptance is idempotent, so a
+retry of the same completed task does not create a second logical result.
+
 import Link from '@docusaurus/Link';
 
 <div className="backBtnWrap">
@@ -30,4 +36,3 @@ import Link from '@docusaurus/Link';
     </span>
   </Link>
 </div>
-

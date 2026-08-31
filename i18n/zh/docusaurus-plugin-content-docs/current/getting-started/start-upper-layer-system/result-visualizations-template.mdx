@@ -16,10 +16,10 @@ Each module corresponds to a specific visualization displayed on the `Result Vis
 
 # A visualization module
 - name: Frame Visualization  # Name of the visualization module
-  type: image  # Type of visualization (support 'image', 'curve', 'topology', 'cdf')
+  type: image  # Supported types: image, curve, topology, cdf, gantt
   variables: [ "Frame with Regions of Interest" ]  # List of variables, can be used as 'self.variables' in hook function
   hook_name: roi_frame  # Hook function name to fetch data, related to code in 'dependency/core/lib/result_visualizer'
-  save_expense: true  # Whether to , default is false
+  save_expense: true  # Whether to include hook execution expense, default is false
   size: 1  # Display size (support 1,2,3), the total size of a line is 3
 
 - name: DAG Service Offloading
@@ -60,8 +60,19 @@ Each module corresponds to a specific visualization displayed on the `Result Vis
   hook_name: e2e_delay
   size: 1
 
+- name: Service Task Gantt
+  type: gantt
+  x_axis: Time
+  y_axis: Service
+  variables: [ "Service Task Timeline" ]
+  hook_name: service_gantt
+  size: 3
+
 # ......
 ```
+
+Gantt 可视化读取每个 task service 保存的绝对执行时间戳。使用 `service_gantt` 按 service 分组；或者使用
+`service_device_gantt`，并通过 `hook_params`（例如 `'{"service": "traffic-detection"}'`）按执行设备展示一个服务。
 
 import Link from '@docusaurus/Link';
 

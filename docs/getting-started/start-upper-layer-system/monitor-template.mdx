@@ -18,11 +18,15 @@ pod-template:
       value: "5"
     - name: MONITORS
       value: >
-        ['memory_capacity','cpu_usage', 'memory_usage', 'gpu_usage', 'available_bandwidth',  'gpu_flops', 'model_flops', 'model_memory','queue_length']
+        ['memory_capacity','cpu_usage', 'memory_usage', 'gpu_usage', 'available_bandwidth',  'gpu_flops', 'model_flops', 'model_memory','queue_state']
 port-open:
   pos: cloud
   port: 9000
 ```
+
+Policies that consume invocation-level queue state use `monitor-queue-state.yaml`, which reports only `queue_state` at
+a shorter interval. Queue state includes ordered waiting identities and the current running/processing phase rather
+than a single queue-length value.
 
 import Link from '@docusaurus/Link';
 
@@ -34,5 +38,4 @@ import Link from '@docusaurus/Link';
     </span>
   </Link>
 </div>
-
 

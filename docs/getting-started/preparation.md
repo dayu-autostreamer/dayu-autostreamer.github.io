@@ -6,15 +6,28 @@ slug: /getting-started/preparation
 
 # Preparation
 
-## Quick Start
+## Deployment path
 
-The [architecture](/docs/architecture/brief-architecture) of our Dayu system includes lower/upper layers, follow the steps below to get started:
+Dayu is installed in two stages:
 
-- Install lower layer system on the cloud-edge devices, which only need to be done once ([instruction](/docs/getting-started/install-lower-layer-system/brief-introduction)).
+1. Install the lower-layer cluster components on the cloud and edge nodes. This is normally done once for a cluster.
+2. Configure and start the upper-layer Dayu services. The support layer and application runtime can then be started and
+   stopped independently as needed.
 
-- Run upper layer system based on the lower layer system, which can be started and stopped as needed in a lightweight way ([instruction](/docs/getting-started/start-upper-layer-system/brief-introduction)).
+Follow [Install Lower-Layer System](/docs/getting-started/install-lower-layer-system/brief-introduction), then
+[Start Upper-Layer System](/docs/getting-started/start-upper-layer-system/brief-introduction).
 
+## Environment checklist
 
-## Hardware Preparation
+Prepare the following before installation:
 
-[TBA]
+- one Linux cloud node that acts as the Kubernetes/KubeEdge control plane;
+- one or more Linux edge nodes with stable, unique hostnames;
+- network reachability between the cloud and edge management endpoints;
+- synchronized clocks on all nodes;
+- Docker and sufficient local storage for images, mounted models, datasource files, and Dayu runtime state;
+- optional NVIDIA GPU support on nodes that run GPU-backed processor images.
+
+CPU, memory, GPU, and disk requirements depend on the selected DAG, models, source rate, and replica count. Size nodes
+for the intended workload rather than the control plane alone. The current installation guide uses Kubernetes 1.22.2
+with KubeEdge 1.9.2 and requires the matched `dayu-sedna v1.1` and `dayu-edgemesh v1.1` pair.

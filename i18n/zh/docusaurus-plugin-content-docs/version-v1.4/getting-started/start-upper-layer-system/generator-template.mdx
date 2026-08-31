@@ -1,0 +1,61 @@
+---
+sidebar_label: Generator 模板
+slug: /getting-started/start-upper-layer-system/generator-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# generator/ 模板
+
+Generator 模板选择数据源侧的数据路径和生命周期 hook。默认模板如下：
+
+```yaml
+position: edge
+pod-template:
+  image: generator
+  imagePullPolicy: Always
+  env:
+    - name: GEN_FILTER_NAME
+      value: simple
+    - name: GEN_GETTER_FILTER_NAME
+      value: simple
+    - name: GEN_PROCESS_NAME
+      value: simple
+    - name: GEN_COMPRESS_NAME
+      value: simple
+    - name: GEN_BSO_NAME
+      value: simple
+    - name: GEN_BSTO_NAME
+      value: simple
+    - name: GEN_ASO_NAME
+      value: simple
+    # interval in source seconds to schedule requests (e.g, 1 request for 1s video), 0 for request at each task
+    - name: REQUEST_SCHEDULING_INTERVAL
+      value: "1"
+```
+
+| 配置 | 作用 |
+| --- | --- |
+| `GEN_GETTER_FILTER_NAME` | 控制是否可以获取下一批 source 数据。 |
+| `GEN_FILTER_NAME` | 从获取的数据中选择帧。 |
+| `GEN_PROCESS_NAME` 与 `GEN_COMPRESS_NAME` | 变换并编码已接受的帧。 |
+| `GEN_BSO_NAME` | 在请求调度前构造 Scheduler request。 |
+| `GEN_ASO_NAME` | 将校验后的 Scheduler response 应用到 Generator 状态。 |
+| `GEN_BSTO_NAME` | 在提交前为已物化的 task 补充信息。 |
+| `REQUEST_SCHEDULING_INTERVAL` | 在指定 source time 内复用 schedule；`0` 表示每个 task 都请求调度。 |
+
+Generator 先过滤一次 ingestion round，再预留 root task identity；需要调度时请求 schedule，最后
+用同一 identity 物化并提交 source 数据。策略专用 Generator 模板可以选择 scheduler-permitted admission、
+bursty arrival、adaptive encoding 或其他已注册 hook alias。
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">返回模板列表</span>
+    </span>
+  </Link>
+</div>

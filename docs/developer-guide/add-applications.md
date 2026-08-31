@@ -15,18 +15,21 @@ In Dayu, an application is usually added as a processor service. A processor ser
 
 The existing applications follow this pattern:
 
-| Application type | Existing examples | Processor selected by `PROCESSOR_NAME` | Python objects exported by application package | Input | Output |
-|------------------|-------------------|-----------------------------------------|------------------------------------------------|-------|--------|
-| Detection with tracking | `car-detection`, `face-detection`, `pedestrian-detection`, `vehicle-detection` | `detector_tracker_processor` | `Detector`, `Tracker` | `frame` | `bbox` |
-| Detection only | `car-detection-pure`, `face-detection-pure`, `model-switch-detection` | `detector_processor` | `Detector` | `frame` | `bbox` |
-| Classification | `age-classification`, `gender-classification`, `category-identification`, `exposure-identification`, `license-plate-recognition` | `classifier_processor` | `Classifier` | `bbox` | `text` |
-| ROI-aware classification | `age-classification-roi`, `gender-classification-roi`, `category-identification-roi`, `exposure-identification-roi`, `license-plate-recognition-roi` | `roi_classifier_processor` | `Roi_Classifier` | `bbox` | `text` |
+| Application type            | Existing examples                                                                                                                                    | Processor selected by `PROCESSOR_NAME` | Python objects exported by application package | Input                                          | Output                                                 |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------|------------------------------------------------|------------------------------------------------|--------------------------------------------------------|
+| Detection with tracking     | `car-detection`, `face-detection`, `pedestrian-detection`, `vehicle-detection`                                                                       | `detector_tracker_processor`           | `Detector`, `Tracker`                          | `frame`                                        | `bbox`                                                 |
+| Detection only              | `car-detection-pure`, `face-detection-pure`, `model-switch-detection`                                                                                | `detector_processor`                   | `Detector`                                     | `frame`                                        | `bbox`                                                 |
+| Classification              | `age-classification`, `gender-classification`, `category-identification`, `exposure-identification`, `license-plate-recognition`                     | `classifier_processor`                 | `Classifier`                                   | `bbox`                                         | `text`                                                 |
+| ROI-aware classification    | `age-classification-roi`, `gender-classification-roi`, `category-identification-roi`, `exposure-identification-roi`, `license-plate-recognition-roi` | `roi_classifier_processor`             | `Roi_Classifier`                               | `bbox`                                         | `text`                                                 |
+| Structured traffic services | `traffic-detection`, `road-context-segmentation`, `vehicle-trajectory-prediction`, `risk-graph-generation`                                           | `structured_processor`                 | `Structured_Processor`                         | list-form labels such as `[frame]` or `[bbox]` | list-form labels such as `[segmentation]` or `[graph]` |
 
-The `id`, `input`, and `output` fields decide how the service appears in frontend DAG orchestration. The `service` field decides which image and application package are used at runtime.
+The `id`, `input`, and `output` fields decide how the service appears in frontend DAG orchestration. The `service` field
+decides which image and application package are used at runtime.
 
 ## Runtime Convention
 
-When a processor is deployed, Dayu injects `PROCESSOR_SERVICE_NAME=processor-<service>`. The application loader converts the service name from hyphen style to Python module style. For example:
+When a processor is deployed, Dayu injects `PROCESSOR_SERVICE_NAME=processor-<service>`. The application loader converts
+the service name from hyphen style to Python module style. For example:
 
 ```text
 processor-car-detection -> core.applications.car_detection
@@ -50,13 +53,18 @@ detector_processor         -> Detector
 detector_tracker_processor -> Detector + Tracker
 classifier_processor       -> Classifier
 roi_classifier_processor   -> Roi_Classifier
+structured_processor       -> Structured_Processor
 ```
 
-Parameters are passed through environment variables named after the object. For example, `DETECTOR_PARAMETERS` is passed to `Detector`, `CLASSIFIER_PARAMETERS` is passed to `Classifier`, and `ROI_CLASSIFIER_PARAMETERS` is passed to `Roi_Classifier`.
+Parameters are passed through environment variables named after the object. For example, `DETECTOR_PARAMETERS` is passed
+to `Detector`, `CLASSIFIER_PARAMETERS` is passed to `Classifier`, and `ROI_CLASSIFIER_PARAMETERS` is passed to
+`Roi_Classifier`.
+For structured services, `STRUCTURED_PROCESSOR_PARAMETERS` is passed to `Structured_Processor`.
 
 ## Add Application Code
 
-Create a package under `dependency/core/applications/`. Use underscore style for the Python module name and keep it aligned with the service name:
+Create a package under `dependency/core/applications/`. Use underscore style for the Python module name and keep it
+aligned with the service name:
 
 ```text
 dependency/core/applications/helmet_detection/
@@ -67,7 +75,8 @@ dependency/core/applications/helmet_detection/
 `-- requirements.txt
 ```
 
-A detection application should accept a list of frames and return one result per frame. Existing detection services return:
+A detection application should accept a list of frames and return one result per frame. Existing detection services
+return:
 
 ```python
 (result_boxes, result_scores, result_class_ids, result_roi_ids)
@@ -120,7 +129,69 @@ from .helmet_detection import HelmetDetection as Detector
 __all__ = ["Detector"]
 ```
 
-If the service uses tracking, also export `Tracker` and select `detector_tracker_processor` in the template. If the service classifies regions from a previous detection result, export `Classifier` and select `classifier_processor`. If it caches classification results by ROI ID, export `Roi_Classifier`, implement `reset_cache()`, and select `roi_classifier_processor`.
+If the service uses tracking, also export `Tracker` and select `detector_tracker_processor` in the template. If the
+service classifies regions from a previous detection result, export `Classifier` and select `classifier_processor`. If
+it caches classification results by ROI ID, export `Roi_Classifier`, implement `reset_cache()`, and select
+`roi_classifier_processor`.
+
+## Add Structured Application Code
+
+Use `structured_processor` when the service needs predecessor outputs from the current DAG or returns richer structured
+records than the bbox/text processors. The application package should export `Structured_Processor`:
+
+```python
+# dependency/core/applications/traffic_event_detection/__init__.py
+from .traffic_event_detection import TrafficEventDetection as Structured_Processor
+
+__all__ = ["Structured_Processor"]
+```
+
+`Structured_Processor` receives a payload with task metadata, decoded frames, and predecessor service content:
+
+```python
+class TrafficEventDetection:
+    def __init__(self, trt_weights, trt_plugin_library=None, non_trt_weights=None, device=0):
+        self.flops = 0
+
+    def __call__(self, payload):
+        frames = payload["frames"]
+        inputs = payload["inputs"]
+
+        return {
+            "graph": [
+                {
+                    "frame_index": frame_index,
+                    "items": []
+                }
+                for frame_index, _ in enumerate(frames)
+            ]
+        }
+```
+
+Structured application code returns only `outputs`. The processor adds the common Dayu content envelope:
+
+```json
+{
+  "service": "traffic-event-detection",
+  "outputs": {
+    "graph": [
+      {
+        "frame_index": 0,
+        "items": []
+      }
+    ]
+  },
+  "profile": {
+    "frame_count": 1
+  }
+}
+```
+
+Every output label must map to a list of records. Each record must include `frame_index` and an `items` list. The
+current processor profile is intentionally compact and only allows `frame_count`.
+
+Implementation-specific backends, service output details, and the recommended review DAG are maintained in the
+[Structured Traffic Services reference](https://github.com/dayu-autostreamer/dayu/blob/main/docs/configuration/structured-traffic-services.md).
 
 ## Add Mounted Files
 
@@ -138,9 +209,12 @@ file-mount:
     path: "processor/helmet-detection/"
 ```
 
-Dayu mounts files from `/data/dayu-files/processor/helmet-detection/` on the node where the processor runs. Inside application code, use `Context.get_file_path("model.engine")` or `Context.get_file_path("model.pt")` instead of hard-coding absolute paths.
+Dayu mounts files from `/data/dayu-files/processor/helmet-detection/` on the node where the processor runs. Inside
+application code, use `Context.get_file_path("model.engine")` or `Context.get_file_path("model.pt")` instead of
+hard-coding absolute paths.
 
-For the full mounted file structure, see [Deploy Mounted Files](/docs/getting-started/start-upper-layer-system/deploy-mounted-files).
+For the full mounted file structure,
+see [Deploy Mounted Files](/docs/getting-started/start-upper-layer-system/deploy-mounted-files).
 
 ## Add Processor Template
 
@@ -179,16 +253,16 @@ file-mount:
 
 Important fields:
 
-| Field | Meaning |
-|-------|---------|
-| `position` | `cloud`, `edge`, or `both`. Most processor applications use `both` so the scheduler can place them on cloud or edge nodes. |
-| `pod-template.image` | Image name. It is expanded with registry, repository, and tag from `template/base.yaml`. |
-| `PROCESSOR_NAME` | Selects the base processor implementation. |
-| `DETECTOR_PARAMETERS` / `CLASSIFIER_PARAMETERS` / `ROI_CLASSIFIER_PARAMETERS` | Constructor parameters for the exported application object. |
-| `SCENARIOS_EXTRACTORS` | Scenario features reported to scheduling policies, such as `obj_num` and `obj_size`. |
-| `PRO_QUEUE_NAME` | Processor task queue implementation. Existing services use `simple`. |
-| `USE_TENSORRT` | Enables TensorRT model loading in applications that support it. |
-| `file-mount.path` | Relative path under `default-file-mount-prefix`. |
+| Field                                                                                                             | Meaning                                                                                                                    |
+|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| `position`                                                                                                        | `cloud`, `edge`, or `both`. Most processor applications use `both` so the scheduler can place them on cloud or edge nodes. |
+| `pod-template.image`                                                                                              | Image name. It is expanded with registry, repository, and tag from `template/base.yaml`.                                   |
+| `PROCESSOR_NAME`                                                                                                  | Selects the base processor implementation.                                                                                 |
+| `DETECTOR_PARAMETERS` / `CLASSIFIER_PARAMETERS` / `ROI_CLASSIFIER_PARAMETERS` / `STRUCTURED_PROCESSOR_PARAMETERS` | Constructor parameters for the exported application object.                                                                |
+| `SCENARIOS_EXTRACTORS`                                                                                            | Scenario features reported to scheduling policies, such as `obj_num` and `obj_size`.                                       |
+| `PRO_QUEUE_NAME`                                                                                                  | Processor task queue implementation. Existing services use `simple`.                                                       |
+| `USE_TENSORRT`                                                                                                    | Enables TensorRT model loading in applications that support it.                                                            |
+| `file-mount.path`                                                                                                 | Relative path under `default-file-mount-prefix`.                                                                           |
 
 ## Register the Service
 
@@ -199,28 +273,33 @@ Add the service to `template/services.yaml`:
   service: helmet-detection
   name: helmet detection
   description: helmet detection
-  input: frame
-  output: bbox
+  input: [ frame ]
+  output: [ bbox ]
   yaml: helmet-detection.yaml
 ```
 
 Use these conventions:
 
 - `id` is the DAG node type shown in the frontend. It must be unique.
-- `service` is the runtime service name. It should match the image name and Python module after converting hyphens to underscores.
-- `input` and `output` must be compatible with adjacent services in a DAG. For example, a detection service usually maps `frame -> bbox`, while a classification service maps `bbox -> text`.
+- `service` is the runtime service name. It should match the image name and Python module after converting hyphens to
+  underscores.
+- `input` and `output` must be YAML lists and must be compatible with adjacent services in a DAG. For example, a
+  detection service usually maps `[frame] -> [bbox]`, while a classification service maps `[bbox] -> [text]`.
 - `yaml` points to a file under `template/processor/`.
 
-Multiple service entries may share the same `service` image and package. For example, `age-classification` and `age-classification-roi` both use `service: age-classification`, but they point to different processor templates.
+Multiple service entries may share the same `service` image and package. For example, `age-classification` and
+`age-classification-roi` both use `service: age-classification`, but they point to different processor templates.
 
 ## Add Dockerfile and Build Registration
 
-Create a Dockerfile under `build/`. Existing processor images copy the shared libraries, the base processor code, the application package requirements, and the common processor entrypoint:
+Create a Dockerfile under `build/`. Existing processor images copy the shared libraries, the base processor code, the
+application package requirements, and the common processor entrypoint:
 
 ```dockerfile
 ARG REG=docker.io
+ARG BASE_REPO=dayuhub
 ARG TAG=latest
-FROM ${REG}/dayuhub/dayubase:${TAG}
+FROM ${REG}/${BASE_REPO}/dayubase:${TAG}
 
 ARG dependency_dir=dependency
 ARG lib_dir=dependency/core/lib
@@ -248,13 +327,33 @@ COPY ${code_dir}/* /app/
 CMD ["python3", "-m", "gunicorn", "main:app", "-c", "./gunicorn.conf.py"]
 ```
 
-Then register the image in `hack/lib/buildx.sh`:
+Then register the image in `docker-bake.hcl`:
 
-```bash
-[helmet-detection]="build/helmet_detection.Dockerfile"
+```text
+target "helmet-detection" {
+  inherits = ["_image-common"]
+  matrix = {
+    variant = [
+      { name = "default", suffix = "" },
+      { name = "jp4", suffix = "-jp4" },
+      { name = "jp5", suffix = "-jp5" },
+      { name = "jp6", suffix = "-jp6" },
+    ]
+  }
+  name = "helmet-detection-${variant.name}"
+  dockerfile = "build/helmet_detection.Dockerfile"
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = {
+    REG = REGISTRY
+    BASE_REPO = BASE_REPO
+    TAG = "${BASE_TAG}${variant.suffix}"
+  }
+  tags = ["${REGISTRY}/${REPO}/helmet-detection:${TAG}${variant.suffix}"]
+}
 ```
 
-Add it to `PLATFORMS`. If the image must be built with JetPack-specific tags such as `v1.3-jp4`, `v1.3-jp5`, and `v1.3-jp6`, also add it to `SPECIAL_TAG_IMAGES`.
+Add the target to the appropriate Bake groups, usually `default`, `processors`, and `all-images`. Processor images and
+`monitor` publish JetPack suffix variants such as `-jp4`, `-jp5`, and `-jp6` through the shared Bake matrix.
 
 Build and push the image:
 
@@ -267,8 +366,14 @@ If you use a private registry, set `REG`, `REPO`, and `TAG` before building:
 ```bash
 export REG=repo:5000
 export REPO=dayuhub
-export TAG=v1.3
+export TAG=current-tag
 make build WHAT=helmet-detection
+```
+
+After adding or renaming an image, run the repository build validator:
+
+```bash
+make validate-build
 ```
 
 ## Check Before Running
@@ -278,8 +383,11 @@ Before starting Dayu, check the following:
 - `template/services.yaml` contains the new service entry.
 - `template/processor/<service-id>.yaml` exists and uses the correct `PROCESSOR_NAME`.
 - The application package exports the objects required by `PROCESSOR_NAME`.
-- `DETECTOR_PARAMETERS`, `CLASSIFIER_PARAMETERS`, or `ROI_CLASSIFIER_PARAMETERS` match the constructor arguments.
+- `DETECTOR_PARAMETERS`, `CLASSIFIER_PARAMETERS`, `ROI_CLASSIFIER_PARAMETERS`, or `STRUCTURED_PROCESSOR_PARAMETERS`
+  match the constructor arguments.
 - Mounted files exist on every cloud or edge node that may run the service.
 - The image name in the processor template can be pulled from the registry configured in `template/base.yaml`.
+- `docker-bake.hcl` contains a target for the image, and `make validate-build` succeeds.
 
-After the system starts, open the frontend DAG orchestration page and verify that the new service appears with the expected input and output types.
+After the system starts, open the frontend DAG orchestration page and verify that the new service appears with the
+expected input and output types.

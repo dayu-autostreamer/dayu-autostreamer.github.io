@@ -17,7 +17,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 
 Step 2: Add filter tags to Kubernetes API services.
 ```bash
-kubectl label services kubernetes service.edgemesh.kubeedge.io/service-proxy-name=""
+kubectl label service kubernetes -n default service.edgemesh.kubeedge.io/service-proxy-name=""
 ```
 
 Step 3: Enable Kube-API endpoint service of KubeEdge on edges.
@@ -86,11 +86,13 @@ If the return value is an empty list, or it takes a long time (close to 10 secon
 
 Download edgemesh code:
 ```bash
-# clone edgemesh code (customized by dayu)
-git clone https://github.com/dayu-autostreamer/dayu-edgemesh.git
+# Clone the EdgeMesh release used by Dayu.
+git clone --branch v1.1 --depth 1 https://github.com/dayu-autostreamer/dayu-edgemesh.git
 # move in code directory
 cd dayu-edgemesh
 ```
+
+Dayu requires `dayu-edgemesh v1.1`. Keep it paired with `dayu-sedna v1.1`.
 
 Add `relay node`:
 ```bash
@@ -177,4 +179,3 @@ cd dayu-edgemesh
 kubectl delete -f build/crds/istio/
 kubectl delete -f build/agent/resources/
 ```
-

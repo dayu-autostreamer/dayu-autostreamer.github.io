@@ -6,7 +6,7 @@ slug: /developer-guide/how-to-develop/add-applications
 
 # 添加应用
 
-在大禹中，应用通常以 processor service 的形式接入。一个 processor service 通常由四部分组成：
+在大禹系统中，应用通常以 processor service 的形式接入。一个 processor service 通常由四部分组成：
 
 - `dependency/core/applications/<application_module>/` 中的 Python 应用代码
 - `template/processor/<service-id>.yaml` 中的 processor 部署模板
@@ -21,12 +21,13 @@ slug: /developer-guide/how-to-develop/add-applications
 | 仅检测 | `car-detection-pure`, `face-detection-pure`, `model-switch-detection` | `detector_processor` | `Detector` | `frame` | `bbox` |
 | 分类 | `age-classification`, `gender-classification`, `category-identification`, `exposure-identification`, `license-plate-recognition` | `classifier_processor` | `Classifier` | `bbox` | `text` |
 | ROI 感知分类 | `age-classification-roi`, `gender-classification-roi`, `category-identification-roi`, `exposure-identification-roi`, `license-plate-recognition-roi` | `roi_classifier_processor` | `Roi_Classifier` | `bbox` | `text` |
+| 结构化交通服务 | `traffic-detection`, `road-context-segmentation`, `vehicle-trajectory-prediction`, `risk-graph-generation` | `structured_processor` | `Structured_Processor` | `[frame]` 或 `[bbox]` 等 list-form 标签 | `[segmentation]` 或 `[graph]` 等 list-form 标签 |
 
 其中，`id`、`input`、`output` 决定服务在前端 DAG 编排中的展示和连接方式；`service` 决定运行时使用的镜像和应用包。
 
 ## 运行时约定
 
-processor 部署时，大禹会注入 `PROCESSOR_SERVICE_NAME=processor-<service>`。应用加载器会把 service 名称从连字符格式转换成 Python 模块格式。例如：
+processor 部署时，大禹系统会注入 `PROCESSOR_SERVICE_NAME=processor-<service>`。应用加载器会把 service 名称从连字符格式转换成 Python 模块格式。例如：
 
 ```text
 processor-car-detection -> core.applications.car_detection
@@ -50,9 +51,11 @@ detector_processor         -> Detector
 detector_tracker_processor -> Detector + Tracker
 classifier_processor       -> Classifier
 roi_classifier_processor   -> Roi_Classifier
+structured_processor       -> Structured_Processor
 ```
 
 对象构造参数通过环境变量传入，环境变量名与对象名对应。例如，`DETECTOR_PARAMETERS` 会传给 `Detector`，`CLASSIFIER_PARAMETERS` 会传给 `Classifier`，`ROI_CLASSIFIER_PARAMETERS` 会传给 `Roi_Classifier`。
+对于 structured service，`STRUCTURED_PROCESSOR_PARAMETERS` 会传给 `Structured_Processor`。
 
 ## 添加应用代码
 
@@ -122,6 +125,65 @@ __all__ = ["Detector"]
 
 如果服务需要跟踪功能，还需要导出 `Tracker`，并在模板中选择 `detector_tracker_processor`。如果服务对上一层检测结果中的区域进行分类，需要导出 `Classifier` 并选择 `classifier_processor`。如果服务按 ROI ID 缓存分类结果，需要导出 `Roi_Classifier`，实现 `reset_cache()`，并选择 `roi_classifier_processor`。
 
+## 添加结构化应用代码
+
+当服务需要当前 DAG 的前驱输出，或需要返回比 bbox/text processor 更丰富的结构化 records 时，使用
+`structured_processor`。应用包应导出 `Structured_Processor`：
+
+```python
+# dependency/core/applications/traffic_event_detection/__init__.py
+from .traffic_event_detection import TrafficEventDetection as Structured_Processor
+
+__all__ = ["Structured_Processor"]
+```
+
+`Structured_Processor` 接收包含 task 元数据、解码帧和前驱服务 content 的 payload：
+
+```python
+class TrafficEventDetection:
+    def __init__(self, trt_weights, trt_plugin_library=None, non_trt_weights=None, device=0):
+        self.flops = 0
+
+    def __call__(self, payload):
+        frames = payload["frames"]
+        inputs = payload["inputs"]
+
+        return {
+            "graph": [
+                {
+                    "frame_index": frame_index,
+                    "items": []
+                }
+                for frame_index, _ in enumerate(frames)
+            ]
+        }
+```
+
+结构化应用代码只返回 `outputs`。processor 会添加大禹系统通用 content envelope：
+
+```json
+{
+  "service": "traffic-event-detection",
+  "outputs": {
+    "graph": [
+      {
+        "frame_index": 0,
+        "items": []
+      }
+    ]
+  },
+  "profile": {
+    "frame_count": 1
+  }
+}
+```
+
+每个 output label 都必须映射到 record 列表。每个 record 必须包含 `frame_index` 和 `items` list。当前 processor
+profile 会保持精简，只允许 `frame_count`。
+
+各内置结构化交通服务的具体后端、输出结构和推荐 DAG 由大禹系统代码仓库中的
+[结构化交通服务参考](https://github.com/dayu-autostreamer/dayu/blob/main/docs/configuration/structured-traffic-services.md)维护。
+
 ## 添加挂载文件
 
 processor 模型文件通常挂载在 `template/base.yaml` 配置的默认挂载前缀下：
@@ -138,7 +200,7 @@ file-mount:
     path: "processor/helmet-detection/"
 ```
 
-大禹会在运行该 processor 的节点上挂载 `/data/dayu-files/processor/helmet-detection/`。在应用代码中，请使用 `Context.get_file_path("model.engine")` 或 `Context.get_file_path("model.pt")`，不要硬编码绝对路径。
+大禹系统会在运行该 processor 的节点上挂载 `/data/dayu-files/processor/helmet-detection/`。在应用代码中，请使用 `Context.get_file_path("model.engine")` 或 `Context.get_file_path("model.pt")`，不要硬编码绝对路径。
 
 完整的挂载文件结构请参考 [部署挂载文件](/docs/getting-started/start-upper-layer-system/deploy-mounted-files)。
 
@@ -184,7 +246,7 @@ file-mount:
 | `position` | `cloud`、`edge` 或 `both`。大多数 processor 应用使用 `both`，让调度器决定部署在云端或边端。 |
 | `pod-template.image` | 镜像名，会结合 `template/base.yaml` 中的 registry、repository 和 tag 展开。 |
 | `PROCESSOR_NAME` | 选择基础 processor 实现。 |
-| `DETECTOR_PARAMETERS` / `CLASSIFIER_PARAMETERS` / `ROI_CLASSIFIER_PARAMETERS` | 传给应用导出对象的构造参数。 |
+| `DETECTOR_PARAMETERS` / `CLASSIFIER_PARAMETERS` / `ROI_CLASSIFIER_PARAMETERS` / `STRUCTURED_PROCESSOR_PARAMETERS` | 传给应用导出对象的构造参数。 |
 | `SCENARIOS_EXTRACTORS` | 上报给调度策略的场景特征，例如 `obj_num` 和 `obj_size`。 |
 | `PRO_QUEUE_NAME` | processor 任务队列实现。已有服务使用 `simple`。 |
 | `USE_TENSORRT` | 对支持 TensorRT 的应用启用 TensorRT 模型加载。 |
@@ -199,8 +261,8 @@ file-mount:
   service: helmet-detection
   name: helmet detection
   description: helmet detection
-  input: frame
-  output: bbox
+  input: [frame]
+  output: [bbox]
   yaml: helmet-detection.yaml
 ```
 
@@ -208,7 +270,7 @@ file-mount:
 
 - `id` 是前端 DAG 中显示的节点类型，必须唯一。
 - `service` 是运行时服务名，应与镜像名保持一致，并能通过连字符转下划线对应到 Python 应用包。
-- `input` 和 `output` 必须能与 DAG 中相邻服务匹配。例如，检测服务通常是 `frame -> bbox`，分类服务通常是 `bbox -> text`。
+- `input` 和 `output` 必须是 YAML list，并且要能与 DAG 中相邻服务匹配。例如，检测服务通常是 `[frame] -> [bbox]`，分类服务通常是 `[bbox] -> [text]`。
 - `yaml` 指向 `template/processor/` 下的模板文件。
 
 多个服务项可以共用同一个 `service` 镜像和应用包。例如，`age-classification` 和 `age-classification-roi` 都使用 `service: age-classification`，但它们指向不同的 processor 模板。
@@ -219,8 +281,9 @@ file-mount:
 
 ```dockerfile
 ARG REG=docker.io
+ARG BASE_REPO=dayuhub
 ARG TAG=latest
-FROM ${REG}/dayuhub/dayubase:${TAG}
+FROM ${REG}/${BASE_REPO}/dayubase:${TAG}
 
 ARG dependency_dir=dependency
 ARG lib_dir=dependency/core/lib
@@ -248,13 +311,33 @@ COPY ${code_dir}/* /app/
 CMD ["python3", "-m", "gunicorn", "main:app", "-c", "./gunicorn.conf.py"]
 ```
 
-然后在 `hack/lib/buildx.sh` 中注册镜像：
+然后在 `docker-bake.hcl` 中注册镜像：
 
-```bash
-[helmet-detection]="build/helmet_detection.Dockerfile"
+```text
+target "helmet-detection" {
+  inherits = ["_image-common"]
+  matrix = {
+    variant = [
+      { name = "default", suffix = "" },
+      { name = "jp4", suffix = "-jp4" },
+      { name = "jp5", suffix = "-jp5" },
+      { name = "jp6", suffix = "-jp6" },
+    ]
+  }
+  name = "helmet-detection-${variant.name}"
+  dockerfile = "build/helmet_detection.Dockerfile"
+  platforms = ["linux/amd64", "linux/arm64"]
+  args = {
+    REG = REGISTRY
+    BASE_REPO = BASE_REPO
+    TAG = "${BASE_TAG}${variant.suffix}"
+  }
+  tags = ["${REGISTRY}/${REPO}/helmet-detection:${TAG}${variant.suffix}"]
+}
 ```
 
-同时将其加入 `PLATFORMS`。如果该镜像需要构建 `v1.3-jp4`、`v1.3-jp5`、`v1.3-jp6` 这类 JetPack 特定标签，也要加入 `SPECIAL_TAG_IMAGES`。
+同时把 target 加入合适的 Bake groups，通常包括 `default`、`processors` 和 `all-images`。processor 镜像和
+`monitor` 通过共享 Bake matrix 发布 `-jp4`、`-jp5`、`-jp6` 等 JetPack 后缀变体。
 
 构建并推送镜像：
 
@@ -262,24 +345,31 @@ CMD ["python3", "-m", "gunicorn", "main:app", "-c", "./gunicorn.conf.py"]
 make build WHAT=helmet-detection
 ```
 
+添加或重命名镜像后，运行仓库构建校验：
+
+```bash
+make validate-build
+```
+
 如果使用私有镜像仓库，请在构建前设置 `REG`、`REPO` 和 `TAG`：
 
 ```bash
 export REG=repo:5000
 export REPO=dayuhub
-export TAG=v1.3
+export TAG=current-tag
 make build WHAT=helmet-detection
 ```
 
 ## 运行前检查
 
-启动大禹之前，请检查下面几项：
+启动大禹系统之前，请检查下面几项：
 
 - `template/services.yaml` 中包含新的服务注册项。
 - `template/processor/<service-id>.yaml` 存在，并使用正确的 `PROCESSOR_NAME`。
 - 应用包导出了 `PROCESSOR_NAME` 所需的对象。
-- `DETECTOR_PARAMETERS`、`CLASSIFIER_PARAMETERS` 或 `ROI_CLASSIFIER_PARAMETERS` 与构造函数参数一致。
+- `DETECTOR_PARAMETERS`、`CLASSIFIER_PARAMETERS`、`ROI_CLASSIFIER_PARAMETERS` 或 `STRUCTURED_PROCESSOR_PARAMETERS` 与构造函数参数一致。
 - 所有可能运行该服务的云端或边端节点上都存在需要挂载的模型文件。
 - processor 模板中的镜像名可以从 `template/base.yaml` 配置的镜像仓库中拉取。
+- `docker-bake.hcl` 中包含该镜像 target，且 `make validate-build` 可以通过。
 
 系统启动后，打开前端 DAG 编排页面，确认新服务以预期的输入和输出类型出现。

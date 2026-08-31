@@ -1,0 +1,76 @@
+---
+sidebar_label: Services Template
+slug: /getting-started/start-upper-layer-system/services-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# services.yaml
+
+`services.yaml` defines the available services in the system.
+Each service includes its unique ID, name, description, input and output data types, and a reference to its specific
+configuration file.
+
+These pre-defined services can be orchestrated in the `DAG Orchestration` page of frontend UI to build complex applications after running system.
+
+```yaml
+# A list of services available in the system. 
+# Each services will be decorated in a processor container in the upper layer system.
+
+- id: car-detection  # Unique identifier for the service.
+  service: car-detection  # Real invoking service related to images in "https://hub.docker.com/u/dayuhub" or code in "dependency/core/applications"
+  name: car detection  # Human-readable name of the service.
+  description: car detection (detection + tracking)  # Description of the service.
+  input: [frame]  # Input data forms for the service.
+  output: [bbox]  # Output data forms for the service.
+  yaml: car-detection.yaml  # YAML defining the service, included in 'processor/' directory
+
+- id: license-plate-recognition
+  service: license-plate-recognition
+  name: license plate recognition
+  description: license plate recognition
+  input: [bbox]
+  output: [text]
+  yaml: license-plate-recognition.yaml
+
+- id: traffic-detection
+  service: traffic-detection
+  name: traffic detection
+  description: traffic detection for vehicles, pedestrians, cyclists, lights, and signs
+  input: [frame]
+  output: [bbox]
+  yaml: traffic-detection.yaml
+
+- id: risk-graph-generation
+  service: risk-graph-generation
+  name: risk graph generation
+  description: traffic risk and violation event graph generation
+  input: [segmentation, text, trajectory]
+  output: [graph]
+  yaml: risk-graph-generation.yaml
+
+# ......
+```
+
+`input` 和 `output` 必须是 YAML list，即使服务只有一种输入或输出形态也一样。这些标签描述 payload 形态，而不是
+业务语义。常见标签包括 `frame`、`bbox`、`text`、`segmentation`、`track`、`attribute`、`trajectory`、
+`pose` 和 `graph`。
+
+在编排 DAG 应用时，服务中定义的 input/output 形态必须兼容。例如，输出 `[bbox]` 的服务可以连接到要求 `[bbox]`
+输入的下游服务。
+
+内置结构化交通服务目录见[应用服务层](/docs/v1.4/architecture/application-service-layer)。具体后端和推荐 DAG
+由大禹系统代码仓库中的
+[结构化交通服务参考](https://github.com/dayu-autostreamer/dayu/blob/main/docs/configuration/structured-traffic-services.md)维护。
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>

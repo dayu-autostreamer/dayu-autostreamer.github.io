@@ -1,22 +1,19 @@
 ---
-sidebar_label: 定制模版文件
+sidebar_label: 自定义模板文件
 sidebar_position: 2
 slug: /getting-started/start-upper-layer-system/customize-template-files
 ---
 
-# 定制模版文件
+# 自定义模板文件
 
-大禹系统基于 `template/` 目录及其中的文件运行，在运行系统之前，您应根据需求自定义模板文件。
-
-通过克隆dayu仓库来获取模板文件：
+大禹系统使用 `template/` 下的 YAML 文件组合每次安装。在云端节点克隆系统仓库，并为目标部署编辑该目录的副本：
 
 ```bash
 git clone https://github.com/dayu-autostreamer/dayu.git
-
 cd dayu/template
 ```
 
-`template/` 目录结构如下：
+主要结构如下：
 
 ```text
 template/
@@ -26,45 +23,38 @@ template/
 ├── result-visualizations.yaml
 ├── system-visualizations.yaml
 ├── scheduler/
-│ ├── fixed-policy.yaml
-│ ├── hei.yaml
-│ └── ...
 ├── processor/
-│ ├── age-classification.yaml
-│ ├── pedestrian-detection.yaml
-│ └── ...
 ├── generator/
-│ ├── generator-base.yaml
-│ └── ...
 ├── controller/
-│ ├── controller-base.yaml
-│ └── ...
 ├── distributor/
-│ ├── distributor-base.yaml
-│ └── ...
 └── monitor/
-  ├── monitor-base.yaml
-  └── ...
 ```
 
-下表列出了描述元信息的模板文件及其功能，有关每个文件格式的更多详细信息，请参阅链接的文档：
+## 目录与系统文件
 
-| File                       | Function                            | Details                                                                               | 
-|----------------------------|-------------------------------------|---------------------------------------------------------------------------------------|
-| base.yaml                  | 包含大禹系统的基本信息                         | [详细格式](/docs/getting-started/start-upper-layer-system/base-template)                  | 
-| scheduler_policies.yaml    | 包含可切换的调度策略列表，该列表在`scheduler/`中进一步定义 | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-policies-template)    | 
-| services.yaml              | 包含可用服务列表，该列表在`processor/`中进一步定义     | [详细格式](/docs/getting-started/start-upper-layer-system/services-template)              | 
-| result-visualizations.yaml | 包含任务结果的可视化模块列表                      | [详细格式](/docs/getting-started/start-upper-layer-system/result-visualizations-template) | 
-| system-visualizations.yaml | 包含系统监控的可视化模块列表                      | [详细格式](/docs/getting-started/start-upper-layer-system/system-visualizations-template) | 
+| 文件 | 用途 | 参考 |
+| --- | --- | --- |
+| `base.yaml` | Namespace、Backend RBAC、运行时超时、镜像、挂载、数据源模式和目录导入。 | [基础模板](/docs/getting-started/start-upper-layer-system/base-template) |
+| `scheduler_policies.yaml` | 可安装策略目录及每个策略依赖的组件模板。 | [调度策略](/docs/getting-started/start-upper-layer-system/scheduler-policies-template) |
+| `services.yaml` | DAG 服务目录与 processor 模板映射。 | [服务](/docs/getting-started/start-upper-layer-system/services-template) |
+| `result-visualizations.yaml` | 任务结果可视化模块。 | [结果可视化](/docs/getting-started/start-upper-layer-system/result-visualizations-template) |
+| `system-visualizations.yaml` | 运行时和资源可视化模块。 | [系统可视化](/docs/getting-started/start-upper-layer-system/system-visualizations-template) |
 
-下表列出了在sedna中下装pod的模板文件及其功能，有关每个文件格式的更多详细信息，请参阅链接的文档：
+## 组件模板
 
-| File               | Function                                                 | Details                                                                     | 
-|--------------------|----------------------------------------------------------|-----------------------------------------------------------------------------|
-| common template    | 以下yaml文件的通用模板，可作为dayu-sedna中的jointmultiedgeservice下装为pod | [详细格式](/docs/getting-started/start-upper-layer-system/common-template)      |
-| scheduler/*.yaml   | 在不同的yaml模板中定义不同的调度策略，运行后在前端UI中可切换                        | [详细格式](/docs/getting-started/start-upper-layer-system/scheduler-template)   | 
-| processor/*.yaml   | 在不同的yaml模板中定义不同的服务，运行后可以在前端UI中编排成应用                      | [详细格式](/docs/getting-started/start-upper-layer-system/processor-template)   | 
-| generator/*.yaml   | 在yaml模板中定义 generator 组件                                  | [详细格式](/docs/getting-started/start-upper-layer-system/generator-template)   | 
-| controller/*.yaml  | 在yaml模板中定义 controller 组件                                 | [详细格式](/docs/getting-started/start-upper-layer-system/controller-template)  | 
-| distributor/*.yaml | 在yaml模板中定义 distributor 组件                                | [详细格式](/docs/getting-started/start-upper-layer-system/distributor-template) |
-| monitor/*.yaml     | 在yaml模板中定义 monitor 组件                                    | [详细格式](/docs/getting-started/start-upper-layer-system/monitor-template)     | 
+`scheduler/`、`processor/`、`generator/`、`controller/`、`distributor/` 与 `monitor/` 下的文件是逻辑组件模板。
+Backend 将所选策略、DAG、数据源、节点、镜像默认值和挂载文件组合后，渲染为不可变的 Sedna `RuntimeService`。
+这些模板不再被转换成一个应用级 `JointMultiEdgeService`。
+
+| 模板 | 作用 | 参考 |
+| --- | --- | --- |
+| 通用字段 | 位置、镜像、环境变量、端口、云/边 overlay 与 host-path 挂载。 | [通用模板](/docs/getting-started/start-upper-layer-system/common-template) |
+| `scheduler/*.yaml` | Scheduler hook 选择与策略参数。 | [Scheduler 模板](/docs/getting-started/start-upper-layer-system/scheduler-template) |
+| `processor/*.yaml` | AI 服务镜像、processor 类型、队列、模型参数与文件。 | [Processor 模板](/docs/getting-started/start-upper-layer-system/processor-template) |
+| `generator/*.yaml` | 数据源处理与调度请求 hook。 | [Generator 模板](/docs/getting-started/start-upper-layer-system/generator-template) |
+| `controller/*.yaml` | 任务转发行为。 | [Controller 模板](/docs/getting-started/start-upper-layer-system/controller-template) |
+| `distributor/*.yaml` | 结果持久化与导出服务。 | [Distributor 模板](/docs/getting-started/start-upper-layer-system/distributor-template) |
+| `monitor/*.yaml` | 资源与 queue-state monitor 集合。 | [Monitor 模板](/docs/getting-started/start-upper-layer-system/monitor-template) |
+
+Backend 会在路由发布前校验目录引用、节点权限、部署计划、端口、挂载和最终环境变量。
+策略专用模型或 profile 资产应放在模板所要求的挂载路径中。

@@ -10,10 +10,10 @@ slug: /getting-started/install-lower-layer-system/faqs
 
 **如果您在使用大禹系统过程中遇到问题，请遵循以下步骤排查定位具体问题，并根据FAQ解决：**
 
-✅ **检查 Dayu Pods:** 使用 `kubectl get pods -n <your-dayu-namespace>` 检查大禹核心容器的状态；
+✅ **检查大禹系统 Pod:** 使用 `kubectl get pods -n <your-dayu-namespace>` 检查大禹系统核心容器的状态；
 并使用 `kubectl logs <pod-name> -n <your-dayu-namespace>` 和 `kubectl describes pod <pod-name> -n <your-dayu-namespace>` 排查异常状态容器的日志信息；
 
-✅ **检查 Dayu 核心资源:** 如果容器Pods在未知错误状态，可以使用 `kubectl get svc -n <your-dayu-namespace>` 和 `kubectl get deployment -n <your-dayu-namespace>` 检查 services 和 deployments 等核心资源状态；
+✅ **检查大禹系统核心资源:** 如果容器Pods在未知错误状态，可以使用 `kubectl get svc -n <your-dayu-namespace>` 和 `kubectl get deployment -n <your-dayu-namespace>` 检查 services 和 deployments 等核心资源状态；
 
 ✅ **检查节点连通性：** 使用 `kubectl get nodes` 检查云边分布式系统中的节点连接状态 ('Ready' 或 'Not Ready')；
 
@@ -207,31 +207,96 @@ sudo apt-get update
 sudo apt-get install -y nvidia-container-toolkit
 ```
 
-## 问题十：lc127.0.0. 53:53 no such host/connection refused
+## 问题十：Sedna LC 报错 `lookup gm.sedna on 127.0.0.53:53: no such host` {#question-10-sedna-lc-dns}
 
-在安装Sedna阶段，检查正确性时报错`lc127.0.0. 53:53 no such host/connection refused`。
+安装大禹系统配套的 Sedna 时，LC Pod 可能显示为 `Running`，但日志持续报错：
 
-**原因：** 错误原理参见[链接](https://zhuanlan.zhihu.com/p/585749690)中的**问题五**。
+```text
+client tries to connect global manager(address: gm.sedna:9000) failed, error: dial tcp: lookup gm.sedna on 127.0.0.53:53: no such host
+```
 
-**解决：**
+在当前配套的 Sedna 中，这还会阻止边缘 RuntimeService 完成激活。工作负载虽然已经运行，但由于 LC 无法从 GM 接收激活请求，资源会持续处于 `Activated=False`、`Ready=False` 和 `AwaitingNodeAck` 状态。
 
-首先，检查准备阶段中的Sedna安装脚本install.sh，观察其中是否有Hostnetwork键值对，如果没有，一般说明不会有问题（[dayu定制版sedna仓库](https://github.com/dayu-autostreamer/dayu-sedna)中的install.sh是没有这个问题的）。
+**原因：**
 
-如果确认没有这个键值对却依然报错，按照如下方法暂时解决问题（**不推荐**）：
+`dayu-sedna v1.1` 的 LC 有意使用 `hostNetwork: true`，以便通过 `127.0.0.1:10551` 核验本机 EdgeMesh 路由。如果 `edged.clusterDNS` 为空或配置错误，使用宿主机网络的 LC 会继承 `127.0.0.53` 等宿主机 DNS，而不是 `169.254.96.16` 上的 EdgeMesh DNS，因此无法解析 Kubernetes 服务名 `gm.sedna`。
 
-（1）在边/云（取决于是哪一个sedna的pod出问题了）用`vim /etc/resolv.conf`打开文件，然后在文件最后一行添加`nameserver 169.254.96.16`，哪怕文件中本来就有nameserver键。但是一般不推荐这样做。
+> 保留当前 `dayu-sedna` LC 的 `hostNetwork`。移除该设置会使 LC 无法通过本机 EdgeMesh 路由完成 RuntimeService 路由确认。
 
-（2）再去边端用`vim /etc/kubeedge/config/edgecore.yaml`打开`edgecore.yaml`，查看edge部分的clusterDNS内是否对应169.254.96.16，有没有被覆盖。如果没覆盖就成功。
+**排查与解决：**
 
-（3）在这之后，如果是边端上的pod出问题，就要重装sedna，先delete再create。
+1. 检查哪些节点上的 LC 无法连接 GM：
 
+   ```bash
+   kubectl get pods -n sedna -o wide
+   kubectl logs -n sedna <lc-pod-name>
+   ```
 
-## 问题十一：169.254.96.16:no such host
+2. 在每个异常边缘节点上检查 `/etc/kubeedge/config/edgecore.yaml`，生效配置必须包含：
 
-检查 edgemesh 的配置是否正确：
+   ```yaml
+   modules:
+     edged:
+       clusterDNS: 169.254.96.16
+       clusterDomain: cluster.local
+   ```
 
-1. 检查 iptables 的链的顺序如[混合代理 | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html) 所示
-2. 着重检查 [EdgeMesh安装](/docs/getting-started/install-lower-layer-system/install-edgemesh#配置edge端网络边端)中的 `clusterDNS`
+3. 确认同一节点上的 EdgeMesh agent 已 Ready，且 EdgeDNS 已启动：
+
+   ```bash
+   kubectl get pods -n kubeedge -o wide
+   kubectl logs -n kubeedge <edgemesh-agent-pod> | grep -E 'EdgeDNS|169.254.96.16'
+   ```
+
+   健康的 agent 日志会显示 EdgeDNS 已运行并监听 `169.254.96.16:53`。
+
+4. 修改 `edgecore.yaml` 后逐个节点重启 edgecore：
+
+   ```bash
+   sudo systemctl restart edgecore.service
+   sudo systemctl status edgecore.service
+   ```
+
+5. 重建对应节点上的 LC Pod，因为已有 Pod 会继续使用旧的 `/etc/resolv.conf`：
+
+   ```bash
+   kubectl delete pod -n sedna <lc-pod-name>
+   ```
+
+6. 验证最终状态，不能只检查 Pod 是否 Ready：
+
+   ```bash
+   kubectl exec -n sedna <new-lc-pod-name> -- cat /etc/resolv.conf
+   kubectl logs -n sedna <new-lc-pod-name>
+   kubectl get runtimeservices.sedna.io -n <dayu-namespace>
+   ```
+
+   LC 应使用 `169.254.96.16` 解析域名，日志应显示已成功建立 GM WebSocket 连接，带服务端点的 RuntimeService 应变为 `Activated=True` 和 `Ready=True`。
+
+不要永久修改 `/etc/resolv.conf`；该文件由 Pod 运行环境生成，重启后修改可能丢失。应修复 `edgecore.yaml`。
+
+## 问题十一：`169.254.96.16` 无法解析服务或请求超时 {#question-11-edgemesh-dns}
+
+首先区分该故障与[问题十](#question-10-sedna-lc-dns)：
+
+- 请求发往 `127.0.0.53` 表示 Pod 使用了错误的 DNS，应修复 `edged.clusterDNS`。
+- 请求发往 `169.254.96.16` 但超时，表示该节点上的 EdgeDNS 不可用或不可达。
+- `169.254.96.16` 返回 `NXDOMAIN`，通常表示 EdgeMesh 尚未同步对应的 Service 和 Endpoint 数据。
+
+依次检查：
+
+1. 按照 [EdgeMesh 安装](/docs/getting-started/install-lower-layer-system/install-edgemesh#配置edge端网络边端)确认 `clusterDNS`。
+2. 确认该节点的 `edgemesh-agent` 已 Ready，且日志显示 EdgeDNS 正常启动、没有持续报错。
+3. 在异常边缘节点上检查 EdgeMesh 使用的边缘本地 API：
+
+   ```bash
+   curl -fsS --max-time 3 http://127.0.0.1:10550/api/v1/services
+   ```
+
+   如果端口 `10550` 拒绝连接，按照[问题三十二](#question-32-edgemesh-local-api)处理。
+
+4. 按照[混合代理 | EdgeMesh](https://edgemesh.netlify.app/zh/advanced/hybird-proxy.html)检查 iptables 链。
+5. 如果新加入节点无法获取 EdgeMesh 镜像，按照[问题二十四](#问题二十四16925496-1653-io-timeout)处理。
 
 
 
@@ -847,6 +912,16 @@ sudo kill -9 <pid>
 
 在大禹系统容器中, `connection refused` 错误出现，然而对应的 pod 却正常且日志无网络连接记录。
 
+对于大禹系统 RuntimeService，首先检查激活状态，不要直接判定为 iptables 残留：
+
+```bash
+kubectl get runtimeservices.sedna.io -n <dayu-namespace>
+kubectl get pods -n sedna -o wide
+kubectl logs -n sedna <lc-pod-name>
+```
+
+如果工作负载已经运行，但带服务端点的 RuntimeService 仍为 `Activated=False`，原因为 `AwaitingNodeAck`，请按照[问题十](#question-10-sedna-lc-dns)处理。清空 edgecore 数据库无法修复已经断开连接的 Sedna LC，还可能造成不必要的数据丢失。
+
 **原因：**
 
 在边缘节点上检查 `edgemesh-agent` 状态：
@@ -855,16 +930,16 @@ kubectl get pods -n kubeedge -owide
 kubectl logs -n kubeedge edgemesh-agent-xxxxx # xxxxx 是pod名
 ```
 
-从 edgemesh-agent 的日志中，我们可以看出存在 service port 冲突，然后我们在边缘设备上检查 iptables:
+只有在 edgemesh-agent 日志明确显示 service port 冲突时，才检查边缘设备上的 iptables：
 ```bash
 sudo iptables -t nat -nvL
 ```
 
 冗余的规则记录在 iptables 中 `KUBE-NODEPORT-CONTAINER`、`KUBE-NODEPORT-HOST`、`KUBE-PORTALS-CONTAINER`、`KUBE-PORTALS-HOST`项中 (来自于关闭大禹系统时的残余记录)。
 
-**解决：**
+**残留状态的解决方案：**
 
-临时解决方案是清空边缘节点上 edgecore 的数据库（这可能导致数据丢失）：
+如果 RuntimeService 激活正常，并且确认存在上述残留规则，可以临时清空异常边缘节点上的 edgecore 数据库。该操作可能导致数据丢失，因此必须先备份：
 ```bash
 # 停止 edgecore
 sudo systemctl stop edgecore
@@ -882,7 +957,7 @@ sudo journalctl -u edgecore -f --no-pager
 
 另一种临时解决方案是参照[文档](/docs/getting-started/install-lower-layer-system/install-kubeedge#加入kubeedge集群边端)在边缘节点上重新安装 KubeEdge 。
 
-该问题已在大禹`v1.3`版本被永久解决，使用最新的[大禹启动脚本](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh)可以避免此问题。
+当前[大禹系统启动脚本](https://github.com/dayu-autostreamer/dayu/blob/main/dayu.sh)已经修复该问题。
 
 ## 问题二十九：JetPack 6 或 cgroup v2 上 edgecore 重启失败
 
@@ -983,7 +1058,7 @@ sudo systemctl restart edgecore.service
 docker images | grep 'kubeedge/pause'
 ```
 
-## 问题三十二：edgemesh-agent 为 Running 但日志中 127.0.0.1:10550 connection refused
+## 问题三十二：edgemesh-agent 为 Running 但日志中 127.0.0.1:10550 connection refused {#question-32-edgemesh-local-api}
 
 `edgemesh-agent` pod 可能显示为 `Running`，但日志持续出现：
 ```bash

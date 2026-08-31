@@ -1,0 +1,39 @@
+---
+sidebar_label: Monitor Template
+slug: /getting-started/start-upper-layer-system/monitor-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# Template in monitor/
+
+```yaml
+position: both
+pod-template:
+  image: monitor
+  imagePullPolicy: Always
+  env:
+    - name: INTERVAL
+      value: "5"
+    - name: MONITORS
+      value: >
+        ['memory_capacity','cpu_usage', 'memory_usage', 'gpu_usage', 'available_bandwidth',  'gpu_flops', 'model_flops', 'model_memory','queue_state']
+port-open:
+  pos: cloud
+  port: 9000
+```
+
+需要 invocation-level queue state 的策略使用 `monitor-queue-state.yaml`，以更短间隔仅上报 `queue_state`。
+Queue state 包含按顺序等待的 task identity 与当前 running/processing phase，而不是单个 queue length 数值。
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>

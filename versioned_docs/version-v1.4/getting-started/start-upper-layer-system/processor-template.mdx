@@ -1,0 +1,57 @@
+---
+sidebar_label: Processor Template
+slug: /getting-started/start-upper-layer-system/processor-template
+unlisted: true
+displayed_sidebar: null
+hide_table_of_contents: true
+---
+
+# Template in processor/
+
+```yaml
+position: both
+pod-template:
+  image: car-detection
+  imagePullPolicy: Always
+  env:
+    - name: PROCESSOR_NAME
+      value: "detector_tracker_processor"
+    - name: DETECTOR_PARAMETERS
+      value: >
+        {
+          'trt_weights':'yolov5s.engine', 
+          'trt_plugin_library':'libmyplugins.so',
+          'non_trt_weights':'yolov5s.pt',
+          'device':0
+        }
+    - name: SCENARIOS_EXTRACTORS
+      value: >
+        ['obj_num', 'obj_size']
+    - name: PRO_QUEUE_NAME
+      value: "simple"
+    - name: USE_TENSORRT
+      value: "True"
+port-open:
+  pos: both
+  port: 9000
+file-mount:
+  - pos: both
+    path: "processor/car-detection/"
+```
+
+`PROCESSOR_NAME` selects the processor family, while the matching `*_PARAMETERS` value is passed to the application
+object exported by `dependency/core/applications/<service>/`. Structured services use
+`PROCESSOR_NAME=structured_processor` and `STRUCTURED_PROCESSOR_PARAMETERS`.
+
+
+import Link from '@docusaurus/Link';
+
+<div className="backBtnWrap">
+  <Link className="backBtn" to="/docs/v1.4/getting-started/start-upper-layer-system/customize-template-files">
+    <span className="backBtnInner">
+      <span className="backBtnIcon">←</span>
+      <span className="backBtnText">Back to Template List</span>
+    </span>
+  </Link>
+</div>
+
