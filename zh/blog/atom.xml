@@ -2,11 +2,35 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dayu-autostreamer.github.io/zh/blog</id>
     <title>Dayu Blog</title>
-    <updated>2026-08-28T00:00:00.000Z</updated>
+    <updated>2026-09-14T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dayu-autostreamer.github.io/zh/blog"/>
     <subtitle>Dayu Blog</subtitle>
     <icon>https://dayu-autostreamer.github.io/zh/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[Dayu Is Now a KubeEdge Case Study]]></title>
+        <id>https://dayu-autostreamer.github.io/zh/blog/kubeedge-case</id>
+        <link href="https://dayu-autostreamer.github.io/zh/blog/kubeedge-case"/>
+        <updated>2026-09-14T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Dayu has been published as an official KubeEdge case study.]]></summary>
+        <content type="html"><![CDATA[<p>We are pleased to share that <strong>Dayu has been published as an official case study on the KubeEdge website</strong>. This milestone highlights how Dayu uses KubeEdge to support cloud-edge collaborative stream analytics.</p>
+<p>Dayu is a framework for building and evaluating cloud-edge stream analytics systems. It provides a unified environment for organizing end-to-end analytics workflows, coordinating computing resources across cloud and edge nodes, and exploring scheduling strategies for real-world streaming applications.</p>
+<p>Read the official Dayu case study:</p>
+<ul>
+<li class=""><a href="https://kubeedge.io/case-studies/dayu/" target="_blank" rel="noopener noreferrer" class="">English</a></li>
+<li class=""><a href="https://kubeedge.io/zh/case-studies/dayu/" target="_blank" rel="noopener noreferrer" class="">中文</a></li>
+</ul>
+<p>We sincerely thank the KubeEdge maintainers and community for their review and support. We look forward to continuing our collaboration and sharing more cloud-edge stream analytics practices with both communities.</p>]]></content>
+        <author>
+            <name>谢磊</name>
+            <uri>https://cs.nju.edu.cn/lxie</uri>
+        </author>
+        <author>
+            <name>周文晖</name>
+            <uri>https://github.com/zwh2119</uri>
+        </author>
+        <category label="news" term="news"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Dayu v1.4 Released]]></title>
         <id>https://dayu-autostreamer.github.io/zh/blog/version1.4</id>
