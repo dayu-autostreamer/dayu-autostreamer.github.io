@@ -129,6 +129,7 @@ const config = {
                         label: 'Documentation',
                     },
                     {to: '/blog', label: 'Blog', position: 'left'},
+                    {to: '/docs/community/contributing', label: 'Community', position: 'left'},
                     {
                         type: 'docsVersionDropdown',
                         position: 'right',
