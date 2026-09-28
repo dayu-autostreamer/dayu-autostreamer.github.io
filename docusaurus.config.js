@@ -58,6 +58,16 @@ const config = {
             ({
                 docs: {
                     sidebarPath: './sidebars.js',
+                    sidebarItemsGenerator: ({defaultSidebarItemsGenerator, item, docs, ...args}) =>
+                        defaultSidebarItemsGenerator({
+                            item,
+                            // Keep community docs in their own sidebar for every version and locale.
+                            docs: item.dirName === '.'
+                                ? docs.filter(({sourceDirName}) =>
+                                    sourceDirName !== 'community' && !sourceDirName.startsWith('community/'))
+                                : docs,
+                            ...args,
+                        }),
                     showLastUpdateTime: true,
                     showLastUpdateAuthor: true,
                     lastVersion: 'current',
@@ -129,7 +139,12 @@ const config = {
                         label: 'Documentation',
                     },
                     {to: '/blog', label: 'Blog', position: 'left'},
-                    {to: '/docs/community/contributing', label: 'Community', position: 'left'},
+                    {
+                        type: 'docSidebar',
+                        sidebarId: 'communitySidebar',
+                        position: 'left',
+                        label: 'Community',
+                    },
                     {
                         type: 'docsVersionDropdown',
                         position: 'right',
