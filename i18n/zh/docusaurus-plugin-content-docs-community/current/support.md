@@ -27,7 +27,8 @@ description: 寻找 Dayu 使用咨询、系统问题、网站反馈、研究合�
 
 <span id="contact-us" />
 
-一般项目交流和研究合作，请联系
+一般项目交流和研究合作，请联系:
+
 [周文晖（Wenhui Zhou）— whzhou@smail.nju.edu.cn](mailto:whzhou@smail.nju.edu.cn)。
 
 ## 安全漏洞报告 {#security}
@@ -45,10 +46,6 @@ description: 寻找 Dayu 使用咨询、系统问题、网站反馈、研究合�
 
 ## 行为问题反馈 {#conduct}
 
-骚扰或其他行为问题，可私下联系 [Lei Xie](mailto:lxie@nju.edu.cn)
-或 [Wenhui Zhou](mailto:whzhou@smail.nju.edu.cn)。
-如果问题涉及其中一人，请仅联系另一人；如果两人均涉及，请联系其他无利益冲突的维护者。
-独立处理、隐私保护及复议流程见
-[行为准则](https://github.com/dayu-autostreamer/dayu/blob/main/CODE_OF_CONDUCT.md#enforcement)。
+骚扰或其他行为问题，可私下联系 [Wenhui Zhou](mailto:whzhou@smail.nju.edu.cn)。
+独立处理、隐私保护及复议流程见 [行为准则](https://github.com/dayu-autostreamer/dayu/blob/main/CODE_OF_CONDUCT.md#enforcement)。
 
-[系统支持指南](https://github.com/dayu-autostreamer/dayu/blob/main/SUPPORT.md)统一维护项目联系渠道。

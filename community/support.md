@@ -27,7 +27,8 @@ and minimal reproduction steps. Remove credentials, tokens, private endpoints, a
 
 <span id="contact-us" />
 
-For general project exchange and research collaboration, contact
+For general project exchange and research collaboration, contact:
+
 [Wenhui Zhou — whzhou@smail.nju.edu.cn](mailto:whzhou@smail.nju.edu.cn).
 
 ## Security reports {#security}
@@ -45,10 +46,7 @@ explains further conflict handling. Keep vulnerability details out of public iss
 
 ## Conduct concerns {#conduct}
 
-Report harassment or other conduct concerns privately to
-[Lei Xie](mailto:lxie@nju.edu.cn) or [Wenhui Zhou](mailto:whzhou@smail.nju.edu.cn).
-If a concern involves one contact, send it only to the other. If both are involved, use another non-conflicted
-Maintainer. Follow the [Code of Conduct](https://github.com/dayu-autostreamer/dayu/blob/main/CODE_OF_CONDUCT.md#enforcement)
+Report harassment or other conduct concerns privately to [Wenhui Zhou](mailto:whzhou@smail.nju.edu.cn).
+Follow the [Code of Conduct](https://github.com/dayu-autostreamer/dayu/blob/main/CODE_OF_CONDUCT.md#enforcement)
 for independent handling, confidentiality, and reconsideration.
 
-The [system support guide](https://github.com/dayu-autostreamer/dayu/blob/main/SUPPORT.md) maintains these project channels.
