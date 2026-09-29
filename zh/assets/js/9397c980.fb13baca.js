@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdayu_documentation_website=self.webpackChunkdayu_documentation_website||[]).push([[1791],{8252:e=>{e.exports=JSON.parse('{"name":"dayu-community-redirects","id":"default"}')}}]);

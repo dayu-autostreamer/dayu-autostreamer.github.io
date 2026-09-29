@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkdayu_documentation_website=self.webpackChunkdayu_documentation_website||[]).push([[8972],{9454:t=>{t.exports=JSON.parse('{"to":"/community/support","anchors":{"contact-us":"project-contact","\u8054\u7cfb\u6211\u4eec":"project-contact"}}')}}]);

@@ -38,11 +38,11 @@
         <updated>2026-08-28T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.4 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.4 is released!</strong></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#breaking-changes" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#breaking-changes" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <p>Replace application <code>JointMultiEdgeService</code> generation and edge-side Kubernetes discovery with immutable Sedna
 <code>RuntimeService</code> resources, Scheduler-owned exact <code>RuntimeDirectory</code> routes, and revision task leases. Runtime workers
 no longer ship the Kubernetes Python client or accept legacy discovery/cache configuration.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#features" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#features" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Add transactional scheduler-first installation, RuntimeDirectory proposal/CAS publication, Redis-backed restart
 recovery, lease-aware drain, and exact-UID runtime retirement (<code>backend</code>/<code>scheduler</code>).</li>
@@ -61,7 +61,7 @@ identity, and processing/handoff phase (<code>processor</code>/<code>monitor</co
 <li class="">Reorganize multi-file hook implementations into algorithm-owned packages with explicit <code>hook.py</code> entry points and
 names matching their sibling single-file Hook entries.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#bug-fix" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#bug-fix" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Fix possible failure in install/uninstall with one crash-recoverable ConfigMap CAS session and exact RuntimeService
 ownership identities (<code>backend</code>).</li>
@@ -91,7 +91,7 @@ to operate on the task passed by the Generator instead of an undefined Generator
 materialization and revision-consistent LIVE RuntimeDirectory state; preserve pipeline partition semantics while
 rejecting unsupported DAG shapes and inactive execution targets (<code>generator</code>/<code>scheduler</code>).</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#minor-update" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.4#minor-update" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Add more services: traffic-detection, road-context-segmentation, traffic-signal-recognition, vehicle-tracking,
 vehicle-attribute-recognition, vehicle-trajectory-prediction, pedestrian-pose-estimation,
@@ -116,19 +116,19 @@ pedestrian-intent-recognition, risk-graph-generation (<code>processor</code>).</
         <updated>2026-07-02T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.3 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.3 is released!</strong></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.3#features" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.3#features" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Add our work on deployment and offloading: Hedger, a hierarchical scheduling framework for macro-level service deployment and micro-level task offloading. It uses dual-agent with GNNs and DRLs to make accurate and feasible decisions. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.3/template/scheduler/hedger.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
 <li class="">Add our work on configuration optimization: Steady Scheduler, a configuration selection framework for steady scheduling. It uses side-effect to shrink search space and adapt to context fluctuations. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.3/template/scheduler/steady.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.3#bug-fix" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.3#bug-fix" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Fix iptables rule accumulation for edgemesh in incorrect dayu shutdowns with <code>dayu.sh</code> script correction.</li>
 <li class="">Separate task temporary directory for different users (<code>controller</code>/<code>processor</code>).</li>
 <li class="">Fix incompatibility of real cameras in rtsp video datasource (<code>generator</code>/<code>backend</code>).</li>
 <li class="">Change defualt redeployment plan from full-deployment to raw deployment (<code>backend</code>).</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.3#minor-update" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.3#minor-update" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Update log export mode to support large logs in multi-stream scenarios (<code>backend</code>/<code>distributor</code>).</li>
 <li class="">Change storage mode of http video datasource from video frame to video to avoid disk occupation (<code>datasource</code>).</li>
@@ -176,13 +176,13 @@ pedestrian-intent-recognition, risk-graph-generation (<code>processor</code>).</
         <updated>2026-01-15T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.2 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.2 is released!</strong></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#features" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#features" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Add a cyclic redeployment mechanism of service processors for further flexible task processing.</li>
 <li class="">Add new services to construct a logical topology, including pedestrian-detection, vehicle-detection,
 exposure-identification, category-classification and license-plate-recognition.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#bug-fix" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#bug-fix" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Fix concurrency conflicts for starting up multiple streams in rtsp video and http video (<code>datasource</code>).</li>
 <li class="">Fix frame index updating error in http video source (<code>datasource</code>).</li>
@@ -193,7 +193,7 @@ exposure-identification, category-classification and license-plate-recognition.<
 <li class="">Fix possible database locking in concurrency access of distributor (<code>distributor</code>).</li>
 <li class="">Add cache TTL of Kubernetes configurations to avoid additional expense in <code>PortInfo</code> and <code>KubeConfig</code>.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#minor-update" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.2#minor-update" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Update more flexible visualization modules to switch different user-defined configurations in multi-stream scenarios (<code>frontend</code> / <code>backend</code>).</li>
 <li class="">Clean up frontend code and beatify frontend pages (<code>frontend</code>).</li>
@@ -254,9 +254,9 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
         <updated>2025-05-07T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.1 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.1 is released!</strong></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#breaking-changes" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="breaking-changes">Breaking Changes<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#breaking-changes" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <p>The basic structure of tasks in dayu is updated from linear pipeline to topological dag (directed acyclic graph) to support more complicated application scenarios.</p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#features" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#features" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">A brand-new forwarding mechanism in the dayu system for tasks with dag structure, including splitting nodes with forking and merging nodes with redis.</li>
 <li class="">A fine-grained and flexible deployment and offloading mechanism for topological logic nodes and physical nodes, which separates the process of model deployment and task offloading and allows collaboration among multi-edges and cloud.</li>
@@ -264,13 +264,13 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
 <li class="">Add our work on model evolution, adaptively switch models based on scenarios. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/model-switch.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
 <li class="">Add our latest work on video encoding: CRAVE (Collaborative Region-aware Adaptive Video Encoding). It is a region-adaptive video encoding algorithm for cloud-edge collaborative object detection. <a href="https://github.com/dayu-autostreamer/dayu/tree/v1.1/template/scheduler/crave.yaml" target="_blank" rel="noopener noreferrer" class="">(link)</a></li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#bug-fix" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="bug-fix">Bug Fix<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#bug-fix" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Fix problem of write queue full in rtsp datasource server (<code>datasource</code>).</li>
 <li class="">Fix possible task loss in the system (<code>controller</code> / <code>distributor</code>).</li>
 <li class="">Add optional cloud/edge parameters filling in template files for flexible parameter specification in cloud-edge pods.</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#minor-update" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="minor-update">Minor Update<a href="https://dayu-autostreamer.github.io/zh/blog/version1.1#minor-update" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Add cloud and edge template supplementary to support heterogeneous parameters (<code>backend</code>).</li>
 <li class="">Beatify frontend pages (<code>frontend</code>).</li>
@@ -325,7 +325,7 @@ which simultaneously considers spatial and temporal imbalance and enhance long-t
         <updated>2025-02-21T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Dayu system Version 1.0 is released!]]></summary>
         <content type="html"><![CDATA[<p><strong>Dayu system Version 1.0 is released!</strong></p>
-<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.0#features" class="hash-link" aria-label="Direct link to heading" title="Direct link to heading" translate="no">​</a></h3>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="features">Features<a href="https://dayu-autostreamer.github.io/zh/blog/version1.0#features" class="hash-link" aria-label="此标题的链接" title="此标题的链接" translate="no">​</a></h3>
 <ul>
 <li class="">Complete online processing, scheduling and displaying flow of video analytics pipelines.</li>
 <li class="">Compatible with different operations among the whole flow with various hook functions.</li>
