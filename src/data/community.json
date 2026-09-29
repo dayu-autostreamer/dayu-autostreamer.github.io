@@ -1,0 +1,90 @@
+{
+  "source": {
+    "repository": "dayu-autostreamer/dayu",
+    "commit": "1277499ef036adcbe9cd21c70bf8dd89896d9ca3",
+    "files": {
+      "GOVERNANCE.md": "911a33eb7e1007f8a868716886c650868d757a985fa43ba72c6edfcc4691d3c2",
+      "MAINTAINERS.md": "162c120b6bff872d175d0ce11c1c56e6b155aa9054ad3a472bdacbe35ed749c0",
+      "CONTRIBUTING.md": "ce3cfcc8f65265da7703194d23671d747864e711300672cb4d285ca736e1d84d",
+      "SUPPORT.md": "35c3ac40abfe74e20b3126625b988c893ce176f3e47b266614e8b0ef680daaa8",
+      "SECURITY.md": "a31b5b5c34479d0ca404acd10836d3d4d998845f03be5fbe04cb2fe342d1e891",
+      "CODE_OF_CONDUCT.md": "bee5a35f65951b59546fa402b657fbb70661ce9beac63d2ad52f31030e8babd6"
+    }
+  },
+  "origin": {
+    "laboratory": {
+      "name": "Dislab",
+      "url": "https://dislab.nju.edu.cn/"
+    },
+    "institution": {
+      "name": "Nanjing University",
+      "url": "https://www.nju.edu.cn/"
+    }
+  },
+  "people": [
+    {
+      "id": "lei-xie",
+      "name": "Lei Xie",
+      "github": null,
+      "affiliation": "Nanjing University"
+    },
+    {
+      "id": "zwh2119",
+      "name": "Wenhui Zhou",
+      "github": "zwh2119",
+      "affiliation": "Nanjing University"
+    },
+    {
+      "id": "shyedge",
+      "name": "Haoyang Su",
+      "github": "ShyEdge",
+      "affiliation": "Nanjing University"
+    },
+    {
+      "id": "adayangolzz",
+      "name": "Bingyun Yang",
+      "github": "AdaYangOlzz",
+      "affiliation": "Nanjing University"
+    },
+    {
+      "id": "skyrimforest",
+      "name": "Hao Wu",
+      "github": "skyrimforest",
+      "affiliation": "Nanjing University"
+    },
+    {
+      "id": "kangarin",
+      "name": "Wenyi Dai",
+      "github": "kangarin",
+      "affiliation": "Nanjing University"
+    },
+    {
+      "id": "siliconmangrove",
+      "name": "Junyu Hou",
+      "github": "SiliconMangrove",
+      "affiliation": "Nanjing University"
+    }
+  ],
+  "tsc": [
+    {
+      "id": "lei-xie",
+      "office": "Chair"
+    },
+    {
+      "id": "zwh2119",
+      "office": "Vice Chair"
+    }
+  ],
+  "maintainers": [
+    "zwh2119",
+    "shyedge"
+  ],
+  "contributors": [
+    "zwh2119",
+    "adayangolzz",
+    "skyrimforest",
+    "kangarin",
+    "shyedge",
+    "siliconmangrove"
+  ]
+}

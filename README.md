@@ -5,7 +5,7 @@ English | [简体中文](./README_zh.md)
 [![Deploy to GitHub Pages](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/actions/workflows/deploy.yaml/badge.svg)](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/actions/workflows/deploy.yaml)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fdayu-autostreamer.github.io%2F&label=website)](https://dayu-autostreamer.github.io/)
 [![License](https://img.shields.io/github/license/dayu-autostreamer/dayu-autostreamer.github.io.svg)](LICENSE)
-[![Docusaurus](https://img.shields.io/badge/Docusaurus-3.8.0-2e8555)](https://docusaurus.io/)
+[![Docusaurus](https://img.shields.io/badge/Docusaurus-3.10.2-2e8555)](https://docusaurus.io/)
 
 This repository maintains the public homepage, documentation, blog, and localized content for the
 [Dayu](https://github.com/dayu-autostreamer/dayu) project.
@@ -15,6 +15,10 @@ heterogeneous cloud and edge nodes. The system repository contains the source co
 policies, tests, and implementation-facing technical documentation. This repository turns that project knowledge into
 the public documentation site at
 [dayu-autostreamer.github.io](https://dayu-autostreamer.github.io/).
+
+Dayu was founded by [Dislab](https://dislab.nju.edu.cn/) at [Nanjing University](https://www.nju.edu.cn/).
+We welcome contributions from academia, industry, and independent developers. Visit the
+[Community](https://dayu-autostreamer.github.io/community/) to get involved and meet the project's maintainers.
 
 ## Repository Scope
 
@@ -27,6 +31,10 @@ Use this repository for website and documentation work:
 | `versioned_docs/version-<release>/` | Immutable English snapshots for published releases (currently `v1.4` and `v1.3`) |
 | `i18n/zh/docusaurus-plugin-content-docs/version-<release>/` | Immutable Simplified Chinese snapshots for published releases |
 | `versions.json` and `versioned_sidebars/` | Published documentation versions and their frozen sidebar metadata |
+| `community/` | English community pages, maintained independently of documentation versions |
+| `i18n/zh/docusaurus-plugin-content-docs-community/current/` | Simplified Chinese community pages |
+| `src/data/community.json` | Shared member roles and founding attribution, with source provenance |
+| `sidebarsCommunity.js` and `plugins/community-redirects.js` | Independent Community navigation and legacy URL redirects |
 | `blog/` | English release notes, research posts, and project updates |
 | `i18n/zh/docusaurus-plugin-content-blog/` | Simplified Chinese blog translation |
 | `src/pages/` | Homepage and standalone Docusaurus pages |
@@ -72,6 +80,10 @@ The `docs/` tree is the Docusaurus `current` version and tracks the active devel
 generated as frozen snapshots under `versioned_docs/` and the matching localized version directories. Update the current
 sources for ongoing work; do not modify a published snapshot after it is frozen.
 
+Community has one current set of pages per language and its own sidebar. The former community URLs within current
+and archived documentation redirect to `/community/` or `/zh/community/`. See
+[CONTRIBUTING.md](CONTRIBUTING.md#community) for content locations and the `community:sync` command.
+
 When adding or updating pages:
 
 - use Docusaurus front matter such as `sidebar_label`, `sidebar_position`, `slug`, `title`, and `description` where
@@ -80,6 +92,7 @@ When adding or updating pages:
 - place shared images under `static/img/` and reference them as `/img/...`
 - update release, architecture, and tutorial content after corresponding changes land in the Dayu system repository
 - run `npm run build` to catch broken links, MDX errors, and site configuration regressions
+- when updating Community, keep both languages aligned and verify the shared roster with `npm run check:community`
 
 If a change belongs to Dayu implementation rather than the documentation site, open the issue or pull request in
 [dayu-autostreamer/dayu](https://github.com/dayu-autostreamer/dayu).

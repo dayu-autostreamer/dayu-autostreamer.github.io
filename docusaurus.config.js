@@ -5,7 +5,9 @@
 // See: https://docusaurus.io/docs/api/docusaurus-config
 
 import {themes as prismThemes} from 'prism-react-renderer';
+import {GlobExcludeDefault} from '@docusaurus/utils';
 import statcounterPlugin from './plugins/statcounter.js';
+import communityRedirectsPlugin from './plugins/community-redirects.js';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -58,16 +60,8 @@ const config = {
             ({
                 docs: {
                     sidebarPath: './sidebars.js',
-                    sidebarItemsGenerator: ({defaultSidebarItemsGenerator, item, docs, ...args}) =>
-                        defaultSidebarItemsGenerator({
-                            item,
-                            // Keep community docs in their own sidebar for every version and locale.
-                            docs: item.dirName === '.'
-                                ? docs.filter(({sourceDirName}) =>
-                                    sourceDirName !== 'community' && !sourceDirName.startsWith('community/'))
-                                : docs,
-                            ...args,
-                        }),
+                    // Archived sources remain intact; their public URLs redirect to Community.
+                    exclude: [...GlobExcludeDefault, '**/community/**'],
                     showLastUpdateTime: true,
                     showLastUpdateAuthor: true,
                     lastVersion: 'current',
@@ -142,6 +136,7 @@ const config = {
                     {
                         type: 'docSidebar',
                         sidebarId: 'communitySidebar',
+                        docsPluginId: 'community',
                         position: 'left',
                         label: 'Community',
                     },
@@ -188,12 +183,16 @@ const config = {
                                 },
                                 {
                                     label: 'Contributing',
-                                    to: '/docs/community/contributing',
+                                    to: '/community/contributing',
                                 },
 
                                 {
-                                    label: 'Contact Us',
-                                    to: '/docs/community/contact-us',
+                                    label: 'Committee',
+                                    to: '/community/committee',
+                                },
+                                {
+                                    label: 'Support & Contact',
+                                    to: '/community/support',
                                 },
 
                             ],
@@ -224,7 +223,26 @@ const config = {
                 ],
             },
         }),
-    plugins: [statcounterPlugin],
+    plugins: [
+        statcounterPlugin,
+        communityRedirectsPlugin,
+        [
+            '@docusaurus/plugin-content-docs',
+            {
+                id: 'community',
+                path: 'community',
+                routeBasePath: 'community',
+                sidebarPath: './sidebarsCommunity.js',
+                editUrl: ({docPath, locale}) => {
+                    const directory = locale === 'zh'
+                        ? 'i18n/zh/docusaurus-plugin-content-docs-community/current'
+                        : 'community';
+                    return 'https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/edit/main/'
+                        + directory + '/' + docPath;
+                },
+            },
+        ],
+    ],
 };
 
 export default config;

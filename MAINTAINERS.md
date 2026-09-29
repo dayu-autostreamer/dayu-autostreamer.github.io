@@ -3,6 +3,9 @@
 This repository is maintained as the public documentation and homepage companion to
 [dayu-autostreamer/dayu](https://github.com/dayu-autostreamer/dayu).
 
+The roles below apply to this website repository. Project TSC offices and system Maintainer roles are recorded
+separately in the [system roster](https://github.com/dayu-autostreamer/dayu/blob/main/MAINTAINERS.md).
+
 ## Responsibilities
 
 Website maintainers are responsible for:
@@ -17,7 +20,6 @@ Website maintainers are responsible for:
 
 | Maintainer | GitHub ID | Affiliation | Email |
 | --- | --- | --- | --- |
-| Lei Xie | | Nanjing University | <lxie@nju.edu.cn> |
 | Wenhui Zhou | [@zwh2119](https://github.com/zwh2119) | Nanjing University | <whzhou@smail.nju.edu.cn> |
 | Haoyang Su | [@ShyEdge](https://github.com/ShyEdge) | Nanjing University | <shyshy@smail.nju.edu.cn> |
 

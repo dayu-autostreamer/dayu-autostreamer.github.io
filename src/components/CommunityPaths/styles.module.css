@@ -1,0 +1,6 @@
+.paths { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; margin: 1.5rem 0; }
+.card { display: flex; flex-direction: column; gap: 0.6rem; padding: 1.2rem; border: 1px solid var(--ifm-color-emphasis-300); border-radius: 10px; color: var(--ifm-font-color-base); }
+.card strong { color: var(--ifm-color-primary); }
+.card span { font-size: 0.95rem; }
+.card:hover { text-decoration: none; border-color: var(--ifm-color-primary); background: var(--ifm-color-emphasis-100); color: var(--ifm-font-color-base); }
+@media (max-width: 700px) { .paths { grid-template-columns: 1fr; } }

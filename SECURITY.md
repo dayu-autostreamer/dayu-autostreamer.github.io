@@ -1,48 +1,45 @@
-# Security
+# Website Security
+
+This policy covers the Dayu documentation website, its dependencies, and its build and deployment workflows.
+For vulnerabilities in the Dayu runtime or system components, use the
+[system security policy](https://github.com/dayu-autostreamer/dayu/blob/main/SECURITY.md).
 
 ## Reporting a Vulnerability
 
-**Please do NOT report security vulnerabilities through public GitHub issues.** Instead, use one of the following methods:
+Report suspected vulnerabilities privately, with `[SECURITY]` in the email subject:
 
-- **Email**: [lxie@nju.edu.cn](mailto:lxie@nju.edu.cn) or [whzhou@smail.nju.edu.cn](mailto:whzhou@smail.nju.edu.cn) (include "[SECURITY]" in the subject line)
-- **Private Advisory**: [GitHub Security Advisory](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/security/advisories/new) (for GitHub users)
+- Primary contact: [Wenhui Zhou](mailto:whzhou@smail.nju.edu.cn).
+- Alternative contact: [Haoyang Su](mailto:shyshy@smail.nju.edu.cn).
+- You can also submit a [private website advisory](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/security/advisories/new).
 
-**Include in your report**:  
-- Detailed description of the vulnerability
-- Steps to reproduce
-- Potential impact
-- Affected versions (if known)
+Include a description, reproduction steps, potential impact, and the affected page, dependency, workflow, or commit.
+Keep vulnerability details out of public issues and PRs. For ordinary documentation problems, use [SUPPORT.md](SUPPORT.md).
 
 We will acknowledge your report within **3 business days** and provide a timeline for resolution.
+## Response Responsibility
 
+A non-conflicted [website Maintainer](MAINTAINERS.md) coordinates triage, technical review, validation, deployment,
+and communication with the reporter. Access to the report and unreleased fix is limited to the people handling it.
 
+If a report involves one contact, send it only to the other. If both are involved, contact another non-conflicted
+website Maintainer to arrange independent handling. Do not use an advisory whose viewers include a conflicted person.
 
-## Security Update Process
+## Fixes and Disclosure
 
-1. **Confirmation**:  
-   The security team will verify the vulnerability.
-2. **Patch Development**:  
-   A fix will be developed in a private repository branch.
-3. **Release**:  
-   Patches are released within **7 days** of confirmation via:  
-   - [GitHub Releases](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/releases)
-4. **CVE Assignment**:  
-   Critical vulnerabilities will receive a CVE identifier (if applicable).
+1. Verify the report and identify the affected website components.
+2. Develop and review a fix in an access-restricted repository or advisory's temporary private fork.
+   Run relevant checks privately and record independent review before integration; avoid exposing unreleased fixes
+   through public build logs or artifacts.
+3. Deploy and verify the correction to the live website. The target is within **7 days** of confirmation;
+   communicate any change to that timeline to the reporter.
+4. Coordinate public disclosure after the correction is available, using
+   [website security advisories](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/security/advisories)
+   when appropriate. Seek a CVE identifier when applicable.
 
-## Supported Versions
-
-Dayu currently commits to supporting the n-1 version minor version of the current major release;
-as well as the last minor version of the previous major release.
-
-
-## Disclosure Policy
-
-- **Coordinated Disclosure**:  
-  Vulnerabilities are disclosed publicly **after** a patch is released.
-- **Timeline Transparency**:  
-  Major vulnerabilities will have a public timeline in [GitHub Security Advisories](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/security/advisories).
-
+Website fixes apply to the deployed site and its maintained source and build dependencies. The version selector
+labels technical documentation snapshots; it does not define separate website software support branches.
+System release support is described in the system security policy linked above.
 
 ## Acknowledgments
 
-We credit security researchers who follow responsible disclosure practices. If you wish to be acknowledged, please specify your preference (name/handle or anonymous).
+We credit researchers who follow coordinated disclosure. Tell us whether you prefer your name, handle, or anonymity.

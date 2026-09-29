@@ -5,13 +5,16 @@
 [![Deploy to GitHub Pages](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/actions/workflows/deploy.yaml/badge.svg)](https://github.com/dayu-autostreamer/dayu-autostreamer.github.io/actions/workflows/deploy.yaml)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fdayu-autostreamer.github.io%2F&label=website)](https://dayu-autostreamer.github.io/)
 [![License](https://img.shields.io/github/license/dayu-autostreamer/dayu-autostreamer.github.io.svg)](LICENSE)
-[![Docusaurus](https://img.shields.io/badge/Docusaurus-3.8.0-2e8555)](https://docusaurus.io/)
+[![Docusaurus](https://img.shields.io/badge/Docusaurus-3.10.2-2e8555)](https://docusaurus.io/)
 
 本仓库维护[大禹系统](https://github.com/dayu-autostreamer/dayu)的公共主页、文档站、博客与多语言内容。
 
 大禹系统是一个面向云边协同流式分析的平台，用于在异构云边节点之间部署、调度并运行基于 DAG 的 AI 服务流水线。系统代码仓库维护源代码、
 运行时实现、调度策略、测试和实现导向技术文档；本仓库负责把这些项目知识整理成公开文档站点：
 [dayu-autostreamer.github.io](https://dayu-autostreamer.github.io/)。
+
+大禹系统由[南京大学](https://www.nju.edu.cn/) [Dislab](https://dislab.nju.edu.cn/) 发起，
+欢迎高校、企业及独立开发者参与贡献。访问[社区](https://dayu-autostreamer.github.io/zh/community/)，了解参与方式与项目维护团队。
 
 ## 仓库职责
 
@@ -24,6 +27,10 @@
 | `versioned_docs/version-<release>/` | 已发布版本的不可变英文快照（当前包括 `v1.4` 与 `v1.3`） |
 | `i18n/zh/docusaurus-plugin-content-docs/version-<release>/` | 已发布版本的不可变简体中文快照 |
 | `versions.json` 与 `versioned_sidebars/` | 已发布文档版本及其冻结的侧边栏元数据 |
+| `community/` | 独立于技术文档版本维护的英文社区页面 |
+| `i18n/zh/docusaurus-plugin-content-docs-community/current/` | 简体中文社区页面 |
+| `src/data/community.json` | 两种语言共用的成员职责、发起团队及来源信息 |
+| `sidebarsCommunity.js` 与 `plugins/community-redirects.js` | 社区独立导航与旧链接跳转 |
 | `blog/` | 英文发布说明、研究文章与项目动态 |
 | `i18n/zh/docusaurus-plugin-content-blog/` | 简体中文博客翻译 |
 | `src/pages/` | 主页与独立 Docusaurus 页面 |
@@ -68,6 +75,10 @@ npm run serve
 `docs/` 是 Docusaurus 的 `current` 版本，与当前开发分支保持同步。已发布版本会冻结到 `versioned_docs/` 以及对应的
 本地化版本目录。日常开发只修改当前源文件；快照冻结后不再修改。
 
+社区在每种语言下维护一套当前内容，并使用独立侧边栏。技术文档当前版本与历史版本中的旧社区链接，分别跳转到
+`/community/` 或 `/zh/community/` 下的对应页面。内容位置和 `community:sync` 成员同步命令见
+[CONTRIBUTING.md](CONTRIBUTING.md#community)。
+
 新增或更新页面时：
 
 - 根据页面需要使用 `sidebar_label`、`sidebar_position`、`slug`、`title`、`description` 等 Docusaurus
@@ -76,6 +87,7 @@ npm run serve
 - 公共图片放在 `static/img/`，并以 `/img/...` 形式引用
 - 上游大禹系统代码仓库完成对应变更后，同步更新发布、架构和教程内容
 - 运行 `npm run build` 检查坏链、MDX 错误和站点配置回归
+- 修改社区时同步维护两种语言，并运行 `npm run check:community` 检查共享成员数据与页面对应关系
 
 如果变更属于大禹系统实现，而不是文档站点，请在
 [dayu-autostreamer/dayu](https://github.com/dayu-autostreamer/dayu) 中提交 issue 或 pull request。

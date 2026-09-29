@@ -23,10 +23,6 @@
     "message": "GitHub",
     "description": "The label of footer link with label=GitHub linking to https://github.com/dayu-autostreamer/dayu"
   },
-  "copyright": {
-    "message": "Copyright © 2025 The Dayu Authors. All rights reserved.",
-    "description": "The footer copyright"
-  },
   "link.item.label.Introduction": {
     "message": "介绍",
     "description": "The label of footer link with label=Introduction linking to /docs/"
@@ -35,12 +31,16 @@
     "message": "开发",
     "description": "The label of footer link with label=Development linking to /docs/developer-guide"
   },
-  "link.item.label.Contact Us": {
-    "message": "联系我们",
-    "description": "The label of footer link with label=Contact Us linking to /docs/community/contact-us"
+  "link.item.label.Committee": {
+    "message": "社区委员会",
+    "description": "The label of footer link with label=Committee linking to /community/committee"
+  },
+  "link.item.label.Support & Contact": {
+    "message": "支持与联系",
+    "description": "The label of footer link with label=Support & Contact linking to /community/support"
   },
   "link.item.label.Contributing": {
-    "message": "贡献代码",
-    "description": "The label of footer link with label=Contributing linking to /docs/community/contributing"
+    "message": "参与贡献",
+    "description": "The label of footer link with label=Contributing linking to /community/contributing"
   }
 }

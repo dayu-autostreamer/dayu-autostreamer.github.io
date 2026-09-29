@@ -51,6 +51,35 @@ Short practical guidance.
 :::
 ```
 
+### Community
+
+Community uses an independent, unversioned docs plugin and its own sidebar:
+
+- English: `community/`
+- Simplified Chinese: `i18n/zh/docusaurus-plugin-content-docs-community/current/`
+- Sidebar: `sidebarsCommunity.js`
+- Shared people, roles, and founding attribution: `src/data/community.json`
+
+Keep both languages' page names, slugs, and explicit heading IDs aligned. The system repository's
+[GOVERNANCE.md](https://github.com/dayu-autostreamer/dayu/blob/main/GOVERNANCE.md) and
+[MAINTAINERS.md](https://github.com/dayu-autostreamer/dayu/blob/main/MAINTAINERS.md) are authoritative for project
+policy and system roles. This website's [MAINTAINERS.md](MAINTAINERS.md) records website responsibilities separately.
+
+To refresh the shared data from a local Dayu checkout with committed community files:
+
+```bash
+npm run community:sync -- /path/to/dayu
+npm run community:sync -- /path/to/dayu --check
+```
+
+The snapshot records the source commit and policy-file hashes for review. When those policies change, also review the
+English and Chinese prose and this repository's support, security, and conduct contacts. The site builds from the
+checked-in snapshot; it does not fetch GitHub member lists at build time or in a visitor's browser.
+
+`npm run check:community` checks member references, bilingual routes, and heading anchors; `npm run build` includes
+that check. Verify the rendered homepage, Community sidebar, language switching, and legacy links with `npm run serve`.
+Keep official logo sources documented in `static/img/community/README.md`.
+
 ### Blog Posts
 
 - Put English posts under `blog/YYYY-MM-DD-short-name/index.md` or `index.mdx`.
@@ -73,6 +102,10 @@ Published releases are immutable snapshots under `versioned_docs/version-<releas
 `version-<release>/` directory. Do not fix a later release by editing an older snapshot. Update the current sources
 first, then create and review a new English and Chinese snapshot when the matching Dayu release is cut. Keep `versions.json`,
 `versioned_sidebars/`, and the `versions` configuration in `docusaurus.config.js` synchronized with that release.
+
+Community is shared across documentation versions. The older community pages in `docs/`, `versioned_docs/`, and their
+localized counterparts are excluded from the documentation build; `plugins/community-redirects.js` preserves their
+public URLs. Update the independent Community sources instead of copying governance or member changes into release snapshots.
 
 ## Pull Request Checklist
 

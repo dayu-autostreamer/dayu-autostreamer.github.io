@@ -23,7 +23,12 @@ instructions.
 
 ## Direct Contact
 
-For community or coordination questions, contact:
+For general project exchange and research collaboration, contact
+[Wenhui Zhou](mailto:whzhou@smail.nju.edu.cn).
 
-- Lei Xie: <lxie@nju.edu.cn>
-- Wenhui Zhou: <whzhou@smail.nju.edu.cn>
+For conduct concerns, use the private contacts and conflict-handling process in
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md#enforcement).
+
+The [Community support page](https://dayu-autostreamer.github.io/community/support) brings together usage,
+contribution, governance, security, and conduct channels. Project-wide channels are maintained in the
+[system support guide](https://github.com/dayu-autostreamer/dayu/blob/main/SUPPORT.md).

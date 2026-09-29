@@ -6,13 +6,11 @@ import ThemedImage from '@theme/ThemedImage';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Translate from '@docusaurus/Translate';
 
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './index.module.css';
 import HomepageFeatures from '../components/HomepageFeatures';
+import FoundingCredit from '../components/FoundingCredit';
 
 function HomepageHeader() {
-    const {siteConfig} = useDocusaurusContext();
-
     return (
         <header className={clsx('hero', styles.heroBackground)}>
             <div className={clsx('container', styles.heroInner)}>
@@ -30,6 +28,8 @@ function HomepageHeader() {
                         Provide infrastructure for cloud-edge collaborative stream data analytics.
                     </Translate>
                 </p>
+
+                <FoundingCredit showCommunityLink />
 
                 <div className={styles.buttons}>
                     <div className="margin-horiz--sm">
